@@ -1,13 +1,13 @@
 # Mobile-APP-Softwrae
  
-<h1 align="center">Hello , we are Youssef Bassiony, Mohammed Magdy</h1>
+<h1 align="center">Hello , we are Youssef Bassiony, Mohammed Magdy, Mrawan El barbary, Amr Achraf </h1>
 <h3 align="center">A React Native Developers Using Environment Expo Go</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=youssef-113&label=Profile%20views&color=0e75b6&style=flat" alt="youssef-113" /> </p>
 
-- 🔭 I’m currently working on **Starting app**
+- 🔭 We 're currently working on **Starting app**
 
-- 🌱 I’m currently learning **Expo GO**
+- 🌱 we 're currently learning **Expo GO**
 
 - 💬 Ask our about **React, React native**
 
