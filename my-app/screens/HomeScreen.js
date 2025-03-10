@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
 
+
 const HomeScreen = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -14,6 +15,10 @@ const HomeScreen = ({ navigation }) => {
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Details")}>
         <Text style={styles.buttonText}>ℹ️ About APP</Text>
+      </TouchableOpacity>+
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Contact")}>
+        <Text style={styles.buttonText}>📞 Connect us</Text>
       </TouchableOpacity>+
 
      

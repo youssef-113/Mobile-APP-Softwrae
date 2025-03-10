@@ -9,8 +9,9 @@ const DetailsScreen = ({ navigation }) => {
       <View style={styles.teamContainer}>
         <Text style={styles.teamMember}>🔹 Marwan Ahmed Sayed</Text>
         <Text style={styles.teamMember}>🔹 Amr Ashraf Salah</Text>
-        <Text style={styles.teamMember}>🔹 Youssef Bassiony</Text>
+        <Text style={styles.teamMember}>🔹 Youssef Bassiouny</Text>
         <Text style={styles.teamMember}>🔹 Mohammed Magdy</Text>
+        <Text style={styles.teamMember}>🔹 Hassan Abdlah</Text>
       </View>
       <Text style={styles.subtitle}>Our Project</Text>
       <View style={styles.teamdis}>
