@@ -1,30 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+import { FontAwesome } from 'react-native-vector-icons';
+import { StatusBar } from 'expo-status-bar'; // استيراد مكتبة StatusBar
 
-const Home = () => {
+const Index = () => {
+  const router = useRouter();
+  const [cartItems, setCartItems] = useState([]);
+
+  // دالة لإضافة المنتجات إلى السلة
+  const addToCart = (product) => {
+    setCartItems((prevCart) => [...prevCart, product]);
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>🚀 Hello In Our app</Text>
-      <Text style={styles.subtitle}>discover our product</Text>
+    <>
+      {/* تغيير لون شريط الحالة إلى اللون الغامق */}
+      <StatusBar style="dark" backgroundColor="#121212" /> 
 
-      <Link href='/Product' asChild>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>🛒 Products</Text>
-        </TouchableOpacity>
-      </Link>
+      <ScrollView contentContainerStyle={styles.container}>
+        
+        <View style={styles.header}>
+          <TouchableOpacity 
+            onPress={() => router.push({ 
+              pathname: '/CartScreen', 
+              params: { cartItems: JSON.stringify(cartItems) } 
+            })} 
+            style={styles.cartIcon}
+          >
+            <FontAwesome name="shopping-cart" size={24} color="#FFA500" />
+            {cartItems.length > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
 
-      <Link href='/About' asChild>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>ℹ️ About APP</Text>
-        </TouchableOpacity>
-      </Link>
-    </ScrollView>
+        <Text style={styles.title}>🚀 Hello In Our app</Text>
+        <Text style={styles.subtitle}>Discover our products</Text>
+
+        <Link href='/Product' asChild>
+          <TouchableOpacity style={styles.button}>
+            <FontAwesome name="shopping-cart" size={20} color="#000" />
+            <Text style={styles.buttonText}>Products</Text>
+          </TouchableOpacity>
+        </Link>
+
+        <Link href='/About' asChild>
+          <TouchableOpacity style={styles.button}>
+            <FontAwesome name="info-circle" size={20} color="#000" />
+            <Text style={styles.buttonText}>About APP</Text>
+          </TouchableOpacity>
+        </Link>
+
+        {/* TABS في الأسفل */}
+        <View style={styles.tabsContainer}>
+          <Link href="/" style={styles.tabButton}>
+            <FontAwesome name="home" size={20} color="#fff" />
+          </Link>
+          <Link href="/Product" style={styles.tabButton}>
+            <FontAwesome name="product-hunt" size={20} color="#fff" />
+          </Link>
+          <Link href="/About" style={styles.tabButton}>
+            <FontAwesome name="info-circle" size={20} color="#fff" />
+          </Link>
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
-
-export default Home;
+export default Index;
 
 const styles = StyleSheet.create({
   container: {
@@ -32,6 +79,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 20,
     backgroundColor: '#121212',
+  },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 15,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+  cartIcon: {
+    position: 'relative',
+    padding: 10,
+  },
+  cartBadge: {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+    backgroundColor: 'red',
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartBadgeText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 26,
@@ -56,33 +132,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 4,
     elevation: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
+    marginLeft: 10,
   },
-  teamContainer: {
-    backgroundColor: '#1E1E1E',
-    padding: 15,
-    borderRadius: 10,
+  tabsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+    paddingVertical: 5,
+    backgroundColor: '#333',
+    position: 'absolute',
+    bottom: 0,
+    height: 60,
+    borderTopWidth: 2,
+    borderTopColor: '#555',
+  },
+  tabButton: {
+    padding: 10,
     alignItems: 'center',
-    elevation: 5,
-    marginBottom: 20,
-    width: '90%',
-  },
-  teamdis: {
-    backgroundColor: '#1E1E1E',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    elevation: 5,
-    marginBottom: 20,
-    width: '90%',
-  },
-  teamMember: {
-    fontSize: 18,
-    color: '#DDD',
-    marginVertical: 5,
+    justifyContent: 'center',
+    width: 60,
+    height: 60,
   },
 });

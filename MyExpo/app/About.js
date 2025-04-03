@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
+import { FontAwesome } from 'react-native-vector-icons';
 
 const About = () => {
     return (
@@ -19,12 +20,25 @@ const About = () => {
         <Text style={styles.subtitle}>Our Project</Text>
         <View style={styles.teamdis}>
           <Text style={styles.teamMember}>
-            our opinion in this project is fol fol fol
+            Our opinion in this project is fol fol fol
           </Text>
+        </View>
+
+        {/* التبويبات */}
+        <View style={styles.tabsContainer}>
+          <Link href="/" style={styles.tabButton}>
+            <FontAwesome name="home" size={20} color="#fff" />
+          </Link>
+          <Link href="/Product" style={styles.tabButton}>
+            <FontAwesome name="product-hunt" size={20} color="#fff" />
+          </Link>
+          <Link href="/About" style={styles.tabButton}>
+            <FontAwesome name="info-circle" size={20} color="#fff" />
+          </Link>
         </View>
       </View>
     );
-  };
+};
 
 export default About;
 
@@ -70,5 +84,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#DDD',
     marginVertical: 5,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+    position: 'absolute',
+    bottom: 0, // تثبيت التبويبات في الأسفل
+    backgroundColor: '#333',
+    height: 60,
+    borderTopWidth: 2,
+    borderTopColor: '#555',
+    paddingVertical: 5,
+    zIndex: 10,
+  },
+  tabButton: {
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 60,
+    height: 60,
   },
 });

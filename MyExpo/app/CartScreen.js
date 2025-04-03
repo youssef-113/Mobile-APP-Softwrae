@@ -1,0 +1,90 @@
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+
+const Cart = () => {
+  const params = useLocalSearchParams();
+  const cartItems = params.cartItems ? JSON.parse(params.cartItems) : [];
+
+  // دالة لحساب مجموع المنتجات
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + parseFloat(item.price.replace('$', '')), 0).toFixed(2);
+  };
+
+  const total = calculateTotal();
+
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>🛒 Your Cart</Text>
+
+      {cartItems.length === 0 ? (
+        <Text style={styles.emptyCartText}>Your cart is empty</Text>
+      ) : (
+        cartItems.map((item, index) => (
+          <View key={index} style={styles.cartItem}>
+            <Text style={styles.cartItemName}>{item.name}</Text>
+            <Text style={styles.cartItemPrice}>${item.price}</Text>
+          </View>
+        ))
+      )}
+
+      {/* إضافة مجموع الأسعار */}
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalText}>Total: ${total}</Text>
+      </View>
+    </ScrollView>
+  );
+};
+
+export default Cart;
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    paddingVertical: 20,
+    backgroundColor: '#121212',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#FFA500',
+  },
+  emptyCartText: {
+    color: '#fff',
+    fontSize: 18,
+    fontStyle: 'italic',
+  },
+  cartItem: {
+    backgroundColor: 'orange',
+    padding: 15,
+    marginVertical: 5,
+    borderRadius: 10,
+    width: '90%',
+    alignItems: 'center',
+  },
+  cartItemName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  cartItemPrice: {
+    fontSize: 16,
+    color: '#008000',
+  },
+  totalContainer: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#1E1E1E',
+    borderRadius: 10,
+    width: '90%',
+    alignItems: 'center',
+    elevation: 5,
+  },
+  totalText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#FFA500',
+  },
+});
