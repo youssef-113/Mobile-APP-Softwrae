@@ -135,7 +135,7 @@ export default function ProductsScreen() {
 
       {/* إضافة التبويبات الثابتة في أول الصفحة */}
       <View style={styles.tabsContainer}>
-        <Link href="/" style={styles.tabButton}>
+        <Link href="/home" style={styles.tabButton}>
           <FontAwesome name="home" size={20} color="#fff" />
         </Link>
         <Link href="/Product" style={styles.tabButton}>
@@ -144,6 +144,9 @@ export default function ProductsScreen() {
         <Link href="/About" style={styles.tabButton}>
           <FontAwesome name="info-circle" size={20} color="#fff" />
         </Link>
+        <Link href="/contactScreen" style={styles.tabButton}>
+           <FontAwesome name="envelope" size={20} color="#fff" />
+         </Link>
       </View>
     </ScrollView>
   );

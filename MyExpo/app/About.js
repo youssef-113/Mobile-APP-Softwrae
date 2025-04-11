@@ -26,7 +26,7 @@ const About = () => {
 
         {/* التبويبات */}
         <View style={styles.tabsContainer}>
-          <Link href="/" style={styles.tabButton}>
+          <Link href="/home" style={styles.tabButton}>
             <FontAwesome name="home" size={20} color="#fff" />
           </Link>
           <Link href="/Product" style={styles.tabButton}>
@@ -35,6 +35,9 @@ const About = () => {
           <Link href="/About" style={styles.tabButton}>
             <FontAwesome name="info-circle" size={20} color="#fff" />
           </Link>
+          <Link href="/contactScreen" style={styles.tabButton}>
+           <FontAwesome name="envelope" size={20} color="#fff" />
+         </Link>
         </View>
       </View>
     );
