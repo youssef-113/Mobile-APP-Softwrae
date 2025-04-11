@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import auth from '../firebase'; 
 
 const Signup = () => {
     const router = useRouter();
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  const handleSignup = () => {
-    if (!email || !password || !confirmPassword|| !username) {
-      Alert.alert('Error', 'Please fill in all fields.');
-      return;
-    }
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match.');
-      return;
-      }
-      
-    router.replace('/logIn');
+    const handleSignup = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    console.log("DONE SIGN UP! ")
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorMessage)
+  });
   };
 
   return (
@@ -32,15 +32,7 @@ const Signup = () => {
         }} 
       />
           <Text style={styles.title}>Create an Account</Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Your Name" 
-        placeholderTextColor="#888"
-        value={username} 
-        onChangeText={setUsername}
-        keyboardType="Name"
-
-      />
+      
       <TextInput 
         style={styles.input} 
         placeholder="Email" 
@@ -56,14 +48,6 @@ const Signup = () => {
         placeholderTextColor="#888"
         value={password} 
         onChangeText={setPassword}
-        secureTextEntry 
-      />
-      <TextInput 
-        style={styles.input} 
-        placeholder="Confirm Password" 
-        placeholderTextColor="#888"
-        value={confirmPassword} 
-        onChangeText={setConfirmPassword}
         secureTextEntry 
       />
       <TouchableOpacity style={styles.button} onPress={handleSignup}>

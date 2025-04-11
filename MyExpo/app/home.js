@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
 import { Link, useRouter,Stack } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
+import auth from '../firebase'; 
 
 const home = () => {
   const router = useRouter();

@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
+import {signInWithEmailAndPassword } from "firebase/auth";
+import auth from '../firebase'; 
 
 const Login = () => {
     const router = useRouter();
-    const [username, setUsername] = useState("");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (!email || !password || !username) {
-      Alert.alert('Error', 'Please fill in both fields.');
-      return;
-    }
-    // TODO: Implement authentication logic here.
-    // For now, we simulate a successful login and navigate to the Home page.
-    router.replace('/home');
-  };
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    console.log("DONE SIGN IN! ")
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorMessage)
+  });
+
+    };
 
   return (
     <View style={styles.container} id='login'>
@@ -32,15 +38,6 @@ const Login = () => {
           />
         <Text style={styles.title} >Welcom in our pharmacy</Text>  
         <Text style={styles.title}>Login to your account </Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Your Name" 
-        placeholderTextColor="#888"
-        value={username} 
-        onChangeText={setUsername}
-        autoCapitalize="none"
-        keyboardType="Name"
-      /> 
       <TextInput 
         style={styles.input} 
         placeholder="Email" 
