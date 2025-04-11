@@ -63,49 +63,56 @@ const Signup = () => {
 };
 
 export default Signup;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212',
+    backgroundColor: '#E0F7FA',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: 'bold',
-    color: '#FFA500',
+    color: '#00796B',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#555',
     marginBottom: 20,
   },
   input: {
-    width: '80%',
-    height: 40,
-    backgroundColor: '#1E1E1E',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    color: '#FFF',
+    width: '90%',
+    height: 50,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    color: '#333',
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#B2DFDB',
   },
   button: {
-    backgroundColor: '#FFA500',
+    backgroundColor: '#26A69A',
     paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 10,
+    paddingHorizontal: 50,
+    borderRadius: 12,
     alignItems: 'center',
-    marginBottom: 15,
+    marginTop: 10,
   },
   buttonText: {
-    color: '#000',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
   linkText: {
-    color: '#FFF',
+    color: '#555',
     fontSize: 16,
+    marginTop: 20,
   },
   link: {
-    color: '#1E90FF',
-    textDecorationLine: 'underline',
+    color: '#00796B',
+    fontWeight: 'bold',
   },
 });

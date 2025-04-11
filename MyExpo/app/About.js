@@ -37,23 +37,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#121212',
+    backgroundColor: '#E0F7FA', // تغيير اللون إلى لون فاتح
     padding: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#FFA500',
+    color: '#00796B', // تغيير اللون إلى الأخضر الداكن
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: '#333', // تغيير اللون إلى لون رمادي داكن
     marginBottom: 10,
   },
   teamContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#ffffff', // تغيير اللون إلى الأبيض
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   teamdis: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#ffffff', // تغيير اللون إلى الأبيض
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   teamMember: {
     fontSize: 18,
-    color: '#DDD',
+    color: '#00796B', // تغيير اللون إلى الأخضر الداكن
     marginVertical: 5,
   },
   tabsContainer: {
@@ -81,10 +81,10 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     bottom: 0, // تثبيت التبويبات في الأسفل
-    backgroundColor: '#333',
+    backgroundColor: '#333', // لون التبويبات
     height: 60,
     borderTopWidth: 2,
-    borderTopColor: '#555',
+    borderTopColor: '#555', // تغيير اللون إلى رمادي داكن
     paddingVertical: 5,
     zIndex: 10,
   },

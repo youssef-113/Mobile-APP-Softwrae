@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
 import { useRouter } from 'expo-router';
-import { Link } from 'expo-router'; 
-import TabBar from './component/TabBar';
+import { Link } from 'expo-router'; // استيراد Link لربط التبويبات
 
 const productImages = {
   product1: require('../assets/images/car.png'),
@@ -29,7 +28,7 @@ const ProductItem = ({ product, addToCart, openModal }) => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
-  const maxDescriptionLength = 50; 
+  const maxDescriptionLength = 50; // الحد الأقصى لعدد الحروف قبل أن يظهر "Read More"
   const truncatedDescription = product.description.slice(0, maxDescriptionLength);
 
   return (
@@ -50,7 +49,7 @@ const ProductItem = ({ product, addToCart, openModal }) => {
           <FontAwesome name="plus" size={20} color="#fff" />
         </TouchableOpacity>
 
-     
+        {/* أيقونة info لفتح نافذة منبثقة */}
         <TouchableOpacity onPress={() => openModal(product)}>
           <FontAwesome name="info-circle" size={20} color="#FFF" style={styles.infoIcon} />
         </TouchableOpacity>
@@ -64,7 +63,7 @@ export default function ProductsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchText, setSearchText] = useState('');
-  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false); // حالة لإظهار حقل البحث
   const router = useRouter();
 
   const addToCart = (product) => {
@@ -81,7 +80,7 @@ export default function ProductsScreen() {
     setSelectedProduct(null);
   };
 
-  
+  // تصفية المنتجات بناءً على نص البحث
   const filteredProducts = productsData.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -90,15 +89,15 @@ export default function ProductsScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Product List</Text>
 
-      
+      {/* أيقونة البحث في أعلى الصفحة */}
       <TouchableOpacity
         style={styles.searchIcon}
-        onPress={() => setIsSearchActive(!isSearchActive)} 
+        onPress={() => setIsSearchActive(!isSearchActive)} // تبديل حالة حقل البحث
       >
         <FontAwesome name="search" size={24} color="#fff" />
       </TouchableOpacity>
 
-    
+      {/* عرض حقل البحث عندما تكون حالة البحث مفعلة */}
       {isSearchActive && (
         <TextInput
           style={styles.searchInput}
@@ -109,7 +108,7 @@ export default function ProductsScreen() {
         />
       )}
 
-    
+      {/* عرض المنتجات بناءً على نص البحث */}
       {filteredProducts.map((item) => (
         <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
       ))}
@@ -120,7 +119,7 @@ export default function ProductsScreen() {
         <Text style={styles.cartButtonText}>Go to Cart ({cart.length})</Text>
       </TouchableOpacity>
 
-      
+      {/* نافذة منبثقة لعرض تفاصيل المنتج */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -134,26 +133,37 @@ export default function ProductsScreen() {
         </View>
       </Modal>
 
-      
+      {/* إضافة التبويبات الثابتة في أول الصفحة */}
       <View style={styles.tabsContainer}>
-      <TabBar />
+        <Link href="/home" style={styles.tabButton}>
+          <FontAwesome name="home" size={20} color="#fff" />
+        </Link>
+        <Link href="/Product" style={styles.tabButton}>
+          <FontAwesome name="product-hunt" size={20} color="#fff" />
+        </Link>
+        <Link href="/About" style={styles.tabButton}>
+          <FontAwesome name="info-circle" size={20} color="#fff" />
+        </Link>
+        <Link href="/contactScreen" style={styles.tabButton}>
+           <FontAwesome name="envelope" size={20} color="#fff" />
+         </Link>
       </View>
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingVertical: 20,
-    backgroundColor: '#121212',
+    backgroundColor: '#E0F7FA',
     alignItems: 'center',
   },
   title: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#FFA500',
+    marginBottom: 20,
+    marginTop: 60,
+    color: '#00796B',
   },
   searchIcon: {
     position: 'absolute',
@@ -164,27 +174,27 @@ const styles = StyleSheet.create({
   searchInput: {
     width: '90%',
     height: 40,
-    backgroundColor: '#333',
-    color: '#fff',
+    backgroundColor: '#ffffff',
+    color: '#000',
     paddingLeft: 10,
     marginBottom: 20,
-    borderRadius: 5,
-    position: 'absolute',
-    top: 50,
-    zIndex: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginTop: 10,
   },
   productContainer: {
-    backgroundColor: 'orange',
+    backgroundColor: '#ffffff',
     padding: 15,
-    marginVertical: 5,
-    borderRadius: 10,
+    marginVertical: 10,
+    borderRadius: 12,
     width: '90%',
     alignItems: 'center',
-    shadowColor: '#fff',
+    shadowColor: '#aaa',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 4,
   },
   productImage: {
     width: 120,
@@ -198,34 +208,35 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#00796B',
   },
   productDescription: {
     fontSize: 14,
-    color: '#fff',
+    color: '#333',
   },
   readMore: {
-    color: '#008000',
+    color: '#00796B',
     fontWeight: 'bold',
     fontSize: 14,
   },
   productPrice: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#008000',
+    color: '#00796B',
   },
   addButton: {
     marginTop: 10,
-    backgroundColor: '#008000',
+    backgroundColor: '#26A69A',
     padding: 10,
     borderRadius: 50,
   },
   cartButton: {
     marginTop: 20,
-    backgroundColor: '#FFA500',
+    backgroundColor: '#26A69A',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
+    width: '90%',
   },
   cartButtonText: {
     fontSize: 18,
@@ -235,20 +246,19 @@ const styles = StyleSheet.create({
   infoIcon: {
     marginTop: 10,
     marginBottom: 10,
+    color: '#00796B',
   },
   tabsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
     paddingVertical: 5,
-    backgroundColor: '#333',
-    position: 'sticky',
-    bottom: 0, 
-    top: 0,
-    zIndex: 10,
+    backgroundColor: '#00796B',
+    position: 'absolute',
+    bottom: 0,
     height: 60,
-    borderBottomWidth: 2,
-    borderBottomColor: '#555',
+    borderTopWidth: 2,
+    borderTopColor: '#004D40',
   },
   tabButton: {
     padding: 10,
@@ -274,6 +284,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#00796B',
   },
   modalDescription: {
     fontSize: 16,
@@ -283,7 +294,7 @@ const styles = StyleSheet.create({
   modalPrice: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#008000',
+    color: '#00796B',
     marginBottom: 20,
   },
   closeButton: {

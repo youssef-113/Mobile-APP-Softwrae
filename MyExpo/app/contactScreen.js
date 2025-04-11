@@ -21,98 +21,95 @@ const ContactScreen = () => {
   };
 
   return (
-    
-      <View style={styles.container}>
-      <View style={styles.container}>
-        <Text style={styles.title}>📞 Contact Us</Text>
-        <Text style={styles.subtitle}>
-          We're here to help you! Reach out to us for any questions or feedback:
-        </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>📞 Contact Us</Text>
+      <Text style={styles.subtitle}>
+        We're here to help you! Reach out to us for any questions or feedback:
+      </Text>
 
-        <Text style={styles.info}>📧 Email: yossf.abdla311@gmail.com</Text>
-        <Text style={styles.info}>📞 Phone: 01 273 240 591</Text>
+      <Text style={styles.info}>📧 Email: yossf.abdla311@gmail.com</Text>
+      <Text style={styles.info}>📞 Phone: 01 273 240 591</Text>
 
-        <Text style={styles.formLabel}>💡 Send us your feedback:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Write your feedback here..."
-          placeholderTextColor="#888"
-          value={feedback}
-          onChangeText={setFeedback}
-          multiline
-        />
+      <Text style={styles.formLabel}>💡 Send us your feedback:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Write your feedback here..."
+        placeholderTextColor="#888"
+        value={feedback}
+        onChangeText={setFeedback}
+        multiline
+      />
 
-        {alertMessage !== "" && (
-          <Text style={styles.alertLabel}>{alertMessage}</Text>
-        )}
+      {alertMessage !== "" && (
+        <Text style={styles.alertLabel}>{alertMessage}</Text>
+      )}
 
-        <TouchableOpacity style={styles.button} onPress={handleSendFeedback}>
-          <Text style={styles.buttonText}>📨 Send Feedback</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleSendFeedback}>
+        <Text style={styles.buttonText}>📨 Send Feedback</Text>
+      </TouchableOpacity>
 
-        <Text style={styles.socialTitle}>🌐 Connect with us:</Text>
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL(
-              "https://github.com/youssef-113/Mobile-APP-Softwrae"
-            )
-          }
-        >
-          <Text style={styles.socialLink}>🔹 GitHub</Text>
-        </TouchableOpacity>
-      </View>
+      <Text style={styles.socialTitle}>🌐 Connect with us:</Text>
+      <TouchableOpacity
+        onPress={() =>
+          Linking.openURL(
+            "https://github.com/youssef-113/Mobile-APP-Softwrae"
+          )
+        }
+      >
+        <Text style={styles.socialLink}>🔹 GitHub</Text>
+      </TouchableOpacity>
 
       <TabBar />
-   </View>
+    </View>
   );
 };
 
 export default ContactScreen;
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#121212",
+    backgroundColor: "#E0F7FA", // تغيير اللون إلى لون فاتح
     padding: 15,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#FFA500",
+    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: "#FFF",
+    color: "#333", // لون رمادي داكن
     marginBottom: 20,
     textAlign: "center",
   },
   info: {
     fontSize: 16,
-    color: "#DDD",
+    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
     marginBottom: 10,
   },
   formLabel: {
     fontSize: 18,
-    color: "#FFA500",
+    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
     marginTop: 20,
     marginBottom: 10,
   },
   input: {
     width: "100%",
     height: 100,
-    backgroundColor: "#1E1E1E",
-    color: "#FFF",
+    backgroundColor: "#FFFFFF", // تغيير اللون إلى الأبيض
+    color: "#333", // لون نص رمادي داكن
     padding: 10,
     borderRadius: 10,
     textAlignVertical: "top",
     borderWidth: 1,
-    borderColor: "#FFA500",
+    borderColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#FFA500",
+    backgroundColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 10,
@@ -121,28 +118,28 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#000",
+    color: "#FFF", // لون النص الأبيض
   },
   socialTitle: {
     fontSize: 18,
-    color: "#FFA500",
+    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
     marginTop: 30,
     marginBottom: 10,
   },
   socialLink: {
     fontSize: 16,
-    color: "#1E90FF",
+    color: "#1E90FF", // تغيير اللون إلى الأزرق
     marginBottom: 5,
   },
   alertLabel: {
-    backgroundColor: "#1E1E1E",
-    color: "#FFF",
+    backgroundColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    color: "#FFF", // لون النص الأبيض
     fontSize: 16,
     fontWeight: "bold",
     padding: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#FFA500",
+    borderColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
     textAlign: "center",
     marginVertical: 10,
     width: "100%",
@@ -153,10 +150,10 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     bottom: 0, // تثبيت التبويبات في الأسفل
-    backgroundColor: '#333',
+    backgroundColor: '#333', // لون التبويبات
     height: 60,
     borderTopWidth: 2,
-    borderTopColor: '#555',
+    borderTopColor: '#555', // تغيير اللون إلى رمادي داكن
     paddingVertical: 5,
     zIndex: 10,
   },
