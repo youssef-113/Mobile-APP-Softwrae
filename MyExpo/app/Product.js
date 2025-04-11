@@ -6,20 +6,32 @@ import { Link } from 'expo-router';
 import TabBar from './component/TabBar';
 
 const productImages = {
-  product1: require('../assets/images/car.png'),
-  product2: require('../assets/images/car1.png'),
-  product3: require('../assets/images/car2.png'),
-  product4: require('../assets/images/icon.png'),
-  product5: require('../assets/images/icon.png'),
+  product1: require('../assets/images/1.jpg'),
+  product2: require('../assets/images/2.jpg'),
+  product3: require('../assets/images/3.jpg'),
+  product4: require('../assets/images/4.jpg'),
+  product5: require('../assets/images/5.jpg'),
   default: require('../assets/images/favicon.png'),
 };
 
 const productsData = [
-  { id: '1', name: 'ZOOBA', description: 'This Is new item now is Available', price: '$10.99', image: productImages.product1 },
-  { id: '2', name: 'AZZA', description: 'This is old item we Know that item and try to buy this more than one time for each other', price: '$20.99', image: productImages.product2 },
-  { id: '3', name: 'BR2BANZIN', description: 'Item 3 is available now', price: '$15.99', image: productImages.product3 },
-  { id: '4', name: 'TMATM', description: 'Item 4 here', price: '$12.99', image: productImages.product4 },
-  { id: '5', name: 'CAR', description: 'Is new item, is fantastic', price: '$22.99', image: productImages.default },
+  { id: '1', name: 'Xiclav', description: 'Xiclav 1g 14 coated tablets', price: '151.99 EGP', image: productImages.product1 },
+];
+
+const productsData2 = [
+  { id: '2', name: 'Stopadol', description: 'Stopadol Forte 1000 mg 10 sachets', price: '60.99 EGP', image: productImages.product2 },
+];
+
+const productsData3 = [
+  { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product3 },
+ ];
+
+const productsData4 = [
+  { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product4 },
+];
+
+const productsData5 = [
+  { id: '5', name: 'Cinacalcet', description: 'Cinacalcet 30 mg 10 tablets', price: '277.99 EGP', image: productImages.product5 },
 ];
 
 const ProductItem = ({ product, addToCart, openModal }) => {
@@ -46,12 +58,14 @@ const ProductItem = ({ product, addToCart, openModal }) => {
           )}
         </Text>
         <Text style={styles.productPrice}>{product.price}</Text>
-        <TouchableOpacity onPress={() => addToCart(product)} style={styles.addButton}>
-          <FontAwesome name="plus" size={20} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => openModal(product)}>
-          <FontAwesome name="info-circle" size={20} color="#FFF" style={styles.infoIcon} />
-        </TouchableOpacity>
+        <View style={styles.productActions}>
+          <TouchableOpacity onPress={() => addToCart(product)} style={styles.addButton}>
+            <FontAwesome name="plus" size={20} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => openModal(product)} style={styles.infoButton}>
+            <FontAwesome name="info-circle" size={20} color="#fff" />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -62,8 +76,13 @@ export default function ProductsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchText, setSearchText] = useState('');
-  const [isSearchActive, setIsSearchActive] = useState(false); 
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const router = useRouter();
+  const [showProducts, setShowProducts] = useState(false);
+  const [showProducts2, setShowProducts2] = useState(false);
+  const [showProducts3, setShowProducts3] = useState(false);
+  const [showProducts4, setShowProducts4] = useState(false);
+  const [showProducts5, setShowProducts5] = useState(false);
 
   const addToCart = (product) => {
     setCart((prevCart) => [...prevCart, product]);
@@ -78,92 +97,239 @@ export default function ProductsScreen() {
     setModalVisible(false);
     setSelectedProduct(null);
   };
-
   const filteredProducts = productsData.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase())
   );
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Products</Text>
-      <TouchableOpacity
-        style={styles.searchIcon}
-        onPress={() => setIsSearchActive(!isSearchActive)} 
-      >
-        <FontAwesome name="search" size={24} color="#00796B" />
-      </TouchableOpacity>
-      {isSearchActive && (
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search for products"
-          placeholderTextColor="#888"
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-      )}
-      {filteredProducts.map((item) => (
-        <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
-      ))}
-      <TouchableOpacity 
-        onPress={() => router.push({ pathname: '/CartScreen', params: { cartItems: JSON.stringify(cart) } })} 
-        style={styles.cartButton}>
-        <Text style={styles.cartButtonText}>Go to Cart ({cart.length})</Text>
-      </TouchableOpacity>
-      <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{selectedProduct?.name}</Text>
-            <Text style={styles.modalDescription}>{selectedProduct?.description}</Text>
-            <Text style={styles.modalPrice}>{selectedProduct?.price}</Text>
-            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
+    <View style={styles.mainContainer}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Product List</Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.container}>   
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="search"
+            placeholderTextColor="#888"
+            value={searchText}
+            onChangeText={setSearchText}
+            textAlign="right"
+          />
+          <FontAwesome name="search" size={20} color="#888" style={styles.searchIcon} />
         </View>
-      </Modal>
-      <TabBar />
-    </ScrollView>
+
+        
+        <TouchableOpacity
+          style={styles.categoryButton}
+          onPress={() => setShowProducts(!showProducts)}
+        >
+          <View style={styles.categoryButtonContent}>
+            <Text style={styles.categoryButtonText}>Antibiotics</Text>
+            <FontAwesome 
+              name={showProducts ? "chevron-up" : "chevron-down"} 
+              size={16} 
+              color="#FFA500" 
+              style={styles.categoryIcon}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {showProducts && productsData.map((item) => (
+          <ProductItem
+            key={item.id}
+            product={item}
+            addToCart={addToCart}
+            openModal={openModal}
+          />
+        ))}
+
+        <TouchableOpacity
+          style={styles.categoryButton}
+          onPress={() => setShowProducts2(!showProducts2)}
+        >
+          <View style={styles.categoryButtonContent}>
+            <Text style={styles.categoryButtonText}>Analgesics and anti-inflammatory</Text>
+            <FontAwesome 
+              name={showProducts2 ? "chevron-up" : "chevron-down"} 
+              size={16} 
+              color="#FFA500" 
+              style={styles.categoryIcon}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {showProducts2 && productsData2.map((item) => (
+          <ProductItem
+            key={item.id}
+            product={item}
+            addToCart={addToCart}
+            openModal={openModal}
+          />
+        ))}
+
+        <TouchableOpacity
+          style={styles.categoryButton}
+          onPress={() => setShowProducts3(!showProducts3)}
+        >
+          <View style={styles.categoryButtonContent}>
+            <Text style={styles.categoryButtonText}>Heart, blood and blood pressure medications</Text>
+            <FontAwesome 
+              name={showProducts3 ? "chevron-up" : "chevron-down"} 
+              size={16} 
+              color="#FFA500" 
+              style={styles.categoryIcon}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {showProducts3 && productsData3.map((item) => (
+          <ProductItem
+            key={item.id}
+            product={item}
+            addToCart={addToCart}
+            openModal={openModal}
+          />
+        ))}
+
+        <TouchableOpacity
+          style={styles.categoryButton}
+          onPress={() => setShowProducts4(!showProducts4)}
+        >
+          <View style={styles.categoryButtonContent}>
+            <Text style={styles.categoryButtonText}>Hemorrhoids and inflammation medications</Text>
+            <FontAwesome 
+              name={showProducts4 ? "chevron-up" : "chevron-down"} 
+              size={16} 
+              color="#FFA500" 
+              style={styles.categoryIcon}
+            />
+          </View>
+        </TouchableOpacity>
+        {showProducts4 && productsData4.map((item) => (
+          <ProductItem
+            key={item.id}
+            product={item}
+            addToCart={addToCart}
+            openModal={openModal}
+          />
+        ))}
+        <TouchableOpacity
+          style={styles.categoryButton}
+          onPress={() => setShowProducts5(!showProducts5)}
+        >
+          <View style={styles.categoryButtonContent}>
+            <Text style={styles.categoryButtonText}>Hormones</Text>
+            <FontAwesome 
+              name={showProducts5 ? "chevron-up" : "chevron-down"} 
+              size={16} 
+              color="#FFA500" 
+              style={styles.categoryIcon}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {showProducts5 && productsData5.map((item) => (
+          <ProductItem
+            key={item.id}
+            product={item}
+            addToCart={addToCart}
+            openModal={openModal}
+          />
+        ))}
+
+        
+        <TouchableOpacity
+          onPress={() => router.push({ pathname: '/CartScreen', params: { cartItems: JSON.stringify(cart) } })}
+          style={styles.cartButton}
+        >
+          <Text style={styles.cartButtonText}>Go to Cart({cart.length})</Text>
+        </TouchableOpacity>
+
+        
+        <Modal visible={modalVisible} animationType="slide" transparent={true}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>{selectedProduct?.name}</Text>
+              <Text style={styles.modalDescription}>{selectedProduct?.description}</Text>
+              <Text style={styles.modalPrice}>{selectedProduct?.price}</Text>
+              <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+                <Text style={styles.closeButtonText}>close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </ScrollView>
+
+      <View style={styles.tabsContainer}>
+        <TabBar />
+      </View>
+    </View>
   );
 }
+
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingVertical: 20,
-    paddingBottom: 100,
+  mainContainer: {
+    flex: 1,
     backgroundColor: '#E0F7FA',
+  },
+  header: {
+    padding: 15,
+    backgroundColor: '#00796B',
+    borderBottomWidth: 1,
+    borderBottomColor: '#004D40',
     alignItems: 'center',
   },
-  title: {
+  headerTitle: {
     fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 5,
-    color: '#00796B',
+    color: '#FFA500',
   },
-  searchIcon: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    zIndex: 10,
+  container: {
+    flexGrow: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    paddingBottom: 80,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginVertical: 10,
   },
   searchInput: {
-    width: '90%',
+    flex: 1,
     height: 40,
-    backgroundColor: '#ffffff',
     color: '#000',
-    paddingLeft: 20,
-    marginBottom: 5,
+    paddingRight: 10,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#00796B',
-    marginTop: 0,
+  },
+  searchIcon: {
+    marginLeft: 10,
+  },
+  categoryButton: {
+    backgroundColor: '#ffffff',
+    padding: 10,
+    borderRadius: 12,
+    marginVertical: 5,
+    borderWidth: 1,
+    borderColor: '#00796B',
+  },
+  categoryButtonText: {
+    fontSize: 14,
+    color: '#00796B',
+    fontWeight: 'bold',
   },
   productContainer: {
     backgroundColor: '#ffffff',
-    padding: 15,
-    marginVertical: 10,
-    borderRadius: 12,
-    width: '90%',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 10,
+    flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#aaa',
     shadowOffset: { width: 0, height: 2 },
@@ -172,56 +338,60 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   productImage: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
     borderRadius: 10,
-    marginBottom: 10,
+    marginLeft: 10,
   },
   productInfo: {
-    alignItems: 'center',
+    flex: 1,
   },
   productName: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#00796B',
+    textAlign: 'right',
   },
   productDescription: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#333',
+    textAlign: 'right',
+    marginVertical: 5,
   },
   readMore: {
     color: '#00796B',
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 12,
   },
   productPrice: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#00796B',
+    textAlign: 'right',
+  },
+  productActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 5,
   },
   addButton: {
-    marginTop: 10,
     backgroundColor: '#26A69A',
-    padding: 10,
-    borderRadius: 50,
+    padding: 8,
+    borderRadius: 20,
+    marginLeft: 10,
   },
   cartButton: {
     marginTop: 20,
     backgroundColor: '#26A69A',
-    padding: 15,
+    padding: 10,
     borderRadius: 10,
     alignItems: 'center',
-    width: '90%',
+    marginBottom: 20,
   },
   cartButtonText: {
-    fontSize: 18,
+    fontSize: 14,
     color: '#fff',
     fontWeight: 'bold',
-  },
-  infoIcon: {
-    marginTop: 10,
-    marginBottom: 10,
-    color: '#00796B',
   },
   tabsContainer: {
     flexDirection: 'row',
@@ -231,16 +401,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#00796B',
     position: 'absolute',
     bottom: 0,
-    height: 60,
-    borderTopWidth: 2,
+    zIndex: 10,
+    borderTopWidth: 1,
     borderTopColor: '#004D40',
-  },
-  tabButton: {
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 60,
-    height: 60,
   },
   modalContainer: {
     flex: 1,
