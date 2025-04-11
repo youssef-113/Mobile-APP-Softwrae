@@ -9,6 +9,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
     const handleSignup = () => {
+      router.replace('/logIn')
     createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     console.log("DONE SIGN UP! ")

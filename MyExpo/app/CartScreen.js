@@ -6,7 +6,7 @@ const Cart = () => {
   const params = useLocalSearchParams();
   const cartItems = params.cartItems ? JSON.parse(params.cartItems) : [];
 
-  // دالة لحساب مجموع المنتجات
+ 
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + parseFloat(item.price.replace('$', '')), 0).toFixed(2);
   };
@@ -28,7 +28,7 @@ const Cart = () => {
         ))
       )}
 
-      {/* إضافة مجموع الأسعار */}
+      
       <View style={styles.totalContainer}>
         <Text style={styles.totalText}>Total: ${total}</Text>
       </View>

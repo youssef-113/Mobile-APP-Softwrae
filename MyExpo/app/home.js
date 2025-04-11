@@ -4,6 +4,7 @@ import { Link, useRouter,Stack } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import auth from '../firebase'; 
+import TabBar from './component/TabBar';
 
 const home = () => {
   const router = useRouter();
@@ -16,13 +17,13 @@ const home = () => {
   return (
     <>
 <Stack.Screen options={{ 
-  title: 'Home',          // 👈 shows "Home" as page title
-  headerBackVisible: true,  // 👈 hides the back arrow
+  title: 'Home',         
+  headerBackVisible: true,  
   headerStyle: { 
-    backgroundColor: '#fff',  // 👈 top bar background color
+    backgroundColor: '#fff',  
   },
   headerTitleStyle: {
-    color: '#000',           // 👈 title color
+    color: '#000',           
     fontWeight: 'bold',
         },
 
@@ -49,7 +50,7 @@ const home = () => {
 
           <Text style={styles.title}>Welcome to Our Pharmacy</Text>
         <Text style={styles.subtitle}>Your health, our priority.</Text>
-         {/* Button to Login */}
+         
       <Link href="/logIn" asChild>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
@@ -78,20 +79,7 @@ const home = () => {
           </TouchableOpacity>
         </Link>
 
-        <View style={styles.tabsContainer}>
-          <Link href="/home" style={styles.tabButton}>
-            <FontAwesome name="home" size={20} color="#fff" />
-          </Link>
-          <Link href="/Product" style={styles.tabButton}>
-            <FontAwesome name="product-hunt" size={20} color="#fff" />
-          </Link>
-          <Link href="/About" style={styles.tabButton}>
-            <FontAwesome name="info-circle" size={20} color="#fff" />
-          </Link>
-          <Link href="/contactScreen" style={styles.tabButton}>
-            <FontAwesome name="envelope" size={20} color="#fff" />
-          </Link>
-        </View>
+        <TabBar />
       </ScrollView>
     </>
   );

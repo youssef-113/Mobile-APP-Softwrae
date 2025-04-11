@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Linking } from "react-native";
 import { Link } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
+import TabBar from './component/TabBar';
 
 const ContactScreen = () => {
   const [feedback, setFeedback] = useState("");
@@ -61,21 +62,7 @@ const ContactScreen = () => {
         </TouchableOpacity>
       </View>
 
-        {/* Bottom Navigation Tabs */}
-       <View style={styles.tabsContainer}>
-         <Link href="/home" style={styles.tabButton}>
-           <FontAwesome name="home" size={20} color="#fff" />
-         </Link>
-         <Link href="/Product" style={styles.tabButton}>
-           <FontAwesome name="product-hunt" size={20} color="#fff" />
-         </Link>
-         <Link href="/About" style={styles.tabButton}>
-           <FontAwesome name="info-circle" size={20} color="#fff" />
-         </Link>
-         <Link href="/contactScreen" style={styles.tabButton}>
-           <FontAwesome name="envelope" size={20} color="#fff" />
-         </Link>
-       </View>
+      <TabBar />
    </View>
   );
 };

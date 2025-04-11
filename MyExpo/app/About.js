@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
+import TabBar from './component/TabBar';
 
 const About = () => {
     return (
@@ -24,21 +25,7 @@ const About = () => {
           </Text>
         </View>
 
-        {/* التبويبات */}
-        <View style={styles.tabsContainer}>
-          <Link href="/home" style={styles.tabButton}>
-            <FontAwesome name="home" size={20} color="#fff" />
-          </Link>
-          <Link href="/Product" style={styles.tabButton}>
-            <FontAwesome name="product-hunt" size={20} color="#fff" />
-          </Link>
-          <Link href="/About" style={styles.tabButton}>
-            <FontAwesome name="info-circle" size={20} color="#fff" />
-          </Link>
-          <Link href="/contactScreen" style={styles.tabButton}>
-           <FontAwesome name="envelope" size={20} color="#fff" />
-         </Link>
-        </View>
+        <TabBar />
       </View>
     );
 };

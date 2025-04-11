@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
+    router.replace('/home')
     signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     console.log("DONE SIGN IN! ")
@@ -26,14 +27,14 @@ const Login = () => {
 
   return (
     <View style={styles.container} id='login'>
-      {/* Set up the header with title and remove back button if needed */}
+  
       <Stack.Screen 
         options={{
           title: 'Login',
           headerStyle: { backgroundColor: '#fff' },
           headerTitleStyle: { color: '#000', fontWeight: 'bold' },
-          // You can disable the back arrow here if desired, e.g.:
-          // headerBackVisible: false,
+          
+          
         }} 
           />
         <Text style={styles.title} >Welcom in our pharmacy</Text>  

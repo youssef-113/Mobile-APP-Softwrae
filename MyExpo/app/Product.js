@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
 import { useRouter } from 'expo-router';
-import { Link } from 'expo-router'; // استيراد Link لربط التبويبات
+import { Link } from 'expo-router'; 
+import TabBar from './component/TabBar';
 
 const productImages = {
   product1: require('../assets/images/car.png'),
@@ -28,7 +29,7 @@ const ProductItem = ({ product, addToCart, openModal }) => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
-  const maxDescriptionLength = 50; // الحد الأقصى لعدد الحروف قبل أن يظهر "Read More"
+  const maxDescriptionLength = 50; 
   const truncatedDescription = product.description.slice(0, maxDescriptionLength);
 
   return (
@@ -49,7 +50,7 @@ const ProductItem = ({ product, addToCart, openModal }) => {
           <FontAwesome name="plus" size={20} color="#fff" />
         </TouchableOpacity>
 
-        {/* أيقونة info لفتح نافذة منبثقة */}
+     
         <TouchableOpacity onPress={() => openModal(product)}>
           <FontAwesome name="info-circle" size={20} color="#FFF" style={styles.infoIcon} />
         </TouchableOpacity>
@@ -63,7 +64,7 @@ export default function ProductsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchText, setSearchText] = useState('');
-  const [isSearchActive, setIsSearchActive] = useState(false); // حالة لإظهار حقل البحث
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const router = useRouter();
 
   const addToCart = (product) => {
@@ -80,7 +81,7 @@ export default function ProductsScreen() {
     setSelectedProduct(null);
   };
 
-  // تصفية المنتجات بناءً على نص البحث
+  
   const filteredProducts = productsData.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -89,15 +90,15 @@ export default function ProductsScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Product List</Text>
 
-      {/* أيقونة البحث في أعلى الصفحة */}
+      
       <TouchableOpacity
         style={styles.searchIcon}
-        onPress={() => setIsSearchActive(!isSearchActive)} // تبديل حالة حقل البحث
+        onPress={() => setIsSearchActive(!isSearchActive)} 
       >
         <FontAwesome name="search" size={24} color="#fff" />
       </TouchableOpacity>
 
-      {/* عرض حقل البحث عندما تكون حالة البحث مفعلة */}
+    
       {isSearchActive && (
         <TextInput
           style={styles.searchInput}
@@ -108,7 +109,7 @@ export default function ProductsScreen() {
         />
       )}
 
-      {/* عرض المنتجات بناءً على نص البحث */}
+    
       {filteredProducts.map((item) => (
         <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
       ))}
@@ -119,7 +120,7 @@ export default function ProductsScreen() {
         <Text style={styles.cartButtonText}>Go to Cart ({cart.length})</Text>
       </TouchableOpacity>
 
-      {/* نافذة منبثقة لعرض تفاصيل المنتج */}
+      
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -133,20 +134,9 @@ export default function ProductsScreen() {
         </View>
       </Modal>
 
-      {/* إضافة التبويبات الثابتة في أول الصفحة */}
+      
       <View style={styles.tabsContainer}>
-        <Link href="/home" style={styles.tabButton}>
-          <FontAwesome name="home" size={20} color="#fff" />
-        </Link>
-        <Link href="/Product" style={styles.tabButton}>
-          <FontAwesome name="product-hunt" size={20} color="#fff" />
-        </Link>
-        <Link href="/About" style={styles.tabButton}>
-          <FontAwesome name="info-circle" size={20} color="#fff" />
-        </Link>
-        <Link href="/contactScreen" style={styles.tabButton}>
-           <FontAwesome name="envelope" size={20} color="#fff" />
-         </Link>
+      <TabBar />
       </View>
     </ScrollView>
   );
@@ -253,7 +243,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: '#333',
     position: 'sticky',
-    bottom: 0, // تثبيت التبويبات في الأسفل
+    bottom: 0, 
     top: 0,
     zIndex: 10,
     height: 60,
