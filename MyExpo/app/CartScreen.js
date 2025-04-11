@@ -40,22 +40,22 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingVertical: 20,
-    backgroundColor: '#E0F7FA', // تغيير اللون إلى لون فاتح
+    backgroundColor: '#E0F7FA', 
     alignItems: 'center',
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#00796B', // تغيير اللون إلى الأخضر الداكن
+    color: '#00796B', 
   },
   emptyCartText: {
-    color: '#333', // لون النص الرمادي الداكن
+    color: '#333', 
     fontSize: 18,
     fontStyle: 'italic',
   },
   cartItem: {
-    backgroundColor: '#26A69A', // تغيير اللون إلى الأخضر الفاتح
+    backgroundColor: '#26A69A', 
     padding: 15,
     marginVertical: 5,
     borderRadius: 10,
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
   },
   cartItemPrice: {
     fontSize: 16,
-    color: '#004D40', // تغيير اللون إلى الأخضر الداكن
+    color: '#004D40', 
   },
   totalContainer: {
     marginTop: 20,
     padding: 15,
-    backgroundColor: '#004D40', // تغيير اللون إلى الأخضر الداكن
+    backgroundColor: '#004D40',
     borderRadius: 10,
     width: '90%',
     alignItems: 'center',
@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFA500', // لون البرتقالي
+    color: '#FFA500', 
   },
 });

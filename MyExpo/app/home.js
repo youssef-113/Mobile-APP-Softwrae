@@ -4,6 +4,7 @@ import { Link, useRouter, Stack } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import auth from '../firebase'; 
+import TabBar from './component/TabBar';
 
 const home = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const home = () => {
     <>
       <Stack.Screen 
         options={{ 
-          title: 'الرئيسية',
+          title: 'الرئيسيه',
           headerBackVisible: true,
           headerStyle: { backgroundColor: '#ffffff' },
           headerTitleStyle: {
@@ -76,20 +77,7 @@ const home = () => {
           </TouchableOpacity>
         </Link>
 
-        <View style={styles.tabsContainer}>
-          <Link href="/home" style={styles.tabButton}>
-            <FontAwesome name="home" size={20} color="#fff" />
-          </Link>
-          <Link href="/Product" style={styles.tabButton}>
-            <FontAwesome name="product-hunt" size={20} color="#fff" />
-          </Link>
-          <Link href="/About" style={styles.tabButton}>
-            <FontAwesome name="info-circle" size={20} color="#fff" />
-          </Link>
-          <Link href="/contactScreen" style={styles.tabButton}>
-            <FontAwesome name="envelope" size={20} color="#fff" />
-          </Link>
-        </View>
+        <TabBar />
       </ScrollView>
     </>
   );

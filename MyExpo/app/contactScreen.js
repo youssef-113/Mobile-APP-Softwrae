@@ -70,46 +70,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#E0F7FA", // تغيير اللون إلى لون فاتح
+    backgroundColor: "#E0F7FA", 
     padding: 15,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    color: "#00796B", 
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: "#333", // لون رمادي داكن
+    color: "#333", 
     marginBottom: 20,
     textAlign: "center",
   },
   info: {
     fontSize: 16,
-    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    color: "#00796B",
     marginBottom: 10,
   },
   formLabel: {
     fontSize: 18,
-    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    color: "#00796B",
     marginTop: 20,
     marginBottom: 10,
   },
   input: {
     width: "100%",
     height: 100,
-    backgroundColor: "#FFFFFF", // تغيير اللون إلى الأبيض
-    color: "#333", // لون نص رمادي داكن
+    backgroundColor: "#FFFFFF", 
+    color: "#333", 
     padding: 10,
     borderRadius: 10,
     textAlignVertical: "top",
     borderWidth: 1,
-    borderColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    borderColor: "#00796B",
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    backgroundColor: "#00796B",
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 10,
@@ -118,28 +118,28 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FFF", // لون النص الأبيض
+    color: "#FFF", 
   },
   socialTitle: {
     fontSize: 18,
-    color: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    color: "#00796B", 
     marginTop: 30,
     marginBottom: 10,
   },
   socialLink: {
     fontSize: 16,
-    color: "#1E90FF", // تغيير اللون إلى الأزرق
+    color: "#1E90FF",
     marginBottom: 5,
   },
   alertLabel: {
-    backgroundColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
-    color: "#FFF", // لون النص الأبيض
+    backgroundColor: "#00796B", 
+    color: "#FFF", 
     fontSize: 16,
     fontWeight: "bold",
     padding: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#00796B", // تغيير اللون إلى الأخضر الداكن
+    borderColor: "#00796B", 
     textAlign: "center",
     marginVertical: 10,
     width: "100%",
@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '100%',
     position: 'absolute',
-    bottom: 0, // تثبيت التبويبات في الأسفل
-    backgroundColor: '#333', // لون التبويبات
+    bottom: 0, 
+    backgroundColor: '#333', 
     height: 60,
     borderTopWidth: 2,
-    borderTopColor: '#555', // تغيير اللون إلى رمادي داكن
+    borderTopColor: '#555', 
     paddingVertical: 5,
     zIndex: 10,
   },

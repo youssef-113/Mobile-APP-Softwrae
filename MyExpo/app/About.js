@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import TabBar from './component/TabBar';
 
+
 const About = () => {
   return (
     <View style={styles.container}>
@@ -37,23 +38,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#E0F7FA', // تغيير اللون إلى لون فاتح
+    backgroundColor: '#E0F7FA',
     padding: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#00796B', // تغيير اللون إلى الأخضر الداكن
+    color: '#00796B', 
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#333', // تغيير اللون إلى لون رمادي داكن
+    color: '#333', 
     marginBottom: 10,
   },
   teamContainer: {
-    backgroundColor: '#ffffff', // تغيير اللون إلى الأبيض
+    backgroundColor: '#ffffff', 
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   teamdis: {
-    backgroundColor: '#ffffff', // تغيير اللون إلى الأبيض
+    backgroundColor: '#ffffff', 
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   },
   teamMember: {
     fontSize: 18,
-    color: '#00796B', // تغيير اللون إلى الأخضر الداكن
+    color: '#00796B',
     marginVertical: 5,
   },
   tabsContainer: {
@@ -80,11 +81,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '100%',
     position: 'absolute',
-    bottom: 0, // تثبيت التبويبات في الأسفل
-    backgroundColor: '#333', // لون التبويبات
+    bottom: 0, 
+    backgroundColor: '#333', 
     height: 60,
     borderTopWidth: 2,
-    borderTopColor: '#555', // تغيير اللون إلى رمادي داكن
+    borderTopColor: '#555', 
     paddingVertical: 5,
     zIndex: 10,
   },

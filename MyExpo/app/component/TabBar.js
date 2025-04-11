@@ -2,10 +2,8 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
-
 export default function TabBar() {
   const router = useRouter();
-
   return (
     <View style={styles.tabsContainer}>
       <TouchableOpacity onPress={() => router.push('/home')} style={styles.tabButton}>
@@ -23,7 +21,6 @@ export default function TabBar() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   tabsContainer: {
     flexDirection: 'row',
@@ -32,16 +29,17 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: '#333',
     position: 'absolute',
-    bottom: 0,
-    height: 60,
+    bottom: 0, 
+    height: 60, 
     borderTopWidth: 2,
     borderTopColor: '#555',
-  },
+  }, 
   tabButton: {
-    padding: 10,
-    alignItems: 'center',
+    padding: 10, 
+    alignItems: 'center', 
     justifyContent: 'center',
-    width: 60,
-    height: 60,
-  },
+    width: 6, 
+    height: 60,   
+  }, 
+
 });
