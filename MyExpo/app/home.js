@@ -18,7 +18,7 @@ const home = () => {
     <>
       <Stack.Screen 
         options={{ 
-          title: 'الرئيسيه',
+          title: 'home',
           headerBackVisible: true,
           headerStyle: { backgroundColor: '#ffffff' },
           headerTitleStyle: {
@@ -47,37 +47,38 @@ const home = () => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.title}>💊 مرحبًا بك في صيدليتنا</Text>
-        <Text style={styles.subtitle}>صحتك تهمنا، خدماتنا دايمًا معاك</Text>
+        <Text style={styles.title1}>Faculty Of Science Pharmacy</Text>
+        <Text style={styles.title}>💊 Hello In Our Pharmacy</Text>
+        <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
 
         <Link href="/logIn" asChild>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>تسجيل الدخول</Text>
+            <Text style={styles.buttonText}>login</Text>
           </TouchableOpacity>
         </Link>
 
         <Link href='/Product' asChild>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>عرض المنتجات</Text>
+            <Text style={styles.buttonText}>shopping</Text>
             <FontAwesome name="shopping-cart" size={20} color="#fff" />
           </TouchableOpacity>
         </Link>
 
         <Link href='/About' asChild>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>عن الفريق</Text>
+            <Text style={styles.buttonText}>About Us </Text>
             <FontAwesome name="info-circle" size={20} color="#fff" />
           </TouchableOpacity>
         </Link>
 
         <Link href='/contactScreen' asChild>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>تواصل معنا</Text>
+            <Text style={styles.buttonText}>Contact Us </Text>
             <FontAwesome name="envelope" size={20} color="#fff" />
           </TouchableOpacity>
         </Link>
 
-        <TabBar />
+      <TabBar />
       </ScrollView>
     </>
   );
@@ -123,10 +124,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
   },
+  title1: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 10,
+    color: '#00796B',
+  },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    marginTop: 60,
+    marginTop: 20,
     marginBottom: 10,
     color: '#00796B',
   },
@@ -134,6 +142,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#555',
     marginBottom: 25,
+    marginRight:50,
+    marginLeft:50,
   },
   button: {
     width: '90%',

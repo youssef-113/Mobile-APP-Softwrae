@@ -68,10 +68,11 @@ export default ContactScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#E0F7FA", 
-    padding: 15,
+    flexGrow: 1,
+    paddingVertical: 20,
+    paddingBottom: 100,
+    backgroundColor: '#E0F7FA',
+    alignItems: 'center',
   },
   title: {
     fontSize: 28,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   input: {
-    width: "100%",
+    width: "90%",
     height: 100,
     backgroundColor: "#FFFFFF", 
     color: "#333", 
@@ -148,14 +149,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
+    paddingVertical: 5,
+    backgroundColor: '#00796B',
     position: 'absolute',
-    bottom: 0, 
-    backgroundColor: '#333', 
+    bottom: 0,
     height: 60,
     borderTopWidth: 2,
-    borderTopColor: '#555', 
-    paddingVertical: 5,
-    zIndex: 10,
+    borderTopColor: '#004D40',
   },
   tabButton: {
     padding: 10,

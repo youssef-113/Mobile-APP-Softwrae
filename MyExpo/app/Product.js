@@ -49,8 +49,6 @@ const ProductItem = ({ product, addToCart, openModal }) => {
         <TouchableOpacity onPress={() => addToCart(product)} style={styles.addButton}>
           <FontAwesome name="plus" size={20} color="#fff" />
         </TouchableOpacity>
-
-      
         <TouchableOpacity onPress={() => openModal(product)}>
           <FontAwesome name="info-circle" size={20} color="#FFF" style={styles.infoIcon} />
         </TouchableOpacity>
@@ -81,24 +79,19 @@ export default function ProductsScreen() {
     setSelectedProduct(null);
   };
 
-
   const filteredProducts = productsData.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Product List</Text>
-
-     
+      <Text style={styles.title}>Products</Text>
       <TouchableOpacity
         style={styles.searchIcon}
         onPress={() => setIsSearchActive(!isSearchActive)} 
       >
-        <FontAwesome name="search" size={24} color="#fff" />
+        <FontAwesome name="search" size={24} color="#00796B" />
       </TouchableOpacity>
-
-    
       {isSearchActive && (
         <TextInput
           style={styles.searchInput}
@@ -108,19 +101,14 @@ export default function ProductsScreen() {
           onChangeText={setSearchText}
         />
       )}
-
-   
       {filteredProducts.map((item) => (
         <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
       ))}
-
       <TouchableOpacity 
         onPress={() => router.push({ pathname: '/CartScreen', params: { cartItems: JSON.stringify(cart) } })} 
         style={styles.cartButton}>
         <Text style={styles.cartButtonText}>Go to Cart ({cart.length})</Text>
       </TouchableOpacity>
-
-   
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -133,10 +121,7 @@ export default function ProductsScreen() {
           </View>
         </View>
       </Modal>
-
-      <View style={styles.tabsContainer}>
       <TabBar />
-      </View>
     </ScrollView>
   );
 }
@@ -144,20 +129,21 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingVertical: 20,
+    paddingBottom: 100,
     backgroundColor: '#E0F7FA',
     alignItems: 'center',
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 60,
+    marginBottom: 10,
+    marginTop: 5,
     color: '#00796B',
   },
   searchIcon: {
     position: 'absolute',
-    top: 20,
-    right: 20,
+    top: 10,
+    right: 10,
     zIndex: 10,
   },
   searchInput: {
@@ -165,12 +151,12 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#ffffff',
     color: '#000',
-    paddingLeft: 10,
-    marginBottom: 20,
-    borderRadius: 8,
+    paddingLeft: 20,
+    marginBottom: 5,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
-    marginTop: 10,
+    borderColor: '#00796B',
+    marginTop: 0,
   },
   productContainer: {
     backgroundColor: '#ffffff',

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import TabBar from './component/TabBar';
-
+//marwan
 
 const About = () => {
   return (
@@ -16,8 +16,8 @@ const About = () => {
         <Text style={styles.teamMember}>🔹 Youssef Bassiony</Text>
         <Text style={styles.teamMember}>🔹 Mohammed Magdy</Text>
         <Text style={styles.teamMember}>🔹 Hassan Mohamed Hassan</Text>
-        <Text style={styles.teamMember}>🔹 Youssef Ahmed Refaat</Text>
-        <Text style={styles.teamMember}>🔹 Khaled Ahmed</Text>
+        <Text style={styles.teamMember}>🔹 Youssef Ashraf Refaat</Text>
+        <Text style={styles.teamMember}>🔹 Khaled Ali</Text>
       </View>
       <Text style={styles.subtitle}>Our Project</Text>
       <View style={styles.teamdis}>
@@ -25,7 +25,6 @@ const About = () => {
           Our opinion in this project is fol fol fol
         </Text>
       </View>
-
       <TabBar />
     </View>
   );
@@ -35,11 +34,11 @@ export default About;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexGrow: 1,
+    paddingVertical: 20,
+    paddingBottom: 100,
     backgroundColor: '#E0F7FA',
-    padding: 20,
+    alignItems: 'center',
   },
   title: {
     fontSize: 28,
@@ -80,14 +79,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
+    paddingVertical: 5,
+    backgroundColor: '#00796B',
     position: 'absolute',
-    bottom: 0, 
-    backgroundColor: '#333', 
+    bottom: 0,
     height: 60,
     borderTopWidth: 2,
-    borderTopColor: '#555', 
-    paddingVertical: 5,
-    zIndex: 10,
+    borderTopColor: '#004D40',
   },
   tabButton: {
     padding: 10,
