@@ -1,5 +1,8 @@
-import { Stack } from 'expo-router';
+import { Drawer } from 'expo-router/drawer';
+import CustomDrawer from '../components/CustomDrawer';
 
 export default function Layout() {
-  return <Stack />;
+  return (
+    <Drawer drawerContent={(props) => <CustomDrawer {...props} />} />
+  );
 }

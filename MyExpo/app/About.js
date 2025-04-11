@@ -5,29 +5,29 @@ import { FontAwesome } from 'react-native-vector-icons';
 import TabBar from './component/TabBar';
 
 const About = () => {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>About Us</Text>
-        <Text style={styles.subtitle}>Our Team</Text>
-        <View style={styles.teamContainer}>
-          <Text style={styles.teamMember}>🔹 Marwan Ahmed Sayed</Text>
-          <Text style={styles.teamMember}>🔹 Amr Ashraf Salah</Text>
-          <Text style={styles.teamMember}>🔹 Youssef Bassiony</Text>
-          <Text style={styles.teamMember}>🔹 Mohammed Magdy</Text>
-          <Text style={styles.teamMember}>🔹 Hassan Mohamed Hassan</Text>
-          <Text style={styles.teamMember}>🔹 Youssef Ahmed Refaat</Text>
-          <Text style={styles.teamMember}>🔹 Khaled Ahmed</Text>
-        </View>
-        <Text style={styles.subtitle}>Our Project</Text>
-        <View style={styles.teamdis}>
-          <Text style={styles.teamMember}>
-            Our opinion in this project is fol fol fol
-          </Text>
-        </View>
-
-        <TabBar />
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>About Us</Text>
+      <Text style={styles.subtitle}>Our Team</Text>
+      <View style={styles.teamContainer}>
+        <Text style={styles.teamMember}>🔹 Marwan Ahmed Sayed</Text>
+        <Text style={styles.teamMember}>🔹 Amr Ashraf Salah</Text>
+        <Text style={styles.teamMember}>🔹 Youssef Bassiony</Text>
+        <Text style={styles.teamMember}>🔹 Mohammed Magdy</Text>
+        <Text style={styles.teamMember}>🔹 Hassan Mohamed Hassan</Text>
+        <Text style={styles.teamMember}>🔹 Youssef Ahmed Refaat</Text>
+        <Text style={styles.teamMember}>🔹 Khaled Ahmed</Text>
       </View>
-    );
+      <Text style={styles.subtitle}>Our Project</Text>
+      <View style={styles.teamdis}>
+        <Text style={styles.teamMember}>
+          Our opinion in this project is fol fol fol
+        </Text>
+      </View>
+
+      <TabBar />
+    </View>
+  );
 };
 
 export default About;
