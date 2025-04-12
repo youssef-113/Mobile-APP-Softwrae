@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet  } from 'react-native';
 import { useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+
 export default function TabBar() {
   const router = useRouter();
+
   return (
     <View style={styles.tabsContainer}>
       <TouchableOpacity onPress={() => router.push('/home')} style={styles.tabButton}>

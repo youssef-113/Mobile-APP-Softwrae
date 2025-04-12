@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet , Dimensions , Platform , Image} from 'react-native';
+import { View, Text, StyleSheet , Dimensions , Platform , Image,ScrollView} from 'react-native';
 import { Link , Stack} from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import TabBar from './component/TabBar';
@@ -10,8 +10,8 @@ const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web'
 const About = () => {
   return (
-    
-    <View style={styles.container}>
+    <>
+    <ScrollView contentContainerStyle={styles.container}>
       
 <Stack.Screen
   options={{
@@ -66,8 +66,12 @@ const About = () => {
           Our opinion in this project is fol fol fol
         </Text>
       </View>
+     
+      </ScrollView>
+      
       <TabBar />
-    </View>
+   
+      </>
   );
 };
 
