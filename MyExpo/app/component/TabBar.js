@@ -15,7 +15,7 @@ export default function TabBar() {
       <TouchableOpacity onPress={() => router.push('/About')} style={styles.tabButton}>
         <FontAwesome name="info-circle" size={20} color="#fff" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push('/Contact Us')} style={styles.tabButton}>
+      <TouchableOpacity onPress={() => router.push('/ContactUs')} style={styles.tabButton}>
         <FontAwesome name="envelope" size={20} color="#fff" />
       </TouchableOpacity>
     </View>

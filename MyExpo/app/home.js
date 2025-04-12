@@ -97,9 +97,9 @@ const home = () => {
           </TouchableOpacity>
         </Link>
 
-        <Link href='/MyExpo/app/Contact Us' asChild>
+        <Link href='ContactUs' asChild>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Contact Us </Text>
+            <Text style={styles.buttonText}> Us </Text>
             <FontAwesome name="envelope" size={20} color="#fff" />
           </TouchableOpacity>
         </Link>

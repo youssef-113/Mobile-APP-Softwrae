@@ -1,3 +1,4 @@
+// components/CustomDrawer.js
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -6,17 +7,17 @@ export default function CustomDrawer(props) {
         <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
             <View style={styles.header}>
                 <Image
-                    source={{ uri: 'https://i.pravatar.cc/100' }}
-                    style={styles.avatar}
+                     source={require('../assets/images/user.png')}
+                    style={{width:50, height:50}}
                 />
-                <Text style={styles.username}>Hello ,User </Text>
+                <Text style={styles.username}> </Text>
             </View>  
             <View style={styles.body}>
                 <DrawerItemList {...props} />
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity onPress={() => alert('loout success')}>
-                    <Text style={styles.logout}>logout </Text>
+                <TouchableOpacity onPress={() => alert('logout sucssfully')}>
+                    <Text style={styles.logout}>logout</Text>
                 </TouchableOpacity>
             </View>
         </DrawerContentScrollView>

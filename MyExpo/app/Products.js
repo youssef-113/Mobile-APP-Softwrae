@@ -281,7 +281,7 @@ export default function ProductsScreen() {
 
         
         <TouchableOpacity
-          onPress={() => router.push({ pathname: '/CartScreen', params: { cartItems: JSON.stringify(cart) } })}
+          onPress={() => router.push({ pathname: '/Cart', params: { cartItems: JSON.stringify(cart) } })}
           style={styles.cartButton}
         >
           <Text style={styles.cartButtonText}>Go to Cart({cart.length})</Text>
