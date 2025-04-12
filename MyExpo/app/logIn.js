@@ -43,9 +43,10 @@ const Login = () => {
   };
 
 
-   const handleLogin =async () => {
+   const handleLogin =() => {
      if (!validation()) return;
  
+     router.replace('/home')
      signInWithEmailAndPassword(auth, email, password)
      .then((userCredential) => {
        console.log("DONE SIGN IN! ")
@@ -53,7 +54,6 @@ const Login = () => {
        setEmailError('');
        setPasswordError('');
        alert("Success", "Login Successful!");
-       router.replace('/home')
    })
    .catch((error) => {
      const errorCode = error.code;
@@ -64,7 +64,7 @@ const Login = () => {
      };
 
   return (
-    <View style={styles.container} id='login'>
+    <View style={styles.container} >
   
           
      <Stack.Screen

@@ -10,7 +10,7 @@ export default function CustomDrawer(props) {
                      source={require('../assets/images/user.png')}
                     style={{width:50, height:50}}
                 />
-                <Text style={styles.username}> </Text>
+                <Text style={styles.username}>Hello, Dear </Text>
             </View>  
             <View style={styles.body}>
                 <DrawerItemList {...props} />
