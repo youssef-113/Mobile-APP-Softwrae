@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert , Dimensions , Platform ,Image } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from '../firebase'; 
+
+
+const { width } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web'
+
 
 const Signup = () => {
     const router = useRouter();
@@ -25,13 +30,43 @@ const Signup = () => {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen 
-        options={{
-          title: 'Sign Up',
-          headerStyle: { backgroundColor: '#fff' },
-          headerTitleStyle: { color: '#000', fontWeight: 'bold' },
-        }} 
-      />
+      
+<Stack.Screen
+  options={{
+    headerBackVisible: true,
+    headerStyle: { backgroundColor: '#FFFFFF' },
+    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
+    headerTitle: () => (
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: isWeb ? 'flex-start' : 'center', 
+        width: '100%', 
+      }}>
+        
+        <Text style={{ 
+          color: '#000', 
+          fontWeight: 'bold', 
+          marginRight: isWeb ? 20 : 10, 
+          fontSize: isWeb ? 18 : 16, 
+        }}>
+          SignUp
+        </Text>
+
+       
+        <Image
+          source={require('../assets/images/final transparent.png')}
+          style={{ 
+            width: isWeb ? 900 : width * 0.6, 
+            height: 300,
+            marginLeft: isWeb ? 250 : -35, 
+            resizeMode: 'contain', 
+          }}
+        />
+      </View>
+    ),
+  }}
+/>
           <Text style={styles.title}>Create an Account</Text>
       
       <TextInput 

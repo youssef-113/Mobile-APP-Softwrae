@@ -1,13 +1,54 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text, StyleSheet , Dimensions , Platform , Image} from 'react-native';
+import { Link , Stack} from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import TabBar from './component/TabBar';
 //marwan
 
+
+const { width } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web'
 const About = () => {
   return (
+    
     <View style={styles.container}>
+      
+<Stack.Screen
+  options={{
+    headerBackVisible: true,
+    headerStyle: { backgroundColor: '#FFFFFF' },
+    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
+    headerTitle: () => (
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: isWeb ? 'flex-start' : 'center', 
+        width: '100%', 
+      }}>
+        
+        <Text style={{ 
+          color: '#000', 
+          fontWeight: 'bold', 
+          marginRight: isWeb ? 20 : 10, 
+          fontSize: isWeb ? 18 : 16, 
+        }}>
+          About
+        </Text>
+
+       
+        <Image
+          source={require('../assets/images/final transparent.png')}
+          style={{ 
+            width: isWeb ? 900 : width * 0.6, 
+            height: 300,
+            marginLeft: isWeb ? 250 : -35, 
+            resizeMode: 'contain', 
+          }}
+        />
+      </View>
+    ),
+  }}
+/>
       <Text style={styles.title}>About Us</Text>
       <Text style={styles.subtitle}>Our Team</Text>
       <View style={styles.teamContainer}>

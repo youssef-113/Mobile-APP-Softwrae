@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image,TouchableOpacity, ScrollView, StyleSheet , Dimensions , Platform} from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import auth from '../firebase'; 
 import TabBar from './component/TabBar';
+
+
+const { width } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web'
 
 const home = () => {
   const router = useRouter();
@@ -16,17 +20,43 @@ const home = () => {
 
   return (
     <>
-      <Stack.Screen 
-        options={{ 
-          title: 'home',
-          headerBackVisible: true,
-          headerStyle: { backgroundColor: '#ffffff' },
-          headerTitleStyle: {
-            color: '#00796B',
-            fontWeight: 'bold',
-          },
-        }} 
-      />
+      
+<Stack.Screen
+  options={{
+    headerBackVisible: true,
+    headerStyle: { backgroundColor: '#FFFFFF' },
+    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
+    headerTitle: () => (
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: isWeb ? 'flex-start' : 'center', 
+        width: '100%', 
+      }}>
+        
+        <Text style={{ 
+          color: '#000', 
+          fontWeight: 'bold', 
+          marginRight: isWeb ? 20 : 10, 
+          fontSize: isWeb ? 18 : 16, 
+        }}>
+          Home
+        </Text>
+
+       
+        <Image
+          source={require('../assets/images/final transparent.png')}
+          style={{ 
+            width: isWeb ? 900 : width * 0.6, 
+            height: 300,
+            marginLeft: isWeb ? 250 : -35, 
+            resizeMode: 'contain', 
+          }}
+        />
+      </View>
+    ),
+  }}
+/>
       <StatusBar style="dark" backgroundColor="#E0F7FA" />
 
       <ScrollView contentContainerStyle={styles.container}>

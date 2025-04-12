@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Linking } from "react-native";
-import { Link } from "expo-router";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Linking , Platform ,Image, Dimensions} from "react-native";
+import { Link , Stack} from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import TabBar from './component/TabBar';
+
+
+const { width } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web'
+
+
 
 const ContactScreen = () => {
   const [feedback, setFeedback] = useState("");
@@ -21,7 +27,45 @@ const ContactScreen = () => {
   };
 
   return (
+    
     <View style={styles.container}>
+      
+<Stack.Screen
+  options={{
+    headerBackVisible: true,
+    headerStyle: { backgroundColor: '#FFFFFF' },
+    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
+    headerTitle: () => (
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: isWeb ? 'flex-start' : 'center', 
+        width: '100%', 
+      }}>
+        
+        <Text style={{ 
+          color: '#000', 
+          fontWeight: 'bold', 
+          marginRight: isWeb ? 20 : 10, 
+          fontSize: isWeb ? 18 : 16, 
+        }}>
+          Contact Us
+        </Text>
+
+       
+        <Image
+          source={require('../assets/images/final transparent.png')}
+          style={{ 
+            width: isWeb ? 900 : width * 0.6, 
+            height: 300,
+            marginLeft: isWeb ? 250 : -35, 
+            resizeMode: 'contain', 
+          }}
+        />
+      </View>
+    ),
+  }}
+/>
       <Text style={styles.title}>📞 Contact Us</Text>
       <Text style={styles.subtitle}>
         We're here to help you! Reach out to us for any questions or feedback:

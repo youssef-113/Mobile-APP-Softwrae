@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, ScrollView, StyleSheet , Image , Platform , Dimensions } from 'react-native';
+import { useLocalSearchParams , Stack} from 'expo-router';
 
+
+const { width } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web'
 const Cart = () => {
   const params = useLocalSearchParams();
   const cartItems = params.cartItems ? JSON.parse(params.cartItems) : [];
@@ -14,6 +17,43 @@ const Cart = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      
+<Stack.Screen
+  options={{
+    headerBackVisible: true,
+    headerStyle: { backgroundColor: '#FFFFFF' },
+    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
+    headerTitle: () => (
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: isWeb ? 'flex-start' : 'center', 
+        width: '100%', 
+      }}>
+        
+        <Text style={{ 
+          color: '#000', 
+          fontWeight: 'bold', 
+          marginRight: isWeb ? 20 : 10, 
+          fontSize: isWeb ? 18 : 16, 
+        }}>
+          Cart
+        </Text>
+
+       
+        <Image
+          source={require('../assets/images/final transparent.png')}
+          style={{ 
+            width: isWeb ? 900 : width * 0.6, 
+            height: 300,
+            marginLeft: isWeb ? 250 : -35, 
+            resizeMode: 'contain', 
+          }}
+        />
+      </View>
+    ),
+  }}
+/>
       <Text style={styles.title}>🛒 Your Cart</Text>
 
       {cartItems.length === 0 ? (

@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput , Platform , Dimensions } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
 import { useRouter } from 'expo-router';
-import { Link } from 'expo-router'; 
+import { Link ,Stack} from 'expo-router'; 
 import TabBar from './component/TabBar';
+
+const { width } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web'
+
 
 const productImages = {
   product1: require('../assets/images/1.jpg'),
@@ -102,6 +106,43 @@ export default function ProductsScreen() {
   );
   return (
     <View style={styles.mainContainer}>
+           
+<Stack.Screen
+  options={{
+    headerBackVisible: true,
+    headerStyle: { backgroundColor: '#FFFFFF' },
+    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
+    headerTitle: () => (
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        justifyContent: isWeb ? 'flex-start' : 'center', 
+        width: '100%', 
+      }}>
+        
+        <Text style={{ 
+          color: '#000', 
+          fontWeight: 'bold', 
+          marginRight: isWeb ? 20 : 10, 
+          fontSize: isWeb ? 18 : 16, 
+        }}>
+          Products
+        </Text>
+
+       
+        <Image
+          source={require('../assets/images/final transparent.png')}
+          style={{ 
+            width: isWeb ? 900 : width * 0.6, 
+            height: 300,
+            marginLeft: isWeb ? 250 : -35, 
+            resizeMode: 'contain', 
+          }}
+        />
+      </View>
+    ),
+  }}
+/>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Product List</Text>
       </View>
