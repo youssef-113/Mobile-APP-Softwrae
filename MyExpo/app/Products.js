@@ -1,13 +1,13 @@
+// ... باقي الاستيرادات
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput , Platform , Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput, Platform, Dimensions } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
 import { useRouter } from 'expo-router';
-import { Link ,Stack} from 'expo-router'; 
+import { Link, Stack } from 'expo-router'; 
 import TabBar from './component/TabBar';
 
 const { width } = Dimensions.get('window');
-const isWeb = Platform.OS === 'web'
-
+const isWeb = Platform.OS === 'web';
 
 const productImages = {
   product1: require('../assets/images/1.jpg'),
@@ -28,7 +28,7 @@ const productsData2 = [
 
 const productsData3 = [
   { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product3 },
- ];
+];
 
 const productsData4 = [
   { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product4 },
@@ -36,6 +36,14 @@ const productsData4 = [
 
 const productsData5 = [
   { id: '5', name: 'Cinacalcet', description: 'Cinacalcet 30 mg 10 tablets', price: '277.99 EGP', image: productImages.product5 },
+];
+
+const allProducts = [
+  ...productsData,
+  ...productsData2,
+  ...productsData3,
+  ...productsData4,
+  ...productsData5,
 ];
 
 const ProductItem = ({ product, addToCart, openModal }) => {
@@ -67,7 +75,7 @@ const ProductItem = ({ product, addToCart, openModal }) => {
             <FontAwesome name="plus" size={20} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => openModal(product)} style={styles.infoButton}>
-            <FontAwesome name="info-circle" size={20} color="#fff" />
+            <FontAwesome name="info-circle" size={30} color="#00796B" />
           </TouchableOpacity>
         </View>
       </View>
@@ -80,7 +88,6 @@ export default function ProductsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchText, setSearchText] = useState('');
-  const [isSearchActive, setIsSearchActive] = useState(false);
   const router = useRouter();
   const [showProducts, setShowProducts] = useState(false);
   const [showProducts2, setShowProducts2] = useState(false);
@@ -101,48 +108,31 @@ export default function ProductsScreen() {
     setModalVisible(false);
     setSelectedProduct(null);
   };
-  const filteredProducts = productsData.filter((product) =>
+
+  const filteredProducts = allProducts.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase())
   );
+
   return (
     <View style={styles.mainContainer}>
-           
-<Stack.Screen
-  options={{
-    headerBackVisible: true,
-    headerStyle: { backgroundColor: '#FFFFFF' },
-    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
-    headerTitle: () => (
-      <View style={{ 
-        flexDirection: 'row', 
-        alignItems: 'center',
-        justifyContent: isWeb ? 'flex-start' : 'center', 
-        width: '100%', 
-      }}>
-        
-        <Text style={{ 
-          color: '#000', 
-          fontWeight: 'bold', 
-          marginRight: isWeb ? 20 : 10, 
-          fontSize: isWeb ? 18 : 16, 
-        }}>
-          Products
-        </Text>
-
-       
-        <Image
-          source={require('../assets/images/final transparent.png')}
-          style={{ 
-            width: isWeb ? 900 : width * 0.6, 
-            height: 300,
-            marginLeft: isWeb ? 250 : -35, 
-            resizeMode: 'contain', 
-          }}
-        />
-      </View>
-    ),
-  }}
-/>
+      <Stack.Screen
+        options={{
+          headerBackVisible: true,
+          headerStyle: { backgroundColor: '#FFFFFF' },
+          headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
+          headerTitle: () => (
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: isWeb ? 'flex-start' : 'center', width: '100%' }}>
+              <Text style={{ color: '#000', fontWeight: 'bold', marginRight: isWeb ? 20 : 10, fontSize: isWeb ? 18 : 16 }}>
+                Products
+              </Text>
+              <Image
+                source={require('../assets/images/final transparent.png')}
+                style={{ width: isWeb ? 900 : width * 0.6, height: 300, marginLeft: isWeb ? 250 : -35, resizeMode: 'contain' }}
+              />
+            </View>
+          ),
+        }}
+      />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Product List</Text>
       </View>
@@ -160,126 +150,69 @@ export default function ProductsScreen() {
           <FontAwesome name="search" size={20} color="#888" style={styles.searchIcon} />
         </View>
 
-        
-        <TouchableOpacity
-          style={styles.categoryButton}
-          onPress={() => setShowProducts(!showProducts)}
-        >
-          <View style={styles.categoryButtonContent}>
-            <Text style={styles.categoryButtonText}>Antibiotics</Text>
-            <FontAwesome 
-              name={showProducts ? "chevron-up" : "chevron-down"} 
-              size={16} 
-              color="#FFA500" 
-              style={styles.categoryIcon}
+        {searchText.length > 0 ? (
+          filteredProducts.map((item) => (
+            <ProductItem
+              key={item.id}
+              product={item}
+              addToCart={addToCart}
+              openModal={openModal}
             />
-          </View>
-        </TouchableOpacity>
+          ))
+        ) : (
+          <>
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts(!showProducts)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Antibiotics</Text>
+                <FontAwesome name={showProducts ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts && productsData.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
 
-        {showProducts && productsData.map((item) => (
-          <ProductItem
-            key={item.id}
-            product={item}
-            addToCart={addToCart}
-            openModal={openModal}
-          />
-        ))}
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts2(!showProducts2)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Analgesics and anti-inflammatory</Text>
+                <FontAwesome name={showProducts2 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts2 && productsData2.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
 
-        <TouchableOpacity
-          style={styles.categoryButton}
-          onPress={() => setShowProducts2(!showProducts2)}
-        >
-          <View style={styles.categoryButtonContent}>
-            <Text style={styles.categoryButtonText}>Analgesics and anti-inflammatory</Text>
-            <FontAwesome 
-              name={showProducts2 ? "chevron-up" : "chevron-down"} 
-              size={16} 
-              color="#FFA500" 
-              style={styles.categoryIcon}
-            />
-          </View>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts3(!showProducts3)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Heart, blood and blood pressure medications</Text>
+                <FontAwesome name={showProducts3 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts3 && productsData3.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
 
-        {showProducts2 && productsData2.map((item) => (
-          <ProductItem
-            key={item.id}
-            product={item}
-            addToCart={addToCart}
-            openModal={openModal}
-          />
-        ))}
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts4(!showProducts4)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Hemorrhoids and inflammation medications</Text>
+                <FontAwesome name={showProducts4 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts4 && productsData4.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
 
-        <TouchableOpacity
-          style={styles.categoryButton}
-          onPress={() => setShowProducts3(!showProducts3)}
-        >
-          <View style={styles.categoryButtonContent}>
-            <Text style={styles.categoryButtonText}>Heart, blood and blood pressure medications</Text>
-            <FontAwesome 
-              name={showProducts3 ? "chevron-up" : "chevron-down"} 
-              size={16} 
-              color="#FFA500" 
-              style={styles.categoryIcon}
-            />
-          </View>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts5(!showProducts5)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Hormones</Text>
+                <FontAwesome name={showProducts5 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts5 && productsData5.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
+          </>
+        )}
 
-        {showProducts3 && productsData3.map((item) => (
-          <ProductItem
-            key={item.id}
-            product={item}
-            addToCart={addToCart}
-            openModal={openModal}
-          />
-        ))}
-
-        <TouchableOpacity
-          style={styles.categoryButton}
-          onPress={() => setShowProducts4(!showProducts4)}
-        >
-          <View style={styles.categoryButtonContent}>
-            <Text style={styles.categoryButtonText}>Hemorrhoids and inflammation medications</Text>
-            <FontAwesome 
-              name={showProducts4 ? "chevron-up" : "chevron-down"} 
-              size={16} 
-              color="#FFA500" 
-              style={styles.categoryIcon}
-            />
-          </View>
-        </TouchableOpacity>
-        {showProducts4 && productsData4.map((item) => (
-          <ProductItem
-            key={item.id}
-            product={item}
-            addToCart={addToCart}
-            openModal={openModal}
-          />
-        ))}
-        <TouchableOpacity
-          style={styles.categoryButton}
-          onPress={() => setShowProducts5(!showProducts5)}
-        >
-          <View style={styles.categoryButtonContent}>
-            <Text style={styles.categoryButtonText}>Hormones</Text>
-            <FontAwesome 
-              name={showProducts5 ? "chevron-up" : "chevron-down"} 
-              size={16} 
-              color="#FFA500" 
-              style={styles.categoryIcon}
-            />
-          </View>
-        </TouchableOpacity>
-
-        {showProducts5 && productsData5.map((item) => (
-          <ProductItem
-            key={item.id}
-            product={item}
-            addToCart={addToCart}
-            openModal={openModal}
-          />
-        ))}
-
-        
         <TouchableOpacity
           onPress={() => router.push({ pathname: '/Cart', params: { cartItems: JSON.stringify(cart) } })}
           style={styles.cartButton}
@@ -287,7 +220,6 @@ export default function ProductsScreen() {
           <Text style={styles.cartButtonText}>Go to Cart({cart.length})</Text>
         </TouchableOpacity>
 
-        
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
@@ -386,6 +318,7 @@ const styles = StyleSheet.create({
   },
   productInfo: {
     flex: 1,
+    color:'#00796B',
   },
   productName: {
     fontSize: 14,
@@ -433,6 +366,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  infobutton: {
+    padding: 20,
   },
   tabsContainer: {
     flexDirection: 'row',
