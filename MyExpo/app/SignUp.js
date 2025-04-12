@@ -10,22 +10,54 @@ const isWeb = Platform.OS === 'web'
 
 
 const Signup = () => {
-    const router = useRouter();
+  const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
-    const handleSignup = () => {
+  const [passwordError, setPasswordError] = useState('');
+
+    const validation = () => {
+    let valid = true;
+      if (!email.includes('@') && !email.includes('.com')) {     
+       setEmailError("Invalid Email , Please enter a valid email");
+       valid = false;
+    
+    } else {
+      setEmailError('');
+    }
+    if (password.length < 8) {
+      setPasswordError('Password must be at least 8 characters long.');
+      valid = false;
+    }
+    else {
+      setPasswordError('');
+    }
+    return valid;
+    
+  };
+
+
+ const handleSignup = () => {
+   if (!validation()) return;
+   
       router.replace('/logIn')
     createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     console.log("DONE SIGN UP! ")
     const user = userCredential.user;
-    // ...
+    setEmailError('');
+    setPasswordError('');
+    alert('Account created successfully')
+    
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
     console.log(errorMessage)
   });
+
   };
 
   return (
@@ -68,16 +100,32 @@ const Signup = () => {
   }}
 />
           <Text style={styles.title}>Create an Account</Text>
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Email" 
-        placeholderTextColor="#888"
-        value={email} 
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
+            <TextInput 
+              style={styles.input} 
+              placeholder="Your Name" 
+              placeholderTextColor="#888"
+              value={username} 
+              onChangeText={setUsername}
+              autoCapitalize="none"
+              keyboardType="default"
+            />
+       <TextInput 
+         style={styles.input} 
+         placeholder="Email" 
+         placeholderTextColor="#888"
+         value={email} 
+         onChangeText={setEmail}
+         autoCapitalize="none"
+         keyboardType="email-address"
+         onBlur={() => {
+                if (!email.includes('@')&& !email.includes('.com')) {
+                  setEmailError('Invalid email format, please enter a valid email.');
+                } else {
+                  setEmailError('');
+                }
+              }}
+         />
+       {emailError !== '' && <Text style={styles.errorText}>{emailError}</Text>}
       <TextInput 
         style={styles.input} 
         placeholder="Password" 
@@ -85,7 +133,16 @@ const Signup = () => {
         value={password} 
         onChangeText={setPassword}
         secureTextEntry 
+        onBlur={() => {
+                 if (password.length < 8) {
+                   setPasswordError('Password must be at least 8 characters long.');
+                 } else {
+                   setPasswordError('');
+                 }
+               }}
       />
+      {passwordError !== '' && <Text style={styles.errorText}>{passwordError}</Text>}
+
       <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
@@ -135,6 +192,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     marginTop: 10,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    alignSelf: 'flex-start',
+    marginLeft: '5%',
+    marginBottom: 10,
   },
   buttonText: {
     color: '#fff',

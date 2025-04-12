@@ -7,6 +7,7 @@ import auth from '../firebase';
 import TabBar from './component/TabBar';
 
 
+
 const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web'
 
@@ -63,7 +64,7 @@ const home = () => {
         <View style={styles.header}>
           <TouchableOpacity 
             onPress={() => router.push({ 
-              pathname: '/CartScreen', 
+              pathname: '/Cart', 
               params: { cartItems: JSON.stringify(cartItems) } 
             })} 
             style={styles.cartIcon}
@@ -81,11 +82,6 @@ const home = () => {
         <Text style={styles.title}>💊 Hello In Our Pharmacy</Text>
         <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
 
-        <Link href="/logIn" asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>login</Text>
-          </TouchableOpacity>
-        </Link>
 
         <Link href='/Products' asChild>
           <TouchableOpacity style={styles.button}>
@@ -101,7 +97,7 @@ const home = () => {
           </TouchableOpacity>
         </Link>
 
-        <Link href='/contactScreen' asChild>
+        <Link href='/MyExpo/app/Contact Us' asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Contact Us </Text>
             <FontAwesome name="envelope" size={20} color="#fff" />

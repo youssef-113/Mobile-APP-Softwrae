@@ -11,25 +11,57 @@ const isWeb = Platform.OS === 'web'
 
 
 const Login = () => {
-    const router = useRouter();
+  const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  const handleLogin = () => {
-    router.replace('/home')
-    signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    console.log("DONE SIGN IN! ")
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorMessage)
-  });
 
-    };
+
+ const validation =async () => {
+    let valid = true;
+    if (!email.includes('@') && !email.includes('.com')) {   
+      alert("Invalid Email , Please enter a valid email");
+       setEmailError("Invalid Email , Please enter a valid email");
+      valid = false;
+    } else {
+      setEmailError('');
+    }
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long"); 
+      setPasswordError('Password must be at least 8 characters long.');
+      valid = false;
+    }
+    else {
+      setPasswordError('');
+    }
+    return valid;
+    
+  };
+
+
+   const handleLogin =async () => {
+     if (!validation()) return;
+ 
+     signInWithEmailAndPassword(auth, email, password)
+     .then((userCredential) => {
+       console.log("DONE SIGN IN! ")
+       const user = userCredential.user;
+       setEmailError('');
+       setPasswordError('');
+       alert("Success", "Login Successful!");
+       router.replace('/home')
+   })
+   .catch((error) => {
+     const errorCode = error.code;
+     const errorMessage = error.message;
+     console.log(errorMessage)
+   });
+ 
+     };
 
   return (
     <View style={styles.container} id='login'>
@@ -72,24 +104,50 @@ const Login = () => {
        }}
      />
         <Text style={styles.title} >Welcom in our pharmacy</Text>  
-        <Text style={styles.title}>Login to your account </Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Email" 
-        placeholderTextColor="#888"
-        value={email} 
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
-      <TextInput 
-        style={styles.input} 
-        placeholder="Password" 
-        placeholderTextColor="#888"
-        value={password} 
-        onChangeText={setPassword}
-        secureTextEntry 
-      />
+      <Text style={styles.title}>Login to your account </Text>
+              <TextInput 
+              style={styles.input} 
+              placeholder="Your Name" 
+              placeholderTextColor="#888"
+              value={username} 
+              onChangeText={setUsername}
+              autoCapitalize="none"
+              keyboardType="defult"
+              />
+       <TextInput 
+         style={styles.input} 
+         placeholder="Email" 
+         placeholderTextColor="#888"
+         value={email} 
+         onChangeText={setEmail}
+         autoCapitalize="none"
+         keyboardType="email-address"
+         onBlur={() => {
+                if (!email.includes('@') && !email.includes('.com')) {
+                  setEmailError('Invalid email format, please enter a valid email.');
+                } else {
+                  setEmailError('');
+                }
+              }}
+         />
+       {emailError !== '' && <Text style={styles.errorText}>{emailError}</Text>}
+    
+        <TextInput 
+          style={styles.input} 
+          placeholder="Password" 
+          placeholderTextColor="#888"
+          value={password} 
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword}
+          onBlur={() => {
+            if (password.length < 8) {
+              setPasswordError('Password must be at least 8 characters long.');
+            } else {
+              setPasswordError('');
+            }
+          }}
+        />
+      {passwordError !== '' && <Text style={styles.errorText}>{passwordError}</Text>}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
@@ -131,6 +189,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderColor: '#B2DFDB',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    alignSelf: 'flex-start',
+    marginLeft: '5%',
+    marginBottom: 10,
   },
   button: {
     backgroundColor: '#26A69A',
