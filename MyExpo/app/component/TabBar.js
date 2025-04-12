@@ -9,7 +9,7 @@ export default function TabBar() {
       <TouchableOpacity onPress={() => router.push('/home')} style={styles.tabButton}>
         <FontAwesome name="home" size={20} color="#fff" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push('/Product')} style={styles.tabButton}>
+      <TouchableOpacity onPress={() => router.push('/Products')} style={styles.tabButton}>
         <FontAwesome name="product-hunt" size={20} color="#fff" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push('/About')} style={styles.tabButton}>

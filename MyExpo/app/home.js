@@ -87,7 +87,7 @@ const home = () => {
           </TouchableOpacity>
         </Link>
 
-        <Link href='/Product' asChild>
+        <Link href='/Products' asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>shopping</Text>
             <FontAwesome name="shopping-cart" size={20} color="#fff" />
