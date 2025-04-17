@@ -15,27 +15,52 @@ const productImages = {
   product3: require('../assets/images/3.jpg'),
   product4: require('../assets/images/4.jpg'),
   product5: require('../assets/images/5.jpg'),
-  default: require('../assets/images/favicon.png'),
+  product6: require('../assets/images/6.webp'),
+  product7: require('../assets/images/7.webp'),
+  product8: require('../assets/images/8.jpeg'),
+  product9: require('../assets/images/9.jpeg'),
+  product10: require('../assets/images/10.jpeg'),
+  default: require('../assets/images/6.webp'),
 };
 
 const productsData = [
-  { id: '1', name: 'Xiclav', description: 'Xiclav 1g 14 coated tablets', price: '151.99 EGP', image: productImages.product1 },
+  { id: '1', name: 'Xiclav', description: 'Xiclav 1g 14 coated tablets', price: '151.99 EGP', image: productImages.product4 },
 ];
 
 const productsData2 = [
-  { id: '2', name: 'Stopadol', description: 'Stopadol Forte 1000 mg 10 sachets', price: '60.99 EGP', image: productImages.product2 },
+  { id: '2', name: 'Stopadol', description: 'Stopadol Forte 1000 mg 10 sachets', price: '60.99 EGP', image: productImages.product3 },
 ];
 
 const productsData3 = [
-  { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product3 },
+  { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product2 },
 ];
 
 const productsData4 = [
-  { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product4 },
+  { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product1 },
 ];
 
 const productsData5 = [
   { id: '5', name: 'Cinacalcet', description: 'Cinacalcet 30 mg 10 tablets', price: '277.99 EGP', image: productImages.product5 },
+];
+
+const productsData6 = [
+  { id: '6', name: 'Singulair', description: 'Singulair 10 mg 20 capsules', price: '41.99 EGP', image: productImages.product10 },
+];
+
+const productsData7 = [
+  { id: '7', name: 'Forxiga', description: 'forxiga 10 mg 28 tablets', price: '174.99 EGP', image: productImages.product9 },
+];
+
+const productsData8 = [
+  { id: '8', name: ' Uvamin retard', description: 'Uvamin retard 30 mg', price: '144.99 EGP', image: productImages.product8 },
+];
+
+const productsData9 = [
+  { id: '9', name: 'Stilnox', description: 'Stilnox 10mg 14 Tablets', price: '64.99 EGP', image: productImages.product7 },
+];
+
+const productsData10 = [
+  { id: '10', name: 'Cartimov', description: 'Cartimov 50 mg 20 capsules', price: '80.99 EGP', image: productImages.product6 },
 ];
 
 const allProducts = [
@@ -44,6 +69,11 @@ const allProducts = [
   ...productsData3,
   ...productsData4,
   ...productsData5,
+  ...productsData6,
+  ...productsData7,
+  ...productsData8,
+  ...productsData9,
+  ...productsData10,
 ];
 
 const ProductItem = ({ product, addToCart, openModal }) => {
@@ -94,6 +124,11 @@ export default function ProductsScreen() {
   const [showProducts3, setShowProducts3] = useState(false);
   const [showProducts4, setShowProducts4] = useState(false);
   const [showProducts5, setShowProducts5] = useState(false);
+  const [showProducts6, setShowProducts6] = useState(false);
+  const [showProducts7, setShowProducts7] = useState(false);
+  const [showProducts8, setShowProducts8] = useState(false);
+  const [showProducts9, setShowProducts9] = useState(false);
+  const [showProducts10, setShowProducts10] = useState(false);
 
   const addToCart = (product) => {
     setCart((prevCart) => [...prevCart, product]);
@@ -206,6 +241,56 @@ export default function ProductsScreen() {
               </View>
             </TouchableOpacity>
             {showProducts5 && productsData5.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
+            <View style={styles.separator} />
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts6(!showProducts6)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Asthma medications</Text>
+                <FontAwesome name={showProducts6 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts6 && productsData6.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
+            <View style={styles.separator} />
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts7(!showProducts7)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Diabetes medications</Text>
+                <FontAwesome name={showProducts7 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts7 && productsData7.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
+            <View style={styles.separator} />
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts8(!showProducts8)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Urinary tract medications</Text>
+                <FontAwesome name={showProducts8 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts8 && productsData8.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
+            <View style={styles.separator} />
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts9(!showProducts9)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Insomnia medications</Text>
+                <FontAwesome name={showProducts9 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts9 && productsData9.map((item) => (
+              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
+            ))}
+            <View style={styles.separator} />
+            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts10(!showProducts10)}>
+              <View style={styles.categoryButtonContent}>
+                <Text style={styles.categoryButtonText}>Bone disease medications</Text>
+                <FontAwesome name={showProducts10 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
+              </View>
+            </TouchableOpacity>
+            {showProducts10 && productsData10.map((item) => (
               <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
             ))}
           </>
