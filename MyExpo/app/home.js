@@ -116,8 +116,9 @@ const home = () => {
 
         
 
-      <TabBar />
+      
       </ScrollView>
+      <TabBar />
     </>
   );
 };

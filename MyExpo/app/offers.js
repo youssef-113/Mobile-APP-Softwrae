@@ -12,7 +12,8 @@ const { height } = Dimensions.get('window');
 
 export default function offers() {
     return(
-      <view>
+      <>
+      <ScrollView>
           <Stack.Screen
                  options={{
                    headerStyle:styles.headerStyle,
@@ -32,9 +33,10 @@ export default function offers() {
            />
           
          
-             <TabBar/>  
-         </view>
-          
+              
+             </ScrollView>
+             <TabBar/> 
+             </>
     );
 
 }
