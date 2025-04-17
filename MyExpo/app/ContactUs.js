@@ -28,8 +28,9 @@ const isWeb = Platform.OS === 'web'
   };
 
   return (
+    <>
     
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       
       
 <Stack.Screen
@@ -86,8 +87,10 @@ const isWeb = Platform.OS === 'web'
         <Text style={styles.socialLink}>🔹 GitHub</Text>
       </TouchableOpacity>
 
-      <TabBar />
-    </View>
+      
+      </ScrollView>
+    <TabBar />
+    </>
   );
 };
 
