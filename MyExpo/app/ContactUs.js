@@ -4,13 +4,14 @@ import { Link , Stack} from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import TabBar from './component/TabBar';
 
+const { height } = Dimensions.get('window');
 
 const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web'
 
 
 
-const ContactScreen = () => {
+ const ContactScreen = () => {
   const [feedback, setFeedback] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
 
@@ -30,37 +31,19 @@ const ContactScreen = () => {
     
     <View style={styles.container}>
       
+      
 <Stack.Screen
   options={{
+    headerStyle:styles.headerStyle,
     headerBackVisible: true,
-    headerStyle: { backgroundColor: '#FFFFFF' },
-    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
     headerTitle: () => (
-      <View style={{ 
-        flexDirection: 'row', 
-        alignItems: 'center',
-        justifyContent: isWeb ? 'flex-start' : 'center', 
-        width: '100%', 
-      }}>
-        
-        <Text style={{ 
-          color: '#000', 
-          fontWeight: 'bold', 
-          marginRight: isWeb ? 20 : 10, 
-          fontSize: isWeb ? 18 : 16, 
-        }}>
+      <View style={styles.forView}>
+        <Text style ={ styles.forText}>
           Contact Us
         </Text>
-
-       
         <Image
           source={require('../assets/images/final transparent.png')}
-          style={{ 
-            width: isWeb ? 900 : width * 0.6, 
-            height: 300,
-            marginLeft: isWeb ? 250 : -35, 
-            resizeMode: 'contain', 
-          }}
+          style ={styles.logo}
         />
       </View>
     ),
@@ -115,29 +98,58 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 20,
     paddingBottom: 100,
-    backgroundColor: '#E0F7FA',
+    backgroundColor: '#F5F5F5',
     alignItems: 'center',
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#00796B", 
+    color: "#000", 
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 20,
     color: "#333", 
     marginBottom: 20,
     textAlign: "center",
   },
+
+
+  logo: {
+    width: isWeb ? 300 : width * 0.6,
+    height: isWeb ? 300 : height * 2.5,
+    marginLeft: isWeb? 650 : -20,
+    resizeMode: 'contain',
+    alignSelf: 'center', 
+  },
+  
+  
+  forText:{ 
+    color: '#191716', 
+    fontWeight: 'bold', 
+    marginRight: isWeb ? 20 : 40,
+    fontSize: isWeb ? 18 : 16, 
+  },
+  forView:{
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: isWeb ? 'flex-start' : 'center', 
+    width: '100%', 
+  },
+
+  headerStyle: {
+    backgroundColor: '#5B9BD5',
+    height: isWeb? 100 : 120,
+   
+ },
   info: {
-    fontSize: 16,
-    color: "#00796B",
+    fontSize: 18,
+    color: "#000",
     marginBottom: 10,
   },
   formLabel: {
     fontSize: 18,
-    color: "#00796B",
+    color: "#000",
     marginTop: 20,
     marginBottom: 10,
   },
@@ -154,7 +166,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#00796B",
+    backgroundColor: "#003366",
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 10,
@@ -163,7 +175,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FFF", 
+    color: "#F5F5F5", 
   },
   socialTitle: {
     fontSize: 18,

@@ -4,6 +4,7 @@ import { Link, useRouter, Stack } from 'expo-router';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from '../firebase'; 
 
+const { height } = Dimensions.get('window');
 
 const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web'
@@ -64,41 +65,22 @@ const Signup = () => {
     <View style={styles.container}>
       
 <Stack.Screen
-  options={{
-    headerBackVisible: true,
-    headerStyle: { backgroundColor: '#FFFFFF' },
-    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
-    headerTitle: () => (
-      <View style={{ 
-        flexDirection: 'row', 
-        alignItems: 'center',
-        justifyContent: isWeb ? 'flex-start' : 'center', 
-        width: '100%', 
-      }}>
-        
-        <Text style={{ 
-          color: '#000', 
-          fontWeight: 'bold', 
-          marginRight: isWeb ? 20 : 10, 
-          fontSize: isWeb ? 18 : 16, 
-        }}>
-          SignUp
-        </Text>
-
-       
-        <Image
-          source={require('../assets/images/final transparent.png')}
-          style={{ 
-            width: isWeb ? 900 : width * 0.6, 
-            height: 300,
-            marginLeft: isWeb ? 250 : -35, 
-            resizeMode: 'contain', 
-          }}
-        />
-      </View>
-    ),
-  }}
-/>
+       options={{
+         headerStyle:styles.headerStyle,
+         headerBackVisible: true,
+         headerTitle: () => (
+           <View style={styles.forView}>
+             <Text style ={ styles.forText}>
+               SignUp
+             </Text>
+             <Image
+               source={require('../assets/images/final transparent.png')}
+               style ={styles.logo}
+             />
+           </View>
+         ),
+       }}
+     />
           <Text style={styles.title}>Create an Account</Text>
             <TextInput 
               style={styles.input} 
@@ -148,7 +130,8 @@ const Signup = () => {
       </TouchableOpacity>
       <Text style={styles.linkText}>
         Already have an account?{' '}
-        <Link href="/logIn" style={styles.link}>Login</Link>
+        <Link href="logIn" style={styles.link}>Login</Link>
+        <Link href='ContactUs' asChild></Link>
       </Text>
     </View>
   );
@@ -156,9 +139,37 @@ const Signup = () => {
 
 export default Signup;
 const styles = StyleSheet.create({
+  logo: {
+    width: isWeb ? 300 : width * 0.6,
+    height: isWeb ? 300 : height * 2.5,
+    marginLeft: isWeb? 650   : -20,
+    resizeMode: 'contain',
+    alignSelf: 'center', 
+  },
+  
+  
+  forText:{ 
+    color: '#191716', 
+    fontWeight: 'bold', 
+    marginRight: isWeb ? 20 : 40,
+    fontSize: isWeb ? 18 : 16, 
+  },
+  forView:{ 
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: isWeb ? 'flex-start' : 'center', 
+    width: '100%', 
+  },
+
+  headerStyle: {
+    backgroundColor: '#5B9BD5',
+    height: isWeb? 100 : 120,
+   
+ },
+  
   container: {
     flex: 1,
-    backgroundColor: '#E0F7FA',
+    backgroundColor: '#f5f5f5',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -166,7 +177,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#00796B',
+    color: '#000',
     marginBottom: 10,
   },
   subtitle: {
@@ -186,7 +197,7 @@ const styles = StyleSheet.create({
     borderColor: '#B2DFDB',
   },
   button: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#003366',
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 12,
@@ -201,7 +212,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: '#f5f5f5',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -211,7 +222,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   link: {
-    color: '#00796B',
+    color: '#000',
     fontWeight: 'bold',
   },
 });

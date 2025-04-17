@@ -5,7 +5,7 @@ import { FontAwesome } from 'react-native-vector-icons';
 import TabBar from './component/TabBar';
 //marwan
 
-
+const { height } = Dimensions.get('window');
 const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web'
 const About = () => {
@@ -15,41 +15,22 @@ const About = () => {
       
 <Stack.Screen
   options={{
+    headerStyle:styles.headerStyle,
     headerBackVisible: true,
-    headerStyle: { backgroundColor: '#FFFFFF' },
-    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
     headerTitle: () => (
-      <View style={{ 
-        flexDirection: 'row', 
-        alignItems: 'center',
-        justifyContent: isWeb ? 'flex-start' : 'center', 
-        width: '100%', 
-      }}>
-        
-        <Text style={{ 
-          color: '#000', 
-          fontWeight: 'bold', 
-          marginRight: isWeb ? 20 : 10, 
-          fontSize: isWeb ? 18 : 16, 
-        }}>
+      <View style={styles.forView}>
+        <Text style ={ styles.forText}>
           About
         </Text>
-
-       
         <Image
           source={require('../assets/images/final transparent.png')}
-          style={{ 
-            width: isWeb ? 900 : width * 0.6, 
-            height: 300,
-            marginLeft: isWeb ? 250 : -35, 
-            resizeMode: 'contain', 
-          }}
+          style ={styles.logo}
         />
       </View>
     ),
   }}
 />
-      <Text style={styles.title}>About Us</Text>
+      
       <Text style={styles.subtitle}>Our Team</Text>
       <View style={styles.teamContainer}>
         <Text style={styles.teamMember}>🔹 Marwan Ahmed Sayed</Text>
@@ -78,12 +59,19 @@ const About = () => {
 export default About;
 
 const styles = StyleSheet.create({
+
+  headerStyle: {
+    backgroundColor: '#5B9BD5',
+    height: isWeb? 100 : 120,
+   
+ },
+
   container: {
     flexGrow: 1,
+    alignItems: 'center',
     paddingVertical: 20,
     paddingBottom: 100,
-    backgroundColor: '#E0F7FA',
-    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
   },
   title: {
     fontSize: 28,
@@ -97,8 +85,30 @@ const styles = StyleSheet.create({
     color: '#333', 
     marginBottom: 10,
   },
+  logo: {
+    width: isWeb ? 300 : width * 0.6,
+    height: isWeb ? 300 : height * 2.5,
+    marginLeft: isWeb? 650 : -20,
+    resizeMode: 'contain',
+    alignSelf: 'center', 
+  },
+
+  
+  forText:{ 
+    color: '#191716', 
+    fontWeight: 'bold', 
+    marginRight: isWeb ? 20 : 40,
+    fontSize: isWeb ? 18 : 16, 
+  },
+  forView:{
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: isWeb ? 'flex-start' : 'center', 
+    width: '100%', 
+  },
+  
   teamContainer: {
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#003366', 
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -107,7 +117,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   teamdis: {
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#003366', 
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -117,7 +127,7 @@ const styles = StyleSheet.create({
   },
   teamMember: {
     fontSize: 18,
-    color: '#00796B',
+    color: '#f5f5f5',
     marginVertical: 5,
   },
   tabsContainer: {

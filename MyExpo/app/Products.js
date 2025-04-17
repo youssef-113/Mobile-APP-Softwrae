@@ -1,4 +1,3 @@
-// ... باقي الاستيرادات
 import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput, Platform, Dimensions } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
@@ -8,6 +7,7 @@ import TabBar from './component/TabBar';
 
 const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web';
+const { height } = Dimensions.get('window');
 
 const productImages = {
   product1: require('../assets/images/1.jpg'),
@@ -115,27 +115,25 @@ export default function ProductsScreen() {
 
   return (
     <View style={styles.mainContainer}>
+            
       <Stack.Screen
         options={{
+          headerStyle:styles.headerStyle,
           headerBackVisible: true,
-          headerStyle: { backgroundColor: '#FFFFFF' },
-          headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
           headerTitle: () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: isWeb ? 'flex-start' : 'center', width: '100%' }}>
-              <Text style={{ color: '#000', fontWeight: 'bold', marginRight: isWeb ? 20 : 10, fontSize: isWeb ? 18 : 16 }}>
+            <View style={styles.forView}>
+              <Text style ={ styles.forText}>
                 Products
               </Text>
               <Image
                 source={require('../assets/images/final transparent.png')}
-                style={{ width: isWeb ? 900 : width * 0.6, height: 300, marginLeft: isWeb ? 250 : -35, resizeMode: 'contain' }}
+                style ={styles.logo}
               />
             </View>
           ),
         }}
       />
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Product List</Text>
-      </View>
+      
 
       <ScrollView contentContainerStyle={styles.container}>   
         <View style={styles.searchContainer}>
@@ -170,7 +168,7 @@ export default function ProductsScreen() {
             {showProducts && productsData.map((item) => (
               <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
             ))}
-
+            <View style={styles.separator} />
             <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts2(!showProducts2)}>
               <View style={styles.categoryButtonContent}>
                 <Text style={styles.categoryButtonText}>Analgesics and anti-inflammatory</Text>
@@ -180,7 +178,7 @@ export default function ProductsScreen() {
             {showProducts2 && productsData2.map((item) => (
               <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
             ))}
-
+<View style={styles.separator} />
             <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts3(!showProducts3)}>
               <View style={styles.categoryButtonContent}>
                 <Text style={styles.categoryButtonText}>Heart, blood and blood pressure medications</Text>
@@ -190,7 +188,7 @@ export default function ProductsScreen() {
             {showProducts3 && productsData3.map((item) => (
               <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
             ))}
-
+<View style={styles.separator} />
             <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts4(!showProducts4)}>
               <View style={styles.categoryButtonContent}>
                 <Text style={styles.categoryButtonText}>Hemorrhoids and inflammation medications</Text>
@@ -200,7 +198,7 @@ export default function ProductsScreen() {
             {showProducts4 && productsData4.map((item) => (
               <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
             ))}
-
+          <View style={styles.separator} />
             <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts5(!showProducts5)}>
               <View style={styles.categoryButtonContent}>
                 <Text style={styles.categoryButtonText}>Hormones</Text>
@@ -212,7 +210,7 @@ export default function ProductsScreen() {
             ))}
           </>
         )}
-
+<View style={styles.separator} />
         <TouchableOpacity
           onPress={() => router.push({ pathname: '/Cart', params: { cartItems: JSON.stringify(cart) } })}
           style={styles.cartButton}
@@ -242,9 +240,37 @@ export default function ProductsScreen() {
 }
 
 const styles = StyleSheet.create({
+
+  logo: {
+    width: isWeb ? 300 : width * 0.6,
+    height: isWeb ? 300 : height * 2.5,
+    marginLeft: isWeb? 650 : -20,
+    resizeMode: 'contain',
+    alignSelf: 'center', 
+  },
+  
+  
+  forText:{ 
+    color: '#191716', 
+    fontWeight: 'bold', 
+    marginRight: isWeb ? 20 : 40,
+    fontSize: isWeb ? 18 : 16, 
+  },
+  forView:{
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: isWeb ? 'flex-start' : 'center', 
+    width: '100%', 
+  },
+
+  headerStyle: {
+    backgroundColor: '#5B9BD5',
+    height: isWeb? 100 : 120,
+   
+ },
   mainContainer: {
     flex: 1,
-    backgroundColor: '#E0F7FA',
+    backgroundColor: '#F5f5f5',
   },
   header: {
     padding: 15,
@@ -256,7 +282,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#FFA500',
+    color: '#000',
   },
   container: {
     flexGrow: 1,
@@ -267,7 +293,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f5f5f5',
     borderRadius: 8,
     paddingHorizontal: 15,
     marginVertical: 10,
@@ -285,20 +311,20 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   categoryButton: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#003366',
     padding: 10,
     borderRadius: 12,
     marginVertical: 5,
     borderWidth: 1,
-    borderColor: '#00796B',
+    borderColor: '#000',
   },
   categoryButtonText: {
     fontSize: 14,
-    color: '#00796B',
+    color: '#f5f5f5',
     fontWeight: 'bold',
   },
   productContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f5f5f5',
     padding: 10,
     marginVertical: 5,
     borderRadius: 10,
@@ -318,29 +344,29 @@ const styles = StyleSheet.create({
   },
   productInfo: {
     flex: 1,
-    color:'#00796B',
+    color:'#000',
   },
   productName: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#00796B',
+    color: '#000',
     textAlign: 'right',
   },
   productDescription: {
     fontSize: 12,
-    color: '#333',
+    color: '#000',
     textAlign: 'right',
     marginVertical: 5,
   },
   readMore: {
-    color: '#00796B',
+    color: '#000',
     fontWeight: 'bold',
     fontSize: 12,
   },
   productPrice: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#00796B',
+    color: '#000',
     textAlign: 'right',
   },
   productActions: {
@@ -349,25 +375,34 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   addButton: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#000',
     padding: 8,
     borderRadius: 20,
     marginLeft: 10,
   },
   cartButton: {
     marginTop: 20,
-    backgroundColor: '#26A69A',
+    backgroundColor: '#003366',
     padding: 10,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
   },
+
+  separator: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 12, 
+    width: '90%', 
+    alignSelf: 'center',
+  },
   cartButtonText: {
     fontSize: 14,
-    color: '#fff',
+    color: '#f5f5f5',
     fontWeight: 'bold',
   },
   infobutton: {
+    color:'#000',
     padding: 20,
   },
   tabsContainer: {
@@ -389,7 +424,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: '#5B9BD5',
     padding: 20,
     borderRadius: 10,
     width: '80%',
@@ -399,26 +434,26 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#00796B',
+    color: '#000',
   },
   modalDescription: {
     fontSize: 16,
-    color: '#555',
+    color: '#000',
     marginBottom: 10,
   },
   modalPrice: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#00796B',
+    color: '#000',
     marginBottom: 20,
   },
   closeButton: {
-    backgroundColor: '#FF6347',
+    backgroundColor: '#5B9BD5',
     padding: 10,
     borderRadius: 5,
   },
   closeButtonText: {
-    color: '#fff',
+    color: '#f5f5f5',
     fontSize: 16,
   },
 });

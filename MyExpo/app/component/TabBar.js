@@ -9,16 +9,16 @@ export default function TabBar() {
   return (
     <View style={styles.tabsContainer}>
       <TouchableOpacity onPress={() => router.push('/home')} style={styles.tabButton}>
-        <FontAwesome name="home" size={20} color="#fff" />
+        <FontAwesome name="home" size={20} color="#f5f5f5" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push('/Products')} style={styles.tabButton}>
-        <FontAwesome name="product-hunt" size={20} color="#fff" />
+        <FontAwesome name="product-hunt" size={20} color="#f5f5f5" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push('/About')} style={styles.tabButton}>
-        <FontAwesome name="info-circle" size={20} color="#fff" />
+        <FontAwesome name="info-circle" size={20} color="#f5f5f5" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push('/ContactUs')} style={styles.tabButton}>
-        <FontAwesome name="envelope" size={20} color="#fff" />
+        <FontAwesome name="envelope" size={20} color="#f5f5f5" />
       </TouchableOpacity>
     </View>
   );
@@ -29,11 +29,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '100%',
     paddingVertical: 5,
-    backgroundColor: 'rgba(0, 121, 107, 0.6)',  
+    backgroundColor: '#5B9BD5',  
     position: 'absolute',
     bottom: 0,
-    height: 60,
-    borderTopWidth: 2,
+    height: 70,
     borderTopColor: '#004D40',
   },
   

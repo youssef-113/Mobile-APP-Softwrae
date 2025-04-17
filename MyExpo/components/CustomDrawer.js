@@ -1,23 +1,32 @@
-// components/CustomDrawer.js
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function CustomDrawer(props) {
+    const router = useRouter();
+
     return (
         <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
             <View style={styles.header}>
                 <Image
-                     source={require('../assets/images/user.png')}
-                    style={{width:50, height:50}}
+                    source={require('../assets/images/user.png')}
+                    style={{ width: 50, height: 50 }}
                 />
-                <Text style={styles.username}>Hello, Dear </Text>
-            </View>  
-            <View style={styles.body}>
-                <DrawerItemList {...props} />
+                <Text style={styles.username}>Hello, Dear</Text>
             </View>
+            <View style={styles.body}>
+                <DrawerItem label="Home" onPress={() => router.push('/home')} />
+                <DrawerItem label="Products" onPress={() => router.push('/Products')} />
+                <DrawerItem label="Cart" onPress={() => router.push('/Cart')} />
+                <DrawerItem label="Contact Us" onPress={() => router.push('/ContactUs')} />
+                <DrawerItem label="About" onPress={() => router.push('/About')} />
+                <DrawerItem label="LogIn" onPress={() => router.push('/logIn')} />
+                <DrawerItem label="SignUp" onPress={() => router.push('/SignUp')} />                
+            </View>
+            
             <View style={styles.footer}>
-                <TouchableOpacity onPress={() => alert('logout sucssfully')}>
-                    <Text style={styles.logout}>logout</Text>
+                <TouchableOpacity onPress={() => alert('Logged out successfully')}>
+                    <Text style={styles.logout}>Logout</Text>
                 </TouchableOpacity>
             </View>
         </DrawerContentScrollView>

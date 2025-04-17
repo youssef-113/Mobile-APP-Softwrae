@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image,TouchableOpacity, ScrollView, StyleSheet , Dimensions , Platform} from 'react-native';
+import { View, Text, Image,TouchableOpacity, ScrollView, StyleSheet , Dimensions , Platform } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -9,6 +9,8 @@ import TabBar from './component/TabBar';
 
 
 const { width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
+
 const isWeb = Platform.OS === 'web'
 
 const home = () => {
@@ -24,44 +26,68 @@ const home = () => {
       
 <Stack.Screen
   options={{
+    headerStyle:styles.headerStyle,
     headerBackVisible: true,
-    headerStyle: { backgroundColor: '#FFFFFF' },
-    headerTitleStyle: { color: '#007968', fontWeight: 'bold' },
     headerTitle: () => (
-      <View style={{ 
-        flexDirection: 'row', 
-        alignItems: 'center',
-        justifyContent: isWeb ? 'flex-start' : 'center', 
-        width: '100%', 
-      }}>
-        
-        <Text style={{ 
-          color: '#000', 
-          fontWeight: 'bold', 
-          marginRight: isWeb ? 20 : 10, 
-          fontSize: isWeb ? 18 : 16, 
-        }}>
+      <View style={styles.forView}>
+        <Text style ={ styles.forText}>
           Home
         </Text>
-
-       
         <Image
           source={require('../assets/images/final transparent.png')}
-          style={{ 
-            width: isWeb ? 900 : width * 0.6, 
-            height: 300,
-            marginLeft: isWeb ? 250 : -35, 
-            resizeMode: 'contain', 
-          }}
+          style ={styles.logo}
         />
       </View>
     ),
   }}
 />
-      <StatusBar style="dark" backgroundColor="#E0F7FA" />
+    
+
+      <StatusBar style="dark" backgroundColor="#000" />
 
       <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title1}>Welcome to Pharma Tech </Text>
+      <Image
+          source={require('../assets/images/free shipping.png')}
+          style ={styles.board}
+        />
+          <Link href='/Products' asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Shopping</Text>
+            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" />
+          </TouchableOpacity>
+        
+        </Link>
+        <Link href='/offers' asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Offers</Text>
+            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" />
+          </TouchableOpacity>
+        
+        </Link>
+        <Link href='/BestSellers' asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Best Seller</Text>
+            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" />
+          </TouchableOpacity>
+        
+        </Link>
+         <Image
+          source={require('../assets/images/Check new.png')}
+          style ={styles.board}
+        />
+
+        <Link href='/NewArrivals' asChild> 
+          <TouchableOpacity style={styles.button}> 
+            <Text style={styles.buttonText}>New arrivals</Text> 
+            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" /> 
+          </TouchableOpacity> 
+        </Link>
+
+        <View style={styles.separator} />
+
         <View style={styles.header}>
+
           <TouchableOpacity 
             onPress={() => router.push({ 
               pathname: '/Cart', 
@@ -69,7 +95,8 @@ const home = () => {
             })} 
             style={styles.cartIcon}
           >
-            <FontAwesome name="shopping-cart" size={24} color="#00796B" />
+            
+            <FontAwesome name="shopping-cart" size={24} color="#003366" />
             {cartItems.length > 0 && (
               <View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
@@ -78,31 +105,16 @@ const home = () => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.title1}>Faculty Of Science Pharmacy</Text>
-        <Text style={styles.title}>💊 Hello In Our Pharmacy</Text>
         <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
 
-
-        <Link href='/Products' asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>shopping</Text>
-            <FontAwesome name="shopping-cart" size={20} color="#fff" />
-          </TouchableOpacity>
-        </Link>
-
-        <Link href='/About' asChild>
+        <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>About Us </Text>
-            <FontAwesome name="info-circle" size={20} color="#fff" />
+            <FontAwesome name="info-circle" size={20} color="#f5f5f5" />
           </TouchableOpacity>
         </Link>
 
-        <Link href='ContactUs' asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}> Us </Text>
-            <FontAwesome name="envelope" size={20} color="#fff" />
-          </TouchableOpacity>
-        </Link>
+        
 
       <TabBar />
       </ScrollView>
@@ -113,12 +125,56 @@ const home = () => {
 export default home;
 
 const styles = StyleSheet.create({
+  separator: {
+  height: 1,
+  backgroundColor: '#ccc',
+  marginVertical: 12, 
+  width: '90%', 
+  alignSelf: 'center',
+},
+
+  headerStyle: {
+     backgroundColor: '#5B9BD5',
+     height: isWeb? 100 : 120,
+    
+  },
+  board: {
+    width: isWeb ? Math.min(1000, width * 0.9) : width * 1.5,
+    height: 300, 
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    resizeMode: 'contain',
+    alignSelf: 'center', 
+  },
+
+  logo: {
+    width: isWeb ? 300 : width * 0.6,
+    height: isWeb ? 300 : height * 2.5,
+    marginLeft: isWeb? 650 : -20,
+    resizeMode: 'contain',
+    alignSelf: 'center', 
+  },
+  
+  
+  forText:{ 
+    color: '#191716', 
+    fontWeight: 'bold', 
+    marginRight: isWeb ? 20 : 40,
+    fontSize: isWeb ? 18 : 16, 
+  },
+  forView:{ 
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: isWeb ? 'flex-start' : 'center', 
+    width: '100%', 
+  },
   container: {
     flexGrow: 1,
     alignItems: 'center',
     paddingVertical: 20,
     paddingBottom: 100,
-    backgroundColor: '#E0F7FA',
+    backgroundColor: '#F5F5F5',
   },
   header: {
     width: '100%',
@@ -133,6 +189,7 @@ const styles = StyleSheet.create({
   cartIcon: {
     position: 'relative',
     padding: 10,
+    color:'#F5F5F5'
   },
   cartBadge: {
     position: 'absolute',
@@ -154,30 +211,27 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginTop: 20,
-    marginBottom: 10,
-    color: '#00796B',
+    marginBottom: 30,
+    color: '#191716',
+    marginTop:50,
+
   },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 10,
-    color: '#00796B',
-  },
+ 
   subtitle: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: 20,
+    color: '#000',
+    fontWeight: 'bold',
     marginBottom: 25,
     marginRight:50,
     marginLeft:50,
   },
   button: {
     width: '90%',
-    backgroundColor: '#26A69A',
+    backgroundColor: '#003366',
     paddingVertical: 15,
     borderRadius: 12,
     alignItems: 'center',
-    marginBottom: 15,
+    marginTop: 20,
     shadowColor: '#aaa',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
