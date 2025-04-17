@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert , Dimensions , Platform ,Image } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import auth from '../firebase'; 
+import {auth,db} from '../firebase'; 
+import { doc, setDoc } from "firebase/firestore"; 
 
 const { height } = Dimensions.get('window');
 
@@ -18,6 +19,7 @@ const Signup = () => {
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [Phone, setPhone] = useState('');
 
     const validation = () => {
     let valid = true;
@@ -48,6 +50,7 @@ const Signup = () => {
   .then((userCredential) => {
     console.log("DONE SIGN UP! ")
     const user = userCredential.user;
+    AddUserToDatabase();
     setEmailError('');
     setPasswordError('');
     alert('Account created successfully')
@@ -60,6 +63,14 @@ const Signup = () => {
   });
 
   };
+  const AddUserToDatabase = async() => {
+    await setDoc(doc(db, "users", auth.currentUser.uid), {
+      name: username,
+      email: email,
+      Phone: Phone
+    });
+ 
+   };
 
   return (
     <View style={styles.container}>
@@ -88,6 +99,15 @@ const Signup = () => {
               placeholderTextColor="#888"
               value={username} 
               onChangeText={setUsername}
+              autoCapitalize="none"
+              keyboardType="default"
+            />
+            <TextInput 
+              style={styles.input} 
+              placeholder="Your Phone" 
+              placeholderTextColor="#888"
+              value={Phone} 
+              onChangeText={setPhone}
               autoCapitalize="none"
               keyboardType="default"
             />

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert , Image , Platform ,Dimensions } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import {signInWithEmailAndPassword } from "firebase/auth";
-import auth from '../firebase'; 
+import {auth,db} from '../firebase'; 
 
 const { height } = Dimensions.get('window');
 
@@ -19,7 +19,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
+  const [Phone, setPhone] = useState('');
 
 
  const validation =async () => {
@@ -52,6 +52,7 @@ const Login = () => {
      .then((userCredential) => {
        console.log("DONE SIGN IN! ")
        const user = userCredential.user;
+       console.log(auth.currentUser.uid)
        setEmailError('');
        setPasswordError('');
        alert("Success", "Login Successful!");
@@ -94,6 +95,15 @@ const Login = () => {
               onChangeText={setUsername}
               autoCapitalize="none"
               keyboardType="defult"
+              />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Your Phone" 
+          placeholderTextColor="#888"
+          value={Phone} 
+          onChangeText={setPhone}
+          autoCapitalize="none"
+          keyboardType="default"
               />
        <TextInput 
          style={styles.input} 
