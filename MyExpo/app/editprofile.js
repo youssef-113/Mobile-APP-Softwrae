@@ -11,13 +11,15 @@ import {
   ScrollView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { doc, getDoc,updateDoc } from "firebase/firestore";
+import {auth,db} from '../firebase';  
 
 export default function EditProfileScreen() {
   const [name, setName] = useState('Ahmed Mohamed');
   const [email, setEmail] = useState('ahmed@example.com');
-  const [phone, setPhone] = useState('01234567890');
-  const [password, setPassword] = useState('');
+  const [Phone, setPhone] = useState('01234567890');
   const [image, setImage] = useState(null);
+  const [viewMode, setViewMode] = useState(true); 
 
   useEffect(() => {
     (async () => {
@@ -51,11 +53,41 @@ export default function EditProfileScreen() {
       }
     }
   };
+  const  GetUser = async() => {
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+
+if (docSnap.exists()) {
+  //console.log("Document data:", docSnap.data());
+  const data = docSnap.data();
+  setName(data.name);
+  setEmail(data.email);
+  setPhone(data.Phone);
+} else {
+  // docSnap.data() will be undefined in this case
+  console.log("No such document!");
+}
+
+  };
+  const updateUserData = async() => {
+    const washingtonRef = doc(db,"users", auth.currentUser.uid);
+
+// Set the "capital" field of the city 'DC'
+    await updateDoc(washingtonRef, {
+    name:name,
+    email:email,
+    Phone:Phone
+});
+  };
 
   const handleSave = () => {
-    // هنا تقدر تبعت name, email, phone, password, image للسيرفر
-    alert('تم حفظ التعديلات!');
+    setViewMode(true);
+    updateUserData();
   };
+  const handleEdit = () => {
+    setViewMode(false);
+  };
+  {viewMode ?GetUser():null};
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -70,14 +102,26 @@ export default function EditProfileScreen() {
         />
         <Text style={styles.changeText}>تغيير الصورة</Text>
       </TouchableOpacity>
-
-      <TextInput
+      {viewMode ?(
+        <View>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.info}>{name}</Text>
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.label}>{email}</Text>
+          <Text style={styles.label}>Phone:</Text>
+          <Text style={styles.label}>{Phone}</Text>
+          <TouchableOpacity style={styles.button} onPress={handleEdit}>
+        <Text style={styles.buttonText}>Edit</Text>
+      </TouchableOpacity>
+    </View>
+      ) : (
+      <View>
+        <TextInput
         style={styles.input}
         value={name}
         onChangeText={setName}
         placeholder="الاسم"
       />
-
       <TextInput
         style={styles.input}
         value={email}
@@ -88,26 +132,19 @@ export default function EditProfileScreen() {
 
       <TextInput
         style={styles.input}
-        value={phone}
+        value={Phone}
         onChangeText={setPhone}
         placeholder="رقم التليفون"
         keyboardType="phone-pad"
       />
-
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="كلمة السر"
-        secureTextEntry
-      />
-
       <TouchableOpacity style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>حفظ التعديلات</Text>
+        <Text style={styles.buttonText}>save</Text>
       </TouchableOpacity>
-    </ScrollView>
+      </View>
+  )}
+  </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

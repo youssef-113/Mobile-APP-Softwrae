@@ -5,6 +5,7 @@ import { Link, useRouter, Stack } from 'expo-router';
 import {signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../firebase'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { navigate } from 'expo-router/build/global-state/routing';
 
 
 const { height } = Dimensions.get('window');
@@ -59,6 +60,7 @@ const Login = () => {
        setEmailError('');
        setPasswordError('');
        alert("Success", "Login Successful!");
+       
    })
    .catch((error) => {
      const errorCode = error.code;
