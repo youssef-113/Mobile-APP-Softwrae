@@ -7,6 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
+
 const { height } = Dimensions.get('window');
 
 const { width } = Dimensions.get('window');
