@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert , Image , Platform ,Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity,Pressable, StyleSheet, Alert , Image , Platform ,Dimensions } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import {signInWithEmailAndPassword } from "firebase/auth";
-import {auth,db} from '../firebase'; 
+import { auth, db } from '../firebase'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const { height } = Dimensions.get('window');
 
@@ -20,9 +22,10 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [Phone, setPhone] = useState('');
+  const [hover, setHover] = useState(false); 
+  
 
-
- const validation =async () => {
+ const validation = () => {
     let valid = true;
     if (!email.includes('@') && !email.includes('.com')) {   
       alert("Invalid Email , Please enter a valid email");
@@ -137,11 +140,34 @@ const Login = () => {
               setPasswordError('');
             }
           }}
-        />
+      />
+         
+        <Pressable
+          onPress={() => setShowPassword(prev => !prev)}
+          style={({ pressed }) => [
+            styles.eyeIcon,
+            pressed && styles.iconPressed
+          ]}
+        >
+        </Pressable>
+       
+      
       {passwordError !== '' && <Text style={styles.errorText}>{passwordError}</Text>}
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+
+      <Pressable
+        onPress={handleLogin}
+        onHoverIn={() => isWeb && setHover(true)}
+        onHoverOut={() => isWeb && setHover(false)}
+        style={({ pressed }) => [
+          styles.buttonLogin,
+          pressed && styles.buttonPressed,
+          hover && styles.buttonHover
+        ]}
+      >
+      {({ pressed }) => (
+          <Text style={[styles.buttonText, (pressed || hover) && styles.buttonTextHover]}>Login</Text>
+        )}
+      </Pressable>
       <Text style={styles.linkText}>
         Don't have an account?{' '}
         <Link href="/SignUp" style={styles.link}>Sign Up</Link>
@@ -238,4 +264,33 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
+  buttonLogin: {
+    margin: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderWidth: 2,
+    borderColor: '#003366',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonPressed: {
+    transform: [{ scale: 0.9 }],
+  },
+  buttonHover: {
+    backgroundColor: '#003366',
+  },
+  buttonText: {
+    color: '#003366',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  buttonTextHover: {
+    color: '#fff',
+  },
+  linkText: {
+    color: '#000',
+    fontSize: 16,
+    marginTop: 20,
+  },
+
 });

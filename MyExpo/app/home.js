@@ -47,6 +47,7 @@ const home = () => {
 
       <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title1}>Welcome to Pharma Tech </Text>
+        <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
       <Image
           source={require('../assets/images/free shipping.png')}
           style ={styles.board}
@@ -105,7 +106,6 @@ const home = () => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
 
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>

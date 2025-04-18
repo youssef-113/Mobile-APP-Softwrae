@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert , Dimensions , Platform ,Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Pressable,StyleSheet, Alert , Dimensions , Platform ,Image } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import {auth,db} from '../firebase'; 
 import { doc, setDoc } from "firebase/firestore"; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const { height } = Dimensions.get('window');
 
@@ -20,6 +22,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [Phone, setPhone] = useState('');
+  const [hover, setHover] = useState(false); 
 
     const validation = () => {
     let valid = true;
@@ -126,28 +129,49 @@ const Signup = () => {
                   setEmailError('');
                 }
               }}
-         />
-       {emailError !== '' && <Text style={styles.errorText}>{emailError}</Text>}
-      <TextInput 
-        style={styles.input} 
-        placeholder="Password" 
-        placeholderTextColor="#888"
-        value={password} 
-        onChangeText={setPassword}
-        secureTextEntry 
-        onBlur={() => {
-                 if (password.length < 8) {
-                   setPasswordError('Password must be at least 8 characters long.');
-                 } else {
-                   setPasswordError('');
-                 }
-               }}
       />
-      {passwordError !== '' && <Text style={styles.errorText}>{passwordError}</Text>}
-
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
+       {emailError !== '' && <Text style={styles.errorText}>{emailError}</Text>}
+              <TextInput 
+                style={styles.input} 
+                placeholder="Password" 
+                placeholderTextColor="#888"
+                value={password} 
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+                onBlur={() => {
+                  if (password.length < 8) {
+                    setPasswordError('Password must be at least 8 characters long.');
+                  } else {
+                    setPasswordError('');
+                  }
+                }}
+            />
+         <Pressable
+           onPress={() => setShowPassword(prev => !prev)}
+           style={({ pressed }) => [
+             styles.eyeIcon,
+             pressed && styles.iconPressed
+           ]}
+         >
+         </Pressable>
+        
+       {passwordError !== '' && <Text style={styles.errorText}>{passwordError}</Text>}
+       
+ 
+       <Pressable
+         onPress={handleSignup}
+         onHoverIn={() => isWeb && setHover(true)}
+         onHoverOut={() => isWeb && setHover(false)}
+         style={({ pressed }) => [
+           styles.buttonLogin,
+           pressed && styles.buttonPressed,
+           hover && styles.buttonHover
+         ]}
+       >
+       {({ pressed }) => (
+           <Text style={[styles.buttonText, (pressed || hover) && styles.buttonTextHover]}>SignUp</Text>
+         )}
+       </Pressable>
       <Text style={styles.linkText}>
         Already have an account?{' '}
         <Link href="logIn" style={styles.link}>Login</Link>
@@ -244,5 +268,33 @@ const styles = StyleSheet.create({
   link: {
     color: '#000',
     fontWeight: 'bold',
+  },
+    buttonLogin: {
+    margin: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderWidth: 2,
+    borderColor: '#003366',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonPressed: {
+    transform: [{ scale: 0.9 }],
+  },
+  buttonHover: {
+    backgroundColor: '#003366',
+  },
+  buttonText: {
+    color: '#003366',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  buttonTextHover: {
+    color: '#fff',
+  },
+  linkText: {
+    color: '#000',
+    fontSize: 16,
+    marginTop: 20,
   },
 });
