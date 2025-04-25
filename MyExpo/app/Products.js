@@ -13,10 +13,10 @@ const isWeb = Platform.OS === 'web';
 const { height } = Dimensions.get('window');
 
 const productImages = {
-  product1: require('../assets/images/1.jpg'),
+  product1: require('../assets/images/4.jpg'),
   product2: require('../assets/images/2.jpg'),
   product3: require('../assets/images/3.jpg'),
-  product4: require('../assets/images/4.jpg'),
+  product4: require('../assets/images/1.jpg'),
   product5: require('../assets/images/5.jpg'),
   default: require('../assets/images/favicon.png'),
 };
