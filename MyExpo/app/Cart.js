@@ -12,11 +12,31 @@ const Cart = () => {
   const params = useLocalSearchParams();
   const cartItems = params.cartItems ? JSON.parse(params.cartItems) : [];
 
+  const calculateItemTotal = (item) => {
+    const price = parseFloat(item.price);
+    const quantity = item.quantity || 1;
+    return (price * quantity).toFixed(2);
+  };
+
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + parseFloat(item.price.replace('$', '')), 0).toFixed(2);
+    return cartItems.reduce((total, item) => {
+      const itemPrice = parseFloat(item.price);
+      const quantity = item.quantity || 1;
+      return total + (itemPrice * quantity);
+    }, 0).toFixed(2);
   };
 
   const total = calculateTotal();
+
+  const groupedCartItems = cartItems.reduce((acc, item) => {
+    const existingItem = acc.find(groupedItem => groupedItem.id === item.id);
+    if (existingItem) {
+      existingItem.quantity = (existingItem.quantity || 1) + 1;
+    } else {
+      acc.push({ ...item, quantity: 1 });
+    }
+    return acc;
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -40,19 +60,30 @@ const Cart = () => {
  />
       <Text style={styles.title}>🛒 Your Cart</Text>
 
-      {cartItems.length === 0 ? (
+      {groupedCartItems.length === 0 ? (
         <Text style={styles.emptyCartText}>Your cart is empty</Text>
       ) : (
-        cartItems.map((item, index) => (
+        groupedCartItems.map((item, index) => (
           <View key={index} style={styles.cartItem}>
-            <Text style={styles.cartItemName}>{item.name}</Text>
-            <Text style={styles.cartItemPrice}>${item.price}</Text>
+            <Image 
+              source={item.image} 
+              style={styles.cartItemImage} 
+              resizeMode='cover' 
+            />
+            <View style={styles.cartItemDetails}>
+              <Text style={styles.cartItemName}>{item.name}</Text>
+              <View style={styles.cartItemPriceContainer}>
+                <Text style={styles.cartItemPrice}>{item.price}</Text>
+                <Text style={styles.cartItemQuantity}>x {item.quantity}</Text>
+              </View>
+              <Text style={styles.cartItemTotal}>Total: {calculateItemTotal(item)}</Text>
+            </View>
           </View>
         ))
       )}
 
       <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Total: ${total}</Text>
+        <Text style={styles.totalText}>Grand Total: {total}</Text>
       </View>
 
       <TabBar />
@@ -111,21 +142,58 @@ forView:{
     fontStyle: 'italic',
   },
   cartItem: {
-    backgroundColor: '#003366', 
+    backgroundColor: '#FFFFFF', 
     padding: 15,
     marginVertical: 5,
     borderRadius: 10,
     width: '90%',
+    flexDirection: 'row',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cartItemImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    marginRight: 15,
+    resizeMode: 'cover',
+  },
+  cartItemDetails: {
+    flex: 1,
+    justifyContent: 'center',
   },
   cartItemName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#f5f5f5',
+    color: '#2C3E50',
+    marginBottom: 5,
+  },
+  cartItemPriceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
   },
   cartItemPrice: {
     fontSize: 16,
-    color: '#F5F5F5', 
+    color: '#27AE60',
+    marginRight: 10,
+  },
+  cartItemQuantity: {
+    fontSize: 14,
+    color: '#7F8C8D',
+    backgroundColor: '#ECF0F1',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 5,
+  },
+  cartItemTotal: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2980B9',
   },
   totalContainer: {
     marginTop: 20,

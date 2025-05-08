@@ -61,19 +61,18 @@ const ProductItem = ({ product, addToCart, openModal }) => {
 
   return (
     <View style={styles.productContainer}>
-      {/* Product Image */}
+
       <Image 
         source={product.image} 
         style={styles.productImage} 
         resizeMode="cover" 
       />
       
-      {/* Product Information */}
+
       <View style={styles.productInfo}>
-        {/* Product Name */}
+
         <Text style={styles.productName}>{product.name}</Text>
-        
-        {/* Product Description */}
+
         <View style={styles.descriptionContainer}>
           <Text style={styles.productDescription}>
             {isDescriptionExpanded ? product.description : truncatedDescription}
@@ -87,20 +86,17 @@ const ProductItem = ({ product, addToCart, openModal }) => {
           )}
         </View>
         
-        {/* Price */}
         <Text style={styles.productPrice}>{product.price}</Text>
-        
-        {/* Actions */}
+    
         <View style={styles.productActions}>
-          {/* Add to Cart Button */}
+         
           <TouchableOpacity 
             onPress={() => addToCart(product)} 
             style={styles.addButton}
           >
             <FontAwesome name="plus" size={20} color="#fff" />
           </TouchableOpacity>
-          
-          {/* Product Details Button */}
+ 
           <TouchableOpacity 
             onPress={() => openModal(product)} 
             style={styles.infoButton}
@@ -119,13 +115,18 @@ export default function ProductsScreen() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchText, setSearchText] = useState('');
   const router = useRouter();
-  const [expandedCategories, setExpandedCategories] = useState({
-    Antibiotics: false,
-    Painkillers: false,
-    Cardiovascular: false,
-    Supplements: false,
-    Others: false
-  });
+  // الأقسام
+  const categories = [
+    { key: 'Antibiotics', label: 'Antibiotics' },
+    { key: 'Painkillers', label: 'Painkillers' },
+    { key: 'Cardiovascular', label: 'Cardiovascular' },
+    { key: 'Supplements', label: 'Supplements' },
+    { key: 'Others', label: 'Others' },
+  ];
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [expandedGroups, setExpandedGroups] = useState({});
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState(null);
 
   const addToCart = async (product) => {
     try {
@@ -171,54 +172,42 @@ export default function ProductsScreen() {
     setSelectedProduct(null);
   };
 
-  const toggleCategory = (category) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [category]: !prev[category]
-    }));
+
+  const handleTabPress = (categoryKey) => {
+    if (selectedCategory === categoryKey) {
+      setSelectedCategory(null); 
+    } else {
+      setSelectedCategory(categoryKey);
+    }
   };
 
-  const filteredProducts = allProducts.filter((product) =>
-    product.name.toLowerCase().includes(searchText.toLowerCase())
-  );
 
-  const renderCategories = () => {
-    return Object.entries(expandedCategories).map(([category, isExpanded]) => {
-      const categoryProducts = 
-        category === 'Antibiotics' ? productsData :
-        category === 'Painkillers' ? productsData2 :
-        category === 'Cardiovascular' ? productsData3 :
-        category === 'Supplements' ? productsData4 :
-        productsData5;
-
-      return (
-        <View key={category}>
-          <TouchableOpacity 
-            style={styles.categoryButton} 
-            onPress={() => toggleCategory(category)}
-          >
-            <View style={styles.categoryButtonContent}>
-              <Text style={styles.categoryButtonText}>{category}</Text>
-              <FontAwesome 
-                name={isExpanded ? "chevron-up" : "chevron-down"} 
-                size={16} 
-                color="#FFA500" 
-                style={styles.categoryIcon} 
-              />
-            </View>
-          </TouchableOpacity>
-          {isExpanded && categoryProducts.map((item) => (
-            <ProductItem
-              key={item.id}
-              product={item}
-              addToCart={addToCart}
-              openModal={openModal}
-            />
-          ))}
-        </View>
+  const getVisibleProducts = () => {
+    let products = allProducts;
+    if (selectedCategory) {
+      if (selectedCategory === 'Antibiotics') products = productsData;
+      else if (selectedCategory === 'Painkillers') products = productsData2;
+      else if (selectedCategory === 'Cardiovascular') products = productsData3;
+      else if (selectedCategory === 'Supplements') products = productsData4;
+      else products = productsData5;
+    }
+    if (searchText.length > 0) {
+      products = products.filter((product) =>
+        product.name.toLowerCase().includes(searchText.toLowerCase())
       );
-    });
+    }
+    if (selectedFilter === 'priceLowHigh') {
+      products = [...products].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    } else if (selectedFilter === 'priceHighLow') {
+      products = [...products].sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+    } else if (selectedFilter === 'nameAZ') {
+      products = [...products].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (selectedFilter === 'nameZA') {
+      products = [...products].sort((a, b) => b.name.localeCompare(a.name));
+    }
+    return products;
   };
+
 
   return (
     <View style={styles.mainContainer}>
@@ -242,26 +231,141 @@ export default function ProductsScreen() {
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.searchInput}
-            placeholder="search"
+            placeholder="Search..."
             placeholderTextColor="#888"
             value={searchText}
             onChangeText={setSearchText}
-            textAlign="right"
+            textAlign="left"
           />
           <FontAwesome name="search" size={20} color="#888" style={styles.searchIcon} />
+          <TouchableOpacity onPress={() => setFilterModalVisible(true)} style={{ marginLeft: 8, padding: 6, borderRadius: 8, backgroundColor: '#F0F0F0' }}>
+            <FontAwesome name="filter" size={20} color="#3498DB" />
+          </TouchableOpacity>
         </View>
 
-        {searchText.length > 0 ? (
-          filteredProducts.map((item) => (
-            <ProductItem
-              key={item.id}
-              product={item}
-              addToCart={addToCart}
-              openModal={openModal}
-            />
-          ))
+        <Modal
+          visible={filterModalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setFilterModalVisible(false)}
+        >
+          <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.3)' }}>
+            <View style={{ backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, minHeight: 260 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20, color: '#2C3E50', textAlign: 'center' }}>Filter & Sort</Text>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'priceLowHigh' ? '#E3F1FD' : '#F7F9FA' }}
+                onPress={() => setSelectedFilter('priceLowHigh')}
+              >
+                <FontAwesome name="sort-amount-asc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Price: Low to High</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'priceHighLow' ? '#E3F1FD' : '#F7F9FA' }}
+                onPress={() => setSelectedFilter('priceHighLow')}
+              >
+                <FontAwesome name="sort-amount-desc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Price: High to Low</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'nameAZ' ? '#E3F1FD' : '#F7F9FA' }}
+                onPress={() => setSelectedFilter('nameAZ')}
+              >
+                <FontAwesome name="sort-alpha-asc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Name: A-Z</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'nameZA' ? '#E3F1FD' : '#F7F9FA' }}
+                onPress={() => setSelectedFilter('nameZA')}
+              >
+                <FontAwesome name="sort-alpha-desc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Name: Z-A</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setFilterModalVisible(false)}
+                style={{ backgroundColor: '#3498DB', padding: 14, borderRadius: 10, alignItems: 'center' }}
+              >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Apply Filter</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => { setSelectedFilter(null); setFilterModalVisible(false); }}
+                style={{ marginTop: 10, alignItems: 'center' }}
+              >
+                <Text style={{ color: '#888', fontSize: 15 }}>Clear Filter</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+
+        <View style={styles.tabBarContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabBarContent}>
+            {categories.map((cat) => (
+              <TouchableOpacity
+                key={cat.key}
+                style={[
+                  styles.tabButton,
+                  selectedCategory === cat.key && styles.tabButtonActive
+                ]}
+                onPress={() => handleTabPress(cat.key)}
+                activeOpacity={0.8}
+              >
+                <Text style={[
+                  styles.tabButtonText,
+                  selectedCategory === cat.key && styles.tabButtonTextActive
+                ]}>{cat.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+ 
+        {selectedCategory ? (
+          getVisibleProducts().length === 0 ? (
+            <Text style={{ textAlign: 'center', color: '#888', marginTop: 40, fontSize: 18 }}>No products found</Text>
+          ) : (
+            getVisibleProducts().map((item) => (
+              <ProductItem
+                key={item.id}
+                product={item}
+                addToCart={addToCart}
+                openModal={openModal}
+              />
+            ))
+          )
         ) : (
-          renderCategories()
+          categories.map((cat) => {
+            let products = [];
+            if (cat.key === 'Antibiotics') products = productsData;
+            else if (cat.key === 'Painkillers') products = productsData2;
+            else if (cat.key === 'Cardiovascular') products = productsData3;
+            else if (cat.key === 'Supplements') products = productsData4;
+            else products = productsData5;
+            if (!products.length) return null;
+            return (
+              <View key={cat.key} style={{ marginBottom: 10, borderRadius: 12, backgroundColor: '#F7F9FA', overflow: 'hidden', borderWidth: 1, borderColor: '#E0E0E0' }}>
+                <TouchableOpacity
+                  onPress={() => setExpandedGroups(prev => ({ ...prev, [cat.key]: !prev[cat.key] }))}
+                  style={{ flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: expandedGroups[cat.key] ? '#E3F1FD' : '#F7F9FA' }}
+                  activeOpacity={0.8}
+                >
+                  <Text style={{ flex: 1, fontSize: 18, fontWeight: 'bold', color: '#2C3E50' }}>{cat.label}</Text>
+                  <FontAwesome name={expandedGroups[cat.key] ? 'chevron-up' : 'chevron-down'} size={18} color="#3498DB" />
+                </TouchableOpacity>
+                {expandedGroups[cat.key] && (
+                  <View style={{ backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#E0E0E0', paddingBottom: 6 }}>
+                    {products.map((item) => (
+                      <ProductItem
+                        key={item.id}
+                        product={item}
+                        addToCart={addToCart}
+                        openModal={openModal}
+                      />
+                    ))}
+                  </View>
+                )}
+              </View>
+            );
+          })
         )}
 
         <TouchableOpacity
@@ -275,7 +379,7 @@ export default function ProductsScreen() {
       <Modal visible={modalVisible} animationType="slide" transparent={true} onRequestClose={closeModal}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            {/* Product Image */}
+          
             <View style={styles.modalImageContainer}>
               <Image 
                 source={selectedProduct?.image} 
@@ -283,8 +387,7 @@ export default function ProductsScreen() {
                 resizeMode="cover" 
               />
             </View>
-            
-            {/* Scrollable Product Details */}
+          
             <ScrollView 
               style={styles.modalScrollView}
               contentContainerStyle={styles.modalScrollViewContent}
@@ -333,8 +436,7 @@ export default function ProductsScreen() {
                 </View>
               </View>
             </ScrollView>
-            
-            {/* Close Button */}
+
             <TouchableOpacity 
               onPress={closeModal} 
               style={styles.modalCloseButton}
@@ -379,15 +481,15 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   productImage: {
-    width: 130,  // Slightly larger
-    height: 130, // Slightly larger
-    borderRadius: 15, // More rounded corners
+    width: 130, 
+    height: 130, 
+    borderRadius: 15,
     marginRight: 15,
-    resizeMode: 'contain', // Changed to 'contain' to show full image
-    backgroundColor: '#F0F0F0', // Light background to highlight image
-    padding: 10, // Add some padding
-    alignSelf: 'center', // Center the image
-    shadowColor: '#000', // Add shadow for depth
+    resizeMode: 'contain',
+    backgroundColor: '#F0F0F0',
+    padding: 10, 
+    alignSelf: 'center', 
+    shadowColor: '#000', 
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -472,10 +574,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
   },
   modalProductImage: {
-    width: 130,  // Match product list image width
-    height: 130, // Match product list image height
-    borderRadius: 15, // Match product list image border radius
-    resizeMode: 'cover', // Match product list image resizeMode
+    width: 130,  
+    height: 130,
+    borderRadius: 15, 
+    resizeMode: 'cover',
   },
   modalScrollView: {
     flex: 1,
@@ -545,5 +647,44 @@ const styles = StyleSheet.create({
     fontSize: 18, 
     fontWeight: 'bold', 
   },
-  tabsContainer: { position: 'absolute', bottom: 0, left: 0, right: 0 },
+  tabBarContainer: {
+    marginVertical: 12,
+    backgroundColor: '#F8F8F8',
+    borderRadius: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 3,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+  },
+  tabBarContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 8,
+  },
+  tabButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    borderRadius: 10,
+    backgroundColor: '#E0E0E0',
+    marginHorizontal: 4,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+  },
+  tabButtonActive: {
+    backgroundColor: '#3498DB',
+    borderColor: '#3498DB',
+  },
+  tabButtonText: {
+    color: '#2C3E50',
+    fontWeight: 'bold',
+    fontSize: 16,
+    letterSpacing: 0.5,
+  },
+  tabButtonTextActive: {
+    color: '#fff',
+  },
 });
