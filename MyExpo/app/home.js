@@ -84,89 +84,83 @@ const home = () => {
   };
 
   return (
-    <>
-      
-<Stack.Screen
-  options={{
-    headerStyle:styles.headerStyle,
-    headerBackVisible: true,
-    headerTitle: () => (
-      <View style={styles.forView}>
-        <Text style ={ styles.forText}>
-          Home
-        </Text>
-        <Image
-          source={require('../assets/images/final transparent.png')}
-          style ={styles.logo}
-        />
-      </View>
-    ),
-  }}
-/>
-    
-
+    <View style={{flex: 1, backgroundColor: '#F5F5F5'}}>
+      <Stack.Screen
+        options={{
+          headerStyle:styles.headerStyle,
+          headerBackVisible: true,
+          headerTitle: () => (
+            <View style={styles.forView}>
+              <Text style ={ styles.forText}>
+                Home
+              </Text>
+              <Image
+                source={require('../assets/images/final transparent.png')}
+                style ={styles.logo}
+              />
+            </View>
+          ),
+        }}
+      />
       <StatusBar style="dark" backgroundColor="#000" />
 
-      <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title1}>Welcome to Pharma Tech </Text>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+
+      <View style={styles.headerWelcomeSection}>
+        <Image source={require('../assets/images/final transparent.png')} style={styles.headerLogoSmall} />
+        <Text style={styles.title1}>Welcome to <Text style={styles.brandAccent}>Pharma Tech</Text></Text>
         <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
+      </View>
 
-<View style={styles.sliderContainer}>
-  <Swiper
-    autoplay
-    autoplayTimeout={3}
-    showsPagination={true}
-    dotStyle={styles.dotStyle}
-    activeDotStyle={styles.activeDotStyle}
-    containerStyle={styles.swiperStyle}
-  >
-    {sliderImages.map((img, idx) => (
-      <Image
-        key={idx}
-        source={img}
-        style={styles.sliderImage}
-        resizeMode="contain"
-      />
-    ))}
-  </Swiper>
-</View>
-
-<View style={styles.offersSection}>
-  <View style={styles.offersHeader}>
-    <Text style={styles.offersTitle}>Offers</Text>
-    <TouchableOpacity onPress={() => router.push('/offers')}>
-      <Text style={styles.seeAllBtn}>See All</Text>
-    </TouchableOpacity>
-  </View>
-  <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-    <TouchableOpacity onPress={() => scrollOffers('left')} style={styles.arrowButton}>
-      <FontAwesome name="chevron-left" size={24} color="#003366" />
-    </TouchableOpacity>
-    <ScrollView
-      horizontal
-      ref={offersScrollRef}
-      showsHorizontalScrollIndicator={true}
-      contentContainerStyle={styles.offersList}
-      style={{ flex: 1 }}
-    >
-      {offersData.map((offer, idx) => (
-        <TouchableOpacity
-          key={idx}
-          style={styles.offerCard}
-          activeOpacity={0.8}
-          onPress={() => router.push({ pathname: '/Products', params: { productName: offer.name } })}
+      <View style={styles.sliderContainerModern}>
+        <Swiper
+          autoplay
+          autoplayTimeout={3}
+          showsPagination={true}
+          dotStyle={styles.dotStyle}
+          activeDotStyle={styles.activeDotStyle}
+          containerStyle={styles.swiperStyle}
         >
-          <Image source={offer.image} style={styles.offerImage} resizeMode="cover" />
-          <Text style={styles.offerName}>{offer.name}</Text>
-          <Text style={styles.offerDiscount}>{offer.discount}</Text>
+          {sliderImages.map((img, idx) => (
+            <Image
+              key={idx}
+              source={img}
+              style={styles.sliderImageModern}
+              resizeMode="cover"
+            />
+          ))}
+        </Swiper>
+      </View>
+
+      <View style={styles.sectionTitleBar}>
+        <Text style={styles.sectionTitle}>🔥 Best Offers</Text>
+        <TouchableOpacity onPress={() => router.push('/offers')}>
+          <Text style={styles.seeAllBtnModern}>See All</Text>
         </TouchableOpacity>
-      ))}
-    </ScrollView>
-    <TouchableOpacity onPress={() => scrollOffers('right')} style={styles.arrowButton}>
-      <FontAwesome name="chevron-right" size={24} color="#003366" />
-    </TouchableOpacity>
-  </View>
-</View>
+      </View>
+      <View style={styles.offersRowWrapper}>
+        <TouchableOpacity onPress={() => scrollOffers('left')} style={styles.arrowButtonModern}>
+          <FontAwesome name="chevron-left" size={22} color="#003366" />
+        </TouchableOpacity>
+        <ScrollView
+          horizontal
+          ref={offersScrollRef}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.offersListModern}
+          style={{ flex: 1 }}
+        >
+          {offersData.map((offer, idx) => (
+            <View key={idx} style={styles.offerCardModern}>
+              <Image source={offer.image} style={styles.offerImageModern} />
+              <Text style={styles.offerNameModern}>{offer.name}</Text>
+              <Text style={styles.offerDiscountModern}>{offer.discount}</Text>
+            </View>
+          ))}
+        </ScrollView>
+        <TouchableOpacity onPress={() => scrollOffers('right')} style={styles.arrowButtonModern}>
+          <FontAwesome name="chevron-right" size={22} color="#003366" />
+        </TouchableOpacity>
+      </View>
 
       <Image
           source={require('../assets/images/free shipping.png')}
@@ -239,13 +233,145 @@ const home = () => {
       
       </ScrollView>
       <TabBar />
-    </>
+    </View>
   );
 };
 
 export default home;
 
 const styles = StyleSheet.create({
+  // Header Welcome Section
+  headerWelcomeSection: {
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 12,
+    paddingHorizontal: 12,
+  },
+  headerLogoSmall: {
+    width: 60,
+    height: 60,
+    borderRadius: 18,
+    marginBottom: 7,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    elevation: 2,
+  },
+  brandAccent: {
+    color: '#003366',
+    fontWeight: 'bold',
+    fontSize: 28,
+  },
+  // Modern Slider
+  sliderContainerModern: {
+    width: isWeb ? Math.min(1000, width * 0.93) : width * 0.97,
+    height: 200,
+    alignSelf: 'center',
+    marginVertical: 10,
+    borderRadius: 18,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    shadowColor: '#003366',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  sliderImageModern: {
+    width: '100%',
+    height: 200,
+    borderRadius: 18,
+  },
+  // Section Title Bar
+  sectionTitleBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: isWeb ? Math.min(1000, width * 0.93) : width * 0.97,
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 7,
+    paddingHorizontal: 2,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#003366',
+    letterSpacing: 0.5,
+  },
+  seeAllBtnModern: {
+    color: '#fff',
+    backgroundColor: '#003366',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    fontWeight: 'bold',
+    fontSize: 15,
+    overflow: 'hidden',
+    elevation: 2,
+  },
+  // Offers Row
+  offersRowWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: isWeb ? Math.min(1000, width * 0.93) : width * 0.97,
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  arrowButtonModern: {
+    backgroundColor: '#E3EAFD',
+    borderRadius: 18,
+    padding: 8,
+    marginHorizontal: 2,
+    elevation: 2,
+  },
+  offersListModern: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 2,
+  },
+  // Modern Offer Card
+  offerCardModern: {
+    width: 120,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginRight: 14,
+    alignItems: 'center',
+    padding: 10,
+    shadowColor: '#003366',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.10,
+    shadowRadius: 8,
+    elevation: 4,
+    borderWidth: 1.2,
+    borderColor: '#F3F6FB',
+    transition: 'transform 0.2s',
+  },
+  offerImageModern: {
+    width: 90,
+    height: 70,
+    borderRadius: 10,
+    marginBottom: 8,
+    backgroundColor: '#F5F6FA',
+  },
+  offerNameModern: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#003366',
+    marginBottom: 2,
+    textAlign: 'center',
+  },
+  offerDiscountModern: {
+    color: '#D32F2F',
+    fontWeight: 'bold',
+    fontSize: 13,
+    backgroundColor: '#FCE4EC',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 7,
+    marginTop: 2,
+  },
   offersSection: {
     width: isWeb ? Math.min(1000, width * 0.95) : width * 0.98,
     alignSelf: 'center',
