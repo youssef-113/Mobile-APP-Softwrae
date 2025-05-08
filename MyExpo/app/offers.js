@@ -9,41 +9,147 @@ const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web';
 const { height } = Dimensions.get('window');
 
+const offersData = [
+  {
+    name: 'Vitamin C 1000mg',
+    image: require('../assets/images/1.jpg'),
+    discount: 'Sale 30%'
+  },
+  {
+    name: 'Zinc Plus Capsules',
+    image: require('../assets/images/2.jpg'),
+    discount: 'Sale 25%'
+  },
+  {
+    name: 'Medical Sunscreen',
+    image: require('../assets/images/3.jpg'),
+    discount: 'Sale 15%'
+  },
+  {
+    name: 'Anti-Dandruff Shampoo',
+    image: require('../assets/images/4.jpg'),
+    discount: 'Sale 20%'
+  },
+  {
+    name: 'Anti-Dandruff Shampoo',
+    image: require('../assets/images/4.jpg'),
+    discount: 'Sale 20%'
+  },
+  {
+    name: 'Anti-Dandruff Shampoo',
+    image: require('../assets/images/4.jpg'),
+    discount: 'Sale 20%'
+  },
+  {
+    name: 'Anti-Dandruff Shampoo',
+    image: require('../assets/images/4.jpg'),
+    discount: 'Sale 20%'
+  },
+  {
+    name: 'Anti-Dandruff Shampoo',
+    image: require('../assets/images/4.jpg'),
+    discount: 'Sale 20%'
+  },
+];
 
 export default function offers() {
-    return(
-      <>
-      <ScrollView>
-          <Stack.Screen
-                 options={{
-                   headerStyle:styles.headerStyle,
-                   headerBackVisible: true,
-                   headerTitle: () => (
-                     <View style={styles.forView}>
-                       <Text style ={ styles.forText}>
-                         Offers
-                       </Text>
-                       <Image
-                         source={require('../assets/images/final transparent.png')}
-                         style ={styles.logo}
-                       />
-                     </View>
-                   ),
-                 }}
-           />
-          
-         
-              
-             </ScrollView>
-             <TabBar/> 
-             </>
-    );
-
+  const router = useRouter();
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          headerStyle: styles.headerStyle,
+          headerBackVisible: true,
+          headerTitle: () => (
+            <View style={styles.forView}>
+              <Text style={styles.forText}>Offers</Text>
+              <Image
+                source={require('../assets/images/final transparent.png')}
+                style={styles.logo}
+              />
+            </View>
+          ),
+        }}
+      />
+      <ScrollView contentContainerStyle={styles.gridContainer}>
+        {offersData.map((offer, idx) => (
+          <TouchableOpacity
+            key={idx}
+            style={styles.gridCard}
+            activeOpacity={0.85}
+            onPress={() => router.push({ pathname: '/Products', params: { productName: offer.name } })}
+          >
+            <Image source={offer.image} style={styles.gridImage} resizeMode="cover" />
+            <Text style={styles.gridName}>{offer.name}</Text>
+            <Text style={styles.gridDiscount}>{offer.discount}</Text>
+            <View style={styles.detailsButton}>
+              <Text style={styles.detailsButtonText}>Details</Text>
+              <FontAwesome name="info-circle" size={16} color="#fff" style={{marginLeft: 4}} />
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <TabBar />
+    </>
+  );
 }
 
-
-
 const styles = StyleSheet.create({
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: 12,
+    paddingBottom: 80,
+    backgroundColor: '#f5f5f5',
+  },
+  gridCard: {
+    width: '47%',
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    marginBottom: 16,
+    alignItems: 'center',
+    padding: 10,
+    shadowColor: '#aaa',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.18,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  gridImage: {
+    width: 90,
+    height: 90,
+    borderRadius: 10,
+    marginBottom: 8,
+  },
+  gridName: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#003366',
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  gridDiscount: {
+    color: '#b71c1c',
+    fontWeight: 'bold',
+    fontSize: 13,
+    marginBottom: 6,
+  },
+  detailsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#003366',
+    borderRadius: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    marginTop: 8,
+  },
+  detailsButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
+
 
   logo: {
     width: isWeb ? 300 : width * 0.6,

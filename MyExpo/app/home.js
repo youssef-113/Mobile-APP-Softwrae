@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import Swiper from 'react-native-swiper';
 import { View, Text, Image,TouchableOpacity, ScrollView, StyleSheet , Dimensions , Platform } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import { FontAwesome } from 'react-native-vector-icons';
@@ -13,9 +14,70 @@ const { height } = Dimensions.get('window');
 
 const isWeb = Platform.OS === 'web'
 
+
 const home = () => {
   const router = useRouter();
   const [cartItems, setCartItems] = useState([]);
+  const offersScrollRef = useRef(null);
+
+  const scrollOffers = (direction) => {
+    if (offersScrollRef.current) {
+      offersScrollRef.current.scrollTo({
+        x: direction === 'right' ? 200 : 0,
+        animated: true,
+      });
+    }
+  };
+
+  const sliderImages = [
+    require('../assets/images/free shipping.png'),
+    require('../assets/images/Check new.png'),
+    require('../assets/images/final transparent.png'),
+  ];
+
+
+  const offersData = [
+    {
+      name: 'Vitamin C 1000mg',
+      image: require('../assets/images/1.jpg'),
+      discount: 'Sale 30%'
+    },
+    {
+      name: 'Zinc Plus Capsules',
+      image: require('../assets/images/2.jpg'),
+      discount: 'Sale 25%'
+    },
+    {
+      name: 'Medical Sunscreen',
+      image: require('../assets/images/3.jpg'),
+      discount: 'Sale 15%'
+    },
+    {
+      name: 'Anti-Dandruff Shampoo',
+      image: require('../assets/images/4.jpg'),
+      discount: 'Sale 20%'
+    },
+    {
+      name: 'Anti-Dandruff Shampoo',
+      image: require('../assets/images/4.jpg'),
+      discount: 'Sale 20%'
+    },
+    {
+      name: 'Anti-Dandruff Shampoo',
+      image: require('../assets/images/4.jpg'),
+      discount: 'Sale 20%'
+    },
+    {
+      name: 'Anti-Dandruff Shampoo',
+      image: require('../assets/images/4.jpg'),
+      discount: 'Sale 20%'
+    },
+    {
+      name: 'Anti-Dandruff Shampoo',
+      image: require('../assets/images/4.jpg'),
+      discount: 'Sale 20%'
+    },
+  ];
 
   const addToCart = (product) => {
     setCartItems((prevCart) => [...prevCart, product]);
@@ -48,6 +110,64 @@ const home = () => {
       <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title1}>Welcome to Pharma Tech </Text>
         <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
+
+<View style={styles.sliderContainer}>
+  <Swiper
+    autoplay
+    autoplayTimeout={3}
+    showsPagination={true}
+    dotStyle={styles.dotStyle}
+    activeDotStyle={styles.activeDotStyle}
+    containerStyle={styles.swiperStyle}
+  >
+    {sliderImages.map((img, idx) => (
+      <Image
+        key={idx}
+        source={img}
+        style={styles.sliderImage}
+        resizeMode="contain"
+      />
+    ))}
+  </Swiper>
+</View>
+
+<View style={styles.offersSection}>
+  <View style={styles.offersHeader}>
+    <Text style={styles.offersTitle}>Offers</Text>
+    <TouchableOpacity onPress={() => router.push('/offers')}>
+      <Text style={styles.seeAllBtn}>See All</Text>
+    </TouchableOpacity>
+  </View>
+  <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+    <TouchableOpacity onPress={() => scrollOffers('left')} style={styles.arrowButton}>
+      <FontAwesome name="chevron-left" size={24} color="#003366" />
+    </TouchableOpacity>
+    <ScrollView
+      horizontal
+      ref={offersScrollRef}
+      showsHorizontalScrollIndicator={true}
+      contentContainerStyle={styles.offersList}
+      style={{ flex: 1 }}
+    >
+      {offersData.map((offer, idx) => (
+        <TouchableOpacity
+          key={idx}
+          style={styles.offerCard}
+          activeOpacity={0.8}
+          onPress={() => router.push({ pathname: '/Products', params: { productName: offer.name } })}
+        >
+          <Image source={offer.image} style={styles.offerImage} resizeMode="cover" />
+          <Text style={styles.offerName}>{offer.name}</Text>
+          <Text style={styles.offerDiscount}>{offer.discount}</Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+    <TouchableOpacity onPress={() => scrollOffers('right')} style={styles.arrowButton}>
+      <FontAwesome name="chevron-right" size={24} color="#003366" />
+    </TouchableOpacity>
+  </View>
+</View>
+
       <Image
           source={require('../assets/images/free shipping.png')}
           style ={styles.board}
@@ -126,6 +246,110 @@ const home = () => {
 export default home;
 
 const styles = StyleSheet.create({
+  offersSection: {
+    width: isWeb ? Math.min(1000, width * 0.95) : width * 0.98,
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  offersHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+    paddingHorizontal: 8,
+  },
+  offersTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#003366',
+  },
+  seeAllBtn: {
+    color: '#00796B',
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 4,
+  },
+  offersList: {
+    flexDirection: 'row',
+    gap: 12,
+    paddingHorizontal: 4,
+    alignItems: 'center',
+  },
+  arrowButton: {
+    padding: 4,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 16,
+    marginHorizontal: 2,
+    elevation: 2,
+  },
+  offerCard: {
+    width: 110, 
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginRight: 12,
+    alignItems: 'center',
+    padding: 8,
+    shadowColor: '#aaa',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  offerImage: {
+    width: 100,
+    height: 80,
+    borderRadius: 8,
+    marginBottom: 6,
+  },
+  offerName: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#222',
+    marginBottom: 2,
+    textAlign: 'center',
+  },
+  offerDiscount: {
+    color: '#D32F2F',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  sliderContainer: {
+    width: isWeb ? Math.min(1000, width * 0.9) : width * 0.95,
+    height: 220,
+    alignSelf: 'center',
+    marginVertical: 15,
+    borderRadius: 15,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    shadowColor: '#aaa',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  swiperStyle: {
+    borderRadius: 15,
+  },
+  sliderImage: {
+    width: '100%',
+    height: 220,
+    borderRadius: 15,
+  },
+  dotStyle: {
+    backgroundColor: '#ccc',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 3,
+  },
+  activeDotStyle: {
+    backgroundColor: '#003366',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 3,
+  },
   separator: {
   height: 1,
   backgroundColor: '#ccc',
