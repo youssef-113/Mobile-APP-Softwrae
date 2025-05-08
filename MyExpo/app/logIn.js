@@ -4,6 +4,8 @@ import { View, Text, TextInput, TouchableOpacity,Pressable, StyleSheet, Alert , 
 import { Link, useRouter, Stack } from 'expo-router';
 import {signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../firebase'; 
+import { doc, getDoc } from 'firebase/firestore';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { navigate } from 'expo-router/build/global-state/routing';
 
@@ -48,27 +50,48 @@ const Login = () => {
   };
 
 
-   const handleLogin =() => {
-     if (!validation()) return;
- 
-     router.replace('/home')
-     signInWithEmailAndPassword(auth, email, password)
-     .then((userCredential) => {
-       console.log("DONE SIGN IN! ")
-       const user = userCredential.user;
-       console.log(auth.currentUser.uid)
-       setEmailError('');
-       setPasswordError('');
-       alert("Success", "Login Successful!");
-       
-   })
-   .catch((error) => {
-     const errorCode = error.code;
-     const errorMessage = error.message;
-     console.log(errorMessage)
-   });
- 
-     };
+  const handleLogin = async () => {
+    if (!validation()) return;
+  
+    try {
+      // تسجيل الدخول بالإيميل والباسورد
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // جلب بيانات المستخدم من Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+  
+        // التحقق من الاسم ورقم الهاتف
+        if (userData.name !== username || userData.Phone !== Phone) {
+          alert("Name or phone number does not match our records.");
+          return;
+        }
+  
+        // ✅ كل شيء تمام
+        alert("Login successful!");
+        router.replace('/home');
+      } else {
+        alert("User record not found in database.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      if (error.code === "auth/user-not-found") {
+        alert("User not found. Please sign up.");
+      } else if (error.code === "auth/wrong-password") {
+        alert("Incorrect password.");
+      } else if (error.code === "auth/invalid-email") {
+        alert("Invalid email format.");
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    }
+  };
+  
+  
 
   return (
     <View style={styles.container} >
