@@ -45,6 +45,7 @@ const About = () => {
       such as home medication delivery, patient counseling and support, and contributing to raising health awareness, 
       Pharma Tech Pharmacies has been able to raise the standard of healthcare in Egypt and progress day by day since its inception
        in the Egyptian pharmaceutical market.
+       ***********************
             </Text>    
 
             <Text style={styles.teamMember}>
