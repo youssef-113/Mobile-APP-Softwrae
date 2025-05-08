@@ -64,7 +64,7 @@ const Cart = () => {
         <Text style={styles.emptyCartText}>Your cart is empty</Text>
       ) : (
         groupedCartItems.map((item, index) => (
-          <View key={index} style={styles.cartItem}>
+          <ScrollView key={index} style={styles.cartItem}>
             <Image 
               source={item.image} 
               style={styles.cartItemImage} 
@@ -78,7 +78,7 @@ const Cart = () => {
               </View>
               <Text style={styles.cartItemTotal}>Total: {calculateItemTotal(item)}</Text>
             </View>
-          </View>
+          </ScrollView>
         ))
       )}
 

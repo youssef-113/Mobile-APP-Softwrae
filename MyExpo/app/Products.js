@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { ActivityIndicator, I18nManager } from 'react-native';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput, Platform, Dimensions } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { FontAwesome } from 'react-native-vector-icons';
 import { useRouter } from 'expo-router';
 import { Stack } from 'expo-router'; 
@@ -18,6 +20,36 @@ const productImages = {
   product5: require('../assets/images/5.jpg'),
   default: require('../assets/images/favicon.png'),
 };
+
+const mockBrands = ['Pfizer', 'Novartis', 'Sanofi', 'GSK', 'Generic'];
+
+function getMockStock(id) {
+  if (id === '1') return { inStock: true, left: 2 };
+  if (id === '2') return { inStock: true, left: 10 };
+  if (id === '3') return { inStock: false, left: 0 };
+  if (id === '4') return { inStock: true, left: 1 };
+  return { inStock: true, left: 20 };
+}
+
+function getMockBadge(id) {
+  if (id === '1') return 'Best Seller';
+  if (id === '2') return 'New';
+  if (id === '4') return 'Discount';
+  return null;
+}
+
+function getMockBrand(id) {
+  if (id === '1') return 'Pfizer';
+  if (id === '2') return 'Novartis';
+  if (id === '3') return 'Sanofi';
+  if (id === '4') return 'GSK';
+  return 'Generic';
+}
+
+function getMockRecommendations() {
+  return [productsData[0], productsData2[0]];
+}
+
 
 const productsData = [
   { id: '1', name: 'Xiclav', description: 'Xiclav 1g 14 coated tablets', price: '151.99 EGP', image: productImages.product1 },
@@ -47,7 +79,7 @@ const allProducts = [
   ...productsData5,
 ];
 
-const ProductItem = ({ product, addToCart, openModal }) => {
+const ProductItem = ({ product, addToCart, openModal, isInWishlist, toggleWishlist }) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   const toggleDescription = () => {
@@ -60,15 +92,18 @@ const ProductItem = ({ product, addToCart, openModal }) => {
     : product.description;
 
   return (
-    <View style={styles.productContainer}>
-
-      <Image 
-        source={product.image} 
-        style={styles.productImage} 
-        resizeMode="cover" 
+    <View style={{ position: 'relative' }}>
+      <Image
+        source={product.image}
+        style={styles.productImage}
+        resizeMode="cover"
       />
-      
-
+      <TouchableOpacity
+        onPress={() => toggleWishlist(product.id)}
+        style={{ position: 'absolute', top: 10, right: 10, zIndex: 3 }}
+      >
+        <FontAwesome name={isInWishlist(product.id) ? 'heart' : 'heart-o'} size={24} color={isInWishlist(product.id) ? '#E53935' : '#B0B0B0'} />
+      </TouchableOpacity>
       <View style={styles.productInfo}>
 
         <Text style={styles.productName}>{product.name}</Text>
@@ -117,16 +152,31 @@ export default function ProductsScreen() {
   const router = useRouter();
   // الأقسام
   const categories = [
-    { key: 'Antibiotics', label: 'Antibiotics' },
-    { key: 'Painkillers', label: 'Painkillers' },
-    { key: 'Cardiovascular', label: 'Cardiovascular' },
-    { key: 'Supplements', label: 'Supplements' },
-    { key: 'Others', label: 'Others' },
-  ];
+  { key: 'Antibiotics', label: 'Antibiotics' },
+  { key: 'Painkillers', label: 'Painkillers' },
+  { key: 'Cardiovascular', label: 'Cardiovascular' },
+  { key: 'Supplements', label: 'Supplements' },
+  { key: 'Others', label: 'Others' },
+  { key: 'Favorites', label: 'Favorites' },
+];
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [expandedGroups, setExpandedGroups] = useState({});
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 300]);
+  const [wishlist, setWishlist] = useState([]);
+  const [imageModal, setImageModal] = useState({ visible: false, image: null });
+  const [language, setLanguage] = useState('EN');
+  const [showToast, setShowToast] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  React.useEffect(() => {
+    setLoading(true);
+    const t = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(t);
+  }, [selectedCategory, searchText, selectedFilter, selectedBrands, priceRange]);
+
 
   const addToCart = async (product) => {
     try {
@@ -184,18 +234,28 @@ export default function ProductsScreen() {
 
   const getVisibleProducts = () => {
     let products = allProducts;
-    if (selectedCategory) {
+    if (selectedCategory === 'Favorites') {
+      products = allProducts.filter(p => isInWishlist(p.id));
+    } else if (selectedCategory) {
       if (selectedCategory === 'Antibiotics') products = productsData;
       else if (selectedCategory === 'Painkillers') products = productsData2;
       else if (selectedCategory === 'Cardiovascular') products = productsData3;
       else if (selectedCategory === 'Supplements') products = productsData4;
-      else products = productsData5;
+      else if (selectedCategory === 'Others') products = productsData5;
     }
+
     if (searchText.length > 0) {
       products = products.filter((product) =>
         product.name.toLowerCase().includes(searchText.toLowerCase())
       );
     }
+    if (selectedBrands.length > 0) {
+      products = products.filter((product) => selectedBrands.includes(getMockBrand(product.id)));
+    }
+    products = products.filter((product) => {
+      const price = parseFloat(product.price);
+      return price >= priceRange[0] && price <= priceRange[1];
+    });
     if (selectedFilter === 'priceLowHigh') {
       products = [...products].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
     } else if (selectedFilter === 'priceHighLow') {
@@ -207,6 +267,19 @@ export default function ProductsScreen() {
     }
     return products;
   };
+
+
+  const isInWishlist = (id) => wishlist.includes(id);
+  const toggleWishlist = (id) => {
+    setWishlist((prev) => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 1200);
+  };
+
 
 
   return (
@@ -227,19 +300,49 @@ export default function ProductsScreen() {
         }}
       />
 
+      {showToast && (
+        <View style={{
+          position: 'absolute',
+          bottom: 40,
+          left: 0,
+          right: 0,
+          alignItems: 'center',
+          zIndex: 1000,
+        }}>
+          <View style={{
+            backgroundColor: '#27AE60',
+            paddingHorizontal: 32,
+            paddingVertical: 14,
+            borderRadius: 30,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
+            elevation: 6,
+          }}>
+            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', letterSpacing: 1 }}>Added!</Text>
+          </View>
+        </View>
+      )}
       <ScrollView contentContainerStyle={styles.container}>   
-        <View style={styles.searchContainer}>
+        <View style={[styles.searchContainer, { flexDirection: 'row', alignItems: 'center' }]}>  
           <TextInput
             style={styles.searchInput}
-            placeholder="Search..."
+            placeholder={language === 'EN' ? 'Search...' : 'بحث...'}
             placeholderTextColor="#888"
             value={searchText}
             onChangeText={setSearchText}
-            textAlign="left"
+            textAlign={language === 'EN' ? 'left' : 'right'}
           />
           <FontAwesome name="search" size={20} color="#888" style={styles.searchIcon} />
           <TouchableOpacity onPress={() => setFilterModalVisible(true)} style={{ marginLeft: 8, padding: 6, borderRadius: 8, backgroundColor: '#F0F0F0' }}>
             <FontAwesome name="filter" size={20} color="#3498DB" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            setLanguage(language === 'EN' ? 'AR' : 'EN');
+            I18nManager.forceRTL(language !== 'EN');
+          }} style={{ marginLeft: 8, padding: 6, borderRadius: 8, backgroundColor: '#E0E0E0' }}>
+            <Text style={{ fontWeight: 'bold', color: '#3498DB' }}>{language === 'EN' ? 'AR' : 'EN'}</Text>
           </TouchableOpacity>
         </View>
 
@@ -250,47 +353,88 @@ export default function ProductsScreen() {
           onRequestClose={() => setFilterModalVisible(false)}
         >
           <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.3)' }}>
-            <View style={{ backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, minHeight: 260 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20, color: '#2C3E50', textAlign: 'center' }}>Filter & Sort</Text>
+            <View style={{ backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, minHeight: 340 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20, color: '#2C3E50', textAlign: 'center' }}>{language === 'EN' ? 'Filter & Sort' : 'تصفية وترتيب'}</Text>
+              <Text style={{ fontWeight: 'bold', marginBottom: 8 }}>Brands</Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 12 }}>
+                {mockBrands.map(brand => (
+                  <TouchableOpacity
+                    key={brand}
+                    onPress={() => setSelectedBrands((prev) => prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand])}
+                    style={{ paddingVertical: 6, paddingHorizontal: 14, borderRadius: 18, backgroundColor: selectedBrands.includes(brand) ? '#3498DB' : '#E0E0E0', marginRight: 8, marginBottom: 8 }}
+                  >
+                    <Text style={{ color: selectedBrands.includes(brand) ? '#fff' : '#2C3E50', fontWeight: 'bold' }}>{brand}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <Text style={{ fontWeight: 'bold', marginBottom: 8 }}>Price Range</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+                <Text style={{ marginRight: 8 }}>{priceRange[0]} EGP</Text>
+                <View style={{ flex: 1, marginHorizontal: 8 }}>
+                  <Slider
+                    style={{ width: '100%', height: 40 }}
+                    minimumValue={0}
+                    maximumValue={300}
+                    step={1}
+                    value={priceRange[0]}
+                    minimumTrackTintColor="#3498DB"
+                    maximumTrackTintColor="#E0E0E0"
+                    thumbTintColor="#3498DB"
+                    onValueChange={min => setPriceRange([min, Math.max(min, priceRange[1])])}
+                  />
+                  <Slider
+                    style={{ width: '100%', height: 40, marginTop: -24 }}
+                    minimumValue={0}
+                    maximumValue={300}
+                    step={1}
+                    value={priceRange[1]}
+                    minimumTrackTintColor="#3498DB"
+                    maximumTrackTintColor="#E0E0E0"
+                    thumbTintColor="#3498DB"
+                    onValueChange={max => setPriceRange([Math.min(max, priceRange[0]), max])}
+                  />
+                </View>
+                <Text style={{ marginLeft: 8 }}>{priceRange[1]} EGP</Text>
+              </View>
               <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'priceLowHigh' ? '#E3F1FD' : '#F7F9FA' }}
                 onPress={() => setSelectedFilter('priceLowHigh')}
               >
                 <FontAwesome name="sort-amount-asc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
-                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Price: Low to High</Text>
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>{language === 'EN' ? 'Price: Low to High' : 'السعر: من الأقل للأعلى'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'priceHighLow' ? '#E3F1FD' : '#F7F9FA' }}
                 onPress={() => setSelectedFilter('priceHighLow')}
               >
                 <FontAwesome name="sort-amount-desc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
-                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Price: High to Low</Text>
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>{language === 'EN' ? 'Price: High to Low' : 'السعر: من الأعلى للأقل'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'nameAZ' ? '#E3F1FD' : '#F7F9FA' }}
                 onPress={() => setSelectedFilter('nameAZ')}
               >
                 <FontAwesome name="sort-alpha-asc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
-                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Name: A-Z</Text>
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>{language === 'EN' ? 'Name: A-Z' : 'الاسم: أ-ي'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24, padding: 10, borderRadius: 8, backgroundColor: selectedFilter === 'nameZA' ? '#E3F1FD' : '#F7F9FA' }}
                 onPress={() => setSelectedFilter('nameZA')}
               >
                 <FontAwesome name="sort-alpha-desc" size={18} color="#3498DB" style={{ marginRight: 12 }} />
-                <Text style={{ fontSize: 16, color: '#2C3E50' }}>Name: Z-A</Text>
+                <Text style={{ fontSize: 16, color: '#2C3E50' }}>{language === 'EN' ? 'Name: Z-A' : 'الاسم: ي-أ'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setFilterModalVisible(false)}
                 style={{ backgroundColor: '#3498DB', padding: 14, borderRadius: 10, alignItems: 'center' }}
               >
-                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Apply Filter</Text>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{language === 'EN' ? 'Apply Filter' : 'تطبيق التصفية'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => { setSelectedFilter(null); setFilterModalVisible(false); }}
+                onPress={() => { setSelectedFilter(null); setSelectedBrands([]); setFilterModalVisible(false); }}
                 style={{ marginTop: 10, alignItems: 'center' }}
               >
-                <Text style={{ color: '#888', fontSize: 15 }}>Clear Filter</Text>
+                <Text style={{ color: '#888', fontSize: 15 }}>{language === 'EN' ? 'Clear Filter' : 'مسح التصفية'}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -319,7 +463,7 @@ export default function ProductsScreen() {
         </View>
 
  
-        {selectedCategory ? (
+        {searchText.length > 0 ? (
           getVisibleProducts().length === 0 ? (
             <Text style={{ textAlign: 'center', color: '#888', marginTop: 40, fontSize: 18 }}>No products found</Text>
           ) : (
@@ -329,43 +473,64 @@ export default function ProductsScreen() {
                 product={item}
                 addToCart={addToCart}
                 openModal={openModal}
+                isInWishlist={isInWishlist}
+                toggleWishlist={toggleWishlist}
               />
             ))
           )
         ) : (
-          categories.map((cat) => {
-            let products = [];
-            if (cat.key === 'Antibiotics') products = productsData;
-            else if (cat.key === 'Painkillers') products = productsData2;
-            else if (cat.key === 'Cardiovascular') products = productsData3;
-            else if (cat.key === 'Supplements') products = productsData4;
-            else products = productsData5;
-            if (!products.length) return null;
-            return (
-              <View key={cat.key} style={{ marginBottom: 10, borderRadius: 12, backgroundColor: '#F7F9FA', overflow: 'hidden', borderWidth: 1, borderColor: '#E0E0E0' }}>
-                <TouchableOpacity
-                  onPress={() => setExpandedGroups(prev => ({ ...prev, [cat.key]: !prev[cat.key] }))}
-                  style={{ flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: expandedGroups[cat.key] ? '#E3F1FD' : '#F7F9FA' }}
-                  activeOpacity={0.8}
-                >
-                  <Text style={{ flex: 1, fontSize: 18, fontWeight: 'bold', color: '#2C3E50' }}>{cat.label}</Text>
-                  <FontAwesome name={expandedGroups[cat.key] ? 'chevron-up' : 'chevron-down'} size={18} color="#3498DB" />
-                </TouchableOpacity>
-                {expandedGroups[cat.key] && (
-                  <View style={{ backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#E0E0E0', paddingBottom: 6 }}>
-                    {products.map((item) => (
-                      <ProductItem
-                        key={item.id}
-                        product={item}
-                        addToCart={addToCart}
-                        openModal={openModal}
-                      />
-                    ))}
-                  </View>
-                )}
-              </View>
-            );
-          })
+          selectedCategory ? (
+            getVisibleProducts().length === 0 ? (
+              <Text style={{ textAlign: 'center', color: '#888', marginTop: 40, fontSize: 18 }}>No products found</Text>
+            ) : (
+              getVisibleProducts().map((item) => (
+                <ProductItem
+                  key={item.id}
+                  product={item}
+                  addToCart={addToCart}
+                  openModal={openModal}
+                  isInWishlist={isInWishlist}
+                  toggleWishlist={toggleWishlist}
+                />
+              ))
+            )
+          ) : (
+            categories.map((cat) => {
+              let products = [];
+              if (cat.key === 'Antibiotics') products = productsData;
+              else if (cat.key === 'Painkillers') products = productsData2;
+              else if (cat.key === 'Cardiovascular') products = productsData3;
+              else if (cat.key === 'Supplements') products = productsData4;
+              else products = productsData5;
+              if (!products.length) return null;
+              return (
+                <View key={cat.key} style={{ marginBottom: 10, borderRadius: 12, backgroundColor: '#F7F9FA', overflow: 'hidden', borderWidth: 1, borderColor: '#E0E0E0' }}>
+                  <TouchableOpacity
+                    onPress={() => setExpandedGroups(prev => ({ ...prev, [cat.key]: !prev[cat.key] }))}
+                    style={{ flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: expandedGroups[cat.key] ? '#E3F1FD' : '#F7F9FA' }}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={{ flex: 1, fontSize: 18, fontWeight: 'bold', color: '#2C3E50' }}>{cat.label}</Text>
+                    <FontAwesome name={expandedGroups[cat.key] ? 'chevron-up' : 'chevron-down'} size={18} color="#3498DB" />
+                  </TouchableOpacity>
+                  {expandedGroups[cat.key] && (
+                    <View style={{ backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#E0E0E0', paddingBottom: 6 }}>
+                      {products.map((item) => (
+                        <ProductItem
+                          key={item.id}
+                          product={item}
+                          addToCart={addToCart}
+                          openModal={openModal}
+                          isInWishlist={isInWishlist}
+                          toggleWishlist={toggleWishlist}
+                        />
+                      ))}
+                    </View>
+                  )}
+                </View>
+              );
+            })
+          )
         )}
 
         <TouchableOpacity
