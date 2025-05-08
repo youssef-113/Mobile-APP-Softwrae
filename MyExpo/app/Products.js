@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput, Platform, Dimensions } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
 import { useRouter } from 'expo-router';
-import { Link, Stack } from 'expo-router'; 
+import { Stack } from 'expo-router'; 
 import TabBar from './component/TabBar';
-import {auth,db} from '../firebase'; 
-import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
-
+import { auth, db } from '../firebase'; 
+import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 const { width } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web';
-const { height } = Dimensions.get('window');
 
 const productImages = {
   product1: require('../assets/images/4.jpg'),
@@ -57,27 +55,56 @@ const ProductItem = ({ product, addToCart, openModal }) => {
   };
 
   const maxDescriptionLength = 50; 
-  const truncatedDescription = product.description.slice(0, maxDescriptionLength);
+  const truncatedDescription = product.description.length > maxDescriptionLength 
+    ? product.description.slice(0, maxDescriptionLength) + '...' 
+    : product.description;
 
   return (
     <View style={styles.productContainer}>
-      <Image source={product.image} style={styles.productImage} />
+      {/* Product Image */}
+      <Image 
+        source={product.image} 
+        style={styles.productImage} 
+        resizeMode="cover" 
+      />
+      
+      {/* Product Information */}
       <View style={styles.productInfo}>
+        {/* Product Name */}
         <Text style={styles.productName}>{product.name}</Text>
-        <Text style={styles.productDescription}>
-          {isDescriptionExpanded ? product.description : truncatedDescription}
-          {product.description.length > maxDescriptionLength && !isDescriptionExpanded && (
+        
+        {/* Product Description */}
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.productDescription}>
+            {isDescriptionExpanded ? product.description : truncatedDescription}
+          </Text>
+          {product.description.length > maxDescriptionLength && (
             <TouchableOpacity onPress={toggleDescription}>
-              <Text style={styles.readMore}>... Read More</Text>
+              <Text style={styles.readMore}>
+                {isDescriptionExpanded ? 'Show Less' : 'Read More'}
+              </Text>
             </TouchableOpacity>
           )}
-        </Text>
+        </View>
+        
+        {/* Price */}
         <Text style={styles.productPrice}>{product.price}</Text>
+        
+        {/* Actions */}
         <View style={styles.productActions}>
-          <TouchableOpacity onPress={() => addToCart(product)} style={styles.addButton}>
+          {/* Add to Cart Button */}
+          <TouchableOpacity 
+            onPress={() => addToCart(product)} 
+            style={styles.addButton}
+          >
             <FontAwesome name="plus" size={20} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => openModal(product)} style={styles.infoButton}>
+          
+          {/* Product Details Button */}
+          <TouchableOpacity 
+            onPress={() => openModal(product)} 
+            style={styles.infoButton}
+          >
             <FontAwesome name="info-circle" size={30} color="#00796B" />
           </TouchableOpacity>
         </View>
@@ -92,17 +119,19 @@ export default function ProductsScreen() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchText, setSearchText] = useState('');
   const router = useRouter();
-  const [showProducts, setShowProducts] = useState(false);
-  const [showProducts2, setShowProducts2] = useState(false);
-  const [showProducts3, setShowProducts3] = useState(false);
-  const [showProducts4, setShowProducts4] = useState(false);
-  const [showProducts5, setShowProducts5] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState({
+    Antibiotics: false,
+    Painkillers: false,
+    Cardiovascular: false,
+    Supplements: false,
+    Others: false
+  });
 
   const addToCart = async (product) => {
     try {
       const cartRef = doc(db, "cartItems", auth.currentUser.uid);
       const cartSnap = await getDoc(cartRef);
-  
+
       if (cartSnap.exists()) {
         await updateDoc(cartRef, {
           items: arrayUnion({
@@ -122,11 +151,11 @@ export default function ProductsScreen() {
           ],
         });
       }
-  
+
       setCart((prevCart) => [...prevCart, product]);
-  
+
       console.log("Product added to cart successfully");
-  
+
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }
@@ -142,31 +171,72 @@ export default function ProductsScreen() {
     setSelectedProduct(null);
   };
 
+  const toggleCategory = (category) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+
   const filteredProducts = allProducts.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const renderCategories = () => {
+    return Object.entries(expandedCategories).map(([category, isExpanded]) => {
+      const categoryProducts = 
+        category === 'Antibiotics' ? productsData :
+        category === 'Painkillers' ? productsData2 :
+        category === 'Cardiovascular' ? productsData3 :
+        category === 'Supplements' ? productsData4 :
+        productsData5;
+
+      return (
+        <View key={category}>
+          <TouchableOpacity 
+            style={styles.categoryButton} 
+            onPress={() => toggleCategory(category)}
+          >
+            <View style={styles.categoryButtonContent}>
+              <Text style={styles.categoryButtonText}>{category}</Text>
+              <FontAwesome 
+                name={isExpanded ? "chevron-up" : "chevron-down"} 
+                size={16} 
+                color="#FFA500" 
+                style={styles.categoryIcon} 
+              />
+            </View>
+          </TouchableOpacity>
+          {isExpanded && categoryProducts.map((item) => (
+            <ProductItem
+              key={item.id}
+              product={item}
+              addToCart={addToCart}
+              openModal={openModal}
+            />
+          ))}
+        </View>
+      );
+    });
+  };
+
   return (
     <View style={styles.mainContainer}>
-            
       <Stack.Screen
         options={{
           headerStyle:styles.headerStyle,
           headerBackVisible: true,
           headerTitle: () => (
             <View style={styles.forView}>
-              <Text style ={ styles.forText}>
-                Products
-              </Text>
+              <Text style={styles.forText}>Products</Text>
               <Image
                 source={require('../assets/images/final transparent.png')}
-                style ={styles.logo}
+                style={styles.logo}
               />
             </View>
           ),
         }}
       />
-      
 
       <ScrollView contentContainerStyle={styles.container}>   
         <View style={styles.searchContainer}>
@@ -191,79 +261,89 @@ export default function ProductsScreen() {
             />
           ))
         ) : (
-          <>
-            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts(!showProducts)}>
-              <View style={styles.categoryButtonContent}>
-                <Text style={styles.categoryButtonText}>Antibiotics</Text>
-                <FontAwesome name={showProducts ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
-              </View>
-            </TouchableOpacity>
-            {showProducts && productsData.map((item) => (
-              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
-            ))}
-            <View style={styles.separator} />
-            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts2(!showProducts2)}>
-              <View style={styles.categoryButtonContent}>
-                <Text style={styles.categoryButtonText}>Analgesics and anti-inflammatory</Text>
-                <FontAwesome name={showProducts2 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
-              </View>
-            </TouchableOpacity>
-            {showProducts2 && productsData2.map((item) => (
-              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
-            ))}
-<View style={styles.separator} />
-            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts3(!showProducts3)}>
-              <View style={styles.categoryButtonContent}>
-                <Text style={styles.categoryButtonText}>Heart, blood and blood pressure medications</Text>
-                <FontAwesome name={showProducts3 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
-              </View>
-            </TouchableOpacity>
-            {showProducts3 && productsData3.map((item) => (
-              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
-            ))}
-<View style={styles.separator} />
-            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts4(!showProducts4)}>
-              <View style={styles.categoryButtonContent}>
-                <Text style={styles.categoryButtonText}>Hemorrhoids and inflammation medications</Text>
-                <FontAwesome name={showProducts4 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
-              </View>
-            </TouchableOpacity>
-            {showProducts4 && productsData4.map((item) => (
-              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
-            ))}
-          <View style={styles.separator} />
-            <TouchableOpacity style={styles.categoryButton} onPress={() => setShowProducts5(!showProducts5)}>
-              <View style={styles.categoryButtonContent}>
-                <Text style={styles.categoryButtonText}>Hormones</Text>
-                <FontAwesome name={showProducts5 ? "chevron-up" : "chevron-down"} size={16} color="#FFA500" style={styles.categoryIcon} />
-              </View>
-            </TouchableOpacity>
-            {showProducts5 && productsData5.map((item) => (
-              <ProductItem key={item.id} product={item} addToCart={addToCart} openModal={openModal} />
-            ))}
-          </>
+          renderCategories()
         )}
-<View style={styles.separator} />
+
         <TouchableOpacity
           onPress={() => router.push({ pathname: '/Cart', params: { cartItems: JSON.stringify(cart) } })}
           style={styles.cartButton}
         >
           <Text style={styles.cartButtonText}>Go to Cart({cart.length})</Text>
         </TouchableOpacity>
-
-        <Modal visible={modalVisible} animationType="slide" transparent={true}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>{selectedProduct?.name}</Text>
-              <Text style={styles.modalDescription}>{selectedProduct?.description}</Text>
-              <Text style={styles.modalPrice}>{selectedProduct?.price}</Text>
-              <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
       </ScrollView>
+
+      <Modal visible={modalVisible} animationType="slide" transparent={true} onRequestClose={closeModal}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            {/* Product Image */}
+            <View style={styles.modalImageContainer}>
+              <Image 
+                source={selectedProduct?.image} 
+                style={styles.modalProductImage} 
+                resizeMode="cover" 
+              />
+            </View>
+            
+            {/* Scrollable Product Details */}
+            <ScrollView 
+              style={styles.modalScrollView}
+              contentContainerStyle={styles.modalScrollViewContent}
+            >
+              <View style={styles.modalDetailsContainer}>
+                <Text style={styles.modalTitle}>{selectedProduct?.name}</Text>
+                
+                <View style={styles.modalInfoSection}>
+                  <Text style={styles.modalInfoLabel}>Description:</Text>
+                  <Text style={styles.modalDescription}>
+                    {selectedProduct?.description}
+                  </Text>
+                </View>
+                
+                <View style={styles.modalInfoSection}>
+                  <Text style={styles.modalInfoLabel}>Dosages:</Text>
+                  <Text style={styles.modalInfoText}>
+                    {selectedProduct?.dosages || 'Not specified'}
+                  </Text>
+                </View>
+                
+                <View style={styles.modalInfoSection}>
+                  <Text style={styles.modalInfoLabel}>Type of Medication:</Text>
+                  <Text style={styles.modalInfoText}>
+                    {selectedProduct?.medicationType || 'Not specified'}
+                  </Text>
+                </View>
+                
+                <View style={styles.modalInfoSection}>
+                  <Text style={styles.modalInfoLabel}>Category:</Text>
+                  <Text style={styles.modalInfoText}>
+                    {selectedProduct?.category || 'Not specified'}
+                  </Text>
+                </View>
+                
+                <View style={styles.modalInfoSection}>
+                  <Text style={styles.modalInfoLabel}>Suitable Age:</Text>
+                  <Text style={styles.modalInfoText}>
+                    {selectedProduct?.suitableAge || 'Not specified'}
+                  </Text>
+                </View>
+                
+                <View style={styles.modalPriceContainer}>
+                  <Text style={styles.modalPriceLabel}>Price:</Text>
+                  <Text style={styles.modalPrice}>{selectedProduct?.price}</Text>
+                </View>
+              </View>
+            </ScrollView>
+            
+            {/* Close Button */}
+            <TouchableOpacity 
+              onPress={closeModal} 
+              style={styles.modalCloseButton}
+            >
+              <Text style={styles.modalCloseButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <View style={styles.tabsContainer}>
         <TabBar />
@@ -273,220 +353,197 @@ export default function ProductsScreen() {
 }
 
 const styles = StyleSheet.create({
-
-  logo: {
-    width: isWeb ? 300 : width * 0.6,
-    height: isWeb ? 300 : height * 2.5,
-    marginLeft: isWeb? 650 : -20,
-    resizeMode: 'contain',
-    alignSelf: 'center', 
-  },
-  
-  
-  forText:{ 
-    color: '#191716', 
-    fontWeight: 'bold', 
-    marginRight: isWeb ? 20 : 40,
-    fontSize: isWeb ? 18 : 16, 
-  },
-  forView:{
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: isWeb ? 'flex-start' : 'center', 
-    width: '100%', 
-  },
-
-  headerStyle: {
-    backgroundColor: '#5B9BD5',
-    height: isWeb? 100 : 120,
-   
- },
-  mainContainer: {
-    flex: 1,
-    backgroundColor: '#F5f5f5',
-  },
-  header: {
-    padding: 15,
-    backgroundColor: '#00796B',
-    borderBottomWidth: 1,
-    borderBottomColor: '#004D40',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  container: {
-    flexGrow: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    paddingBottom: 80,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginVertical: 10,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    color: '#000',
-    paddingRight: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#00796B',
-  },
-  searchIcon: {
-    marginLeft: 10,
-  },
-  categoryButton: {
-    backgroundColor: '#003366',
-    padding: 10,
-    borderRadius: 12,
-    marginVertical: 5,
-    borderWidth: 1,
-    borderColor: '#000',
-  },
-  categoryButtonText: {
-    fontSize: 14,
-    color: '#f5f5f5',
-    fontWeight: 'bold',
-  },
+  mainContainer: { flex: 1, backgroundColor: '#F7F9FC' },
+  container: { paddingHorizontal: 15, paddingTop: 10, paddingBottom: 100 },
+  headerStyle: { backgroundColor: '#FFFFFF', elevation: 2 },
+  forView: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' },
+  forText: { fontSize: 20, fontWeight: '600', color: '#2C3E50' },
+  logo: { width: isWeb ? 200 : width * 0.4, height: 50, resizeMode: 'contain' },
+  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 15, paddingHorizontal: 15, marginVertical: 15, elevation: 3 },
+  searchInput: { flex: 1, height: 50, fontSize: 16, color: '#2C3E50', textAlign: 'right', paddingRight: 10 },
+  searchIcon: { marginLeft: 10, color: '#7F8C8D' },
+  categoryButton: { backgroundColor: '#FFFFFF', borderRadius: 10, padding: 15, marginVertical: 10, elevation: 3 },
+  categoryButtonContent: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  categoryButtonText: { fontSize: 18, fontWeight: '600', color: '#2C3E50' },
+  categoryIcon: { color: '#3498DB' },
   productContainer: {
-    backgroundColor: '#f5f5f5',
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
     flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#aaa',
+    marginVertical: 10,
+    padding: 15,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   productImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    marginLeft: 10,
+    width: 130,  // Slightly larger
+    height: 130, // Slightly larger
+    borderRadius: 15, // More rounded corners
+    marginRight: 15,
+    resizeMode: 'contain', // Changed to 'contain' to show full image
+    backgroundColor: '#F0F0F0', // Light background to highlight image
+    padding: 10, // Add some padding
+    alignSelf: 'center', // Center the image
+    shadowColor: '#000', // Add shadow for depth
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   productInfo: {
     flex: 1,
-    color:'#000',
+    justifyContent: 'space-between',
+  },
+  descriptionContainer: {
+    marginVertical: 10,
   },
   productName: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'right',
+    color: '#2C3E50',
+    marginBottom: 5,
   },
   productDescription: {
-    fontSize: 12,
-    color: '#000',
-    textAlign: 'right',
-    marginVertical: 5,
+    fontSize: 16,
+    color: '#7F8C8D',
+    lineHeight: 22,
   },
   readMore: {
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: 12,
+    color: '#3498DB',
+    fontWeight: '600',
+    marginTop: 5,
   },
   productPrice: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'right',
+    color: '#27AE60',
+    marginBottom: 10,
   },
   productActions: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
   },
   addButton: {
-    backgroundColor: '#000',
-    padding: 8,
-    borderRadius: 20,
-    marginLeft: 10,
-  },
-  cartButton: {
-    marginTop: 20,
-    backgroundColor: '#003366',
-    padding: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-
-  separator: {
-    height: 1,
-    backgroundColor: '#ccc',
-    marginVertical: 12, 
-    width: '90%', 
-    alignSelf: 'center',
-  },
-  cartButtonText: {
-    fontSize: 14,
-    color: '#f5f5f5',
-    fontWeight: 'bold',
-  },
-  infobutton: {
-    color:'#000',
-    padding: 20,
-  },
-  tabsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    paddingVertical: 5,
-    backgroundColor: '#00796B',
-    position: 'absolute',
-    bottom: 0,
-    zIndex: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#004D40',
-  },
-  modalContainer: {
-    flex: 1,
+    backgroundColor: '#3498DB',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  modalContent: {
-    backgroundColor: '#5B9BD5',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
+  infoButton: {
+    backgroundColor: 'transparent',
+  },
+  cartButton: { backgroundColor: '#3498DB', padding: 15, borderRadius: 10, alignItems: 'center', marginTop: 20 },
+  cartButtonText: { color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' },
+  modalContainer: { 
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: 'rgba(0,0,0,0.5)', 
+  },
+  modalContent: { 
+    width: '90%', 
+    height: '90%', 
+    backgroundColor: '#FFFFFF', 
+    borderRadius: 20, 
+    overflow: 'hidden', 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
+  },
+  modalImageContainer: {
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    backgroundColor: '#F0F0F0',
   },
-  modalTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#000',
+  modalProductImage: {
+    width: 130,  // Match product list image width
+    height: 130, // Match product list image height
+    borderRadius: 15, // Match product list image border radius
+    resizeMode: 'cover', // Match product list image resizeMode
   },
-  modalDescription: {
-    fontSize: 16,
-    color: '#000',
-    marginBottom: 10,
+  modalScrollView: {
+    flex: 1,
   },
-  modalPrice: {
+  modalScrollViewContent: {
+    paddingBottom: 20,
+  },
+  modalDetailsContainer: {
+    padding: 20,
+  },
+  modalInfoSection: {
+    marginBottom: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  modalInfoLabel: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 20,
+    color: '#2C3E50',
+    marginBottom: 5,
   },
-  closeButton: {
-    backgroundColor: '#5B9BD5',
-    padding: 10,
-    borderRadius: 5,
-  },
-  closeButtonText: {
-    color: '#f5f5f5',
+  modalInfoText: {
     fontSize: 16,
+    color: '#7F8C8D',
+    lineHeight: 24,
   },
+  modalTitle: { 
+    fontSize: 24, 
+    fontWeight: 'bold', 
+    color: '#2C3E50', 
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  modalDescription: { 
+    fontSize: 16, 
+    color: '#7F8C8D', 
+    marginBottom: 15,
+    lineHeight: 24,
+  },
+  modalPriceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 15,
+    paddingTop: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+  },
+  modalPriceLabel: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2C3E50',
+  },
+  modalPrice: { 
+    fontSize: 22, 
+    fontWeight: 'bold', 
+    color: '#27AE60', 
+  },
+  modalCloseButton: { 
+    backgroundColor: '#3498DB', 
+    padding: 15, 
+    alignItems: 'center',
+  },
+  modalCloseButtonText: { 
+    color: '#FFFFFF', 
+    fontSize: 18, 
+    fontWeight: 'bold', 
+  },
+  tabsContainer: { position: 'absolute', bottom: 0, left: 0, right: 0 },
 });
