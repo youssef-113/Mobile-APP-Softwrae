@@ -26,9 +26,8 @@ export default function EditProfileScreen() {
     (async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        alert('محتاج إذن للوصول للصور.');
+        alert('Sorry, we need camera roll permissions to make this work!');
       }
-      // جلب URI الصورة المخزنة سابقاً
       const storedUri = await AsyncStorage.getItem('profileImageUri');
       if (storedUri) {
         setImage(storedUri);
@@ -38,11 +37,11 @@ export default function EditProfileScreen() {
 
   const pickImage = async () => {
     Alert.alert(
-      'تغيير الصورة',
-      'اختر مصدر الصورة',
+      'select image',
+      'select an option',
       [
         {
-          text: 'الكاميرا',
+          text: 'camera',
           onPress: async () => {
             let result = await ImagePicker.launchCameraAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -62,7 +61,7 @@ export default function EditProfileScreen() {
           }
         },
         {
-          text: 'المعرض',
+          text: 'gallery',
           onPress: async () => {
             let result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -81,7 +80,7 @@ export default function EditProfileScreen() {
             }
           }
         },
-        { text: 'إلغاء', style: 'cancel' }
+        { text: 'Cancel', style: 'cancel' }
       ],
       { cancelable: true }
     );
@@ -103,7 +102,6 @@ export default function EditProfileScreen() {
   const updateUserData = async() => {
     const washingtonRef = doc(db,"users", auth.currentUser.uid);
 
-// Set the "capital" field of the city 'DC'
     await updateDoc(washingtonRef, {
     name:name,
     email:email,
@@ -131,7 +129,7 @@ export default function EditProfileScreen() {
           }
           style={styles.avatar}
         />
-        <Text style={styles.changeText}>تغيير الصورة</Text>
+        <Text style={styles.changeText}>edite your profile</Text>
       </TouchableOpacity>
       {viewMode ?(
         <View>
@@ -151,13 +149,13 @@ export default function EditProfileScreen() {
         style={styles.input}
         value={name}
         onChangeText={setName}
-        placeholder="الاسم"
+        placeholder="name"
       />
       <TextInput
         style={styles.input}
         value={email}
         onChangeText={setEmail}
-        placeholder="الإيميل"
+        placeholder="email"
         keyboardType="email-address"
       />
 
@@ -165,7 +163,7 @@ export default function EditProfileScreen() {
         style={styles.input}
         value={Phone}
         onChangeText={setPhone}
-        placeholder="رقم التليفون"
+        placeholder="phone number"
         keyboardType="phone-pad"
       />
       <TouchableOpacity style={styles.button} onPress={handleSave}>

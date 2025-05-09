@@ -1,4 +1,4 @@
-// app/_layout.js
+
 import { Drawer } from 'expo-router/drawer';
 import CustomDrawer from '../components/CustomDrawer';
 
