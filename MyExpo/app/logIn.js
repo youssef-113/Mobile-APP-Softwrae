@@ -1,14 +1,14 @@
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity,Pressable, StyleSheet, Alert , Image , Platform ,Dimensions } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import {signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../firebase'; 
 import { doc, getDoc } from 'firebase/firestore';
+import { showNotification } from './utils/notify';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { navigate } from 'expo-router/build/global-state/routing';
-
+import { useNotification } from './context/NotificationsContext';
 
 const { height } = Dimensions.get('window');
 
@@ -26,7 +26,7 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState('');
   const [Phone, setPhone] = useState('');
   const [hover, setHover] = useState(false); 
-  
+  const { showNotification } = useNotification();
 
  const validation = () => {
     let valid = true;
@@ -74,6 +74,7 @@ const Login = () => {
       
         alert("Login successful!");
         router.replace('/home');
+        await showNotification('✅ Login Successful', `Welcome back, ${username}!`);
       } else {
         alert("User record not found in database.");
       }

@@ -89,24 +89,20 @@ const About = () => {
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>© 2023 MyPharmacy App. All rights reserved.</Text>
-
-          <View style={styles.footerLinksContainer}>
-            <Text style={styles.footerLink}>About Us</Text>
-            <Text style={styles.footerDivider}>|</Text>
-            <Text style={styles.footerLink}>Help Center</Text>
-            <Text style={styles.footerDivider}>|</Text>
-            <Text style={styles.footerLink}>Terms</Text>
-            <Text style={styles.footerDivider}>|</Text>
-            <Text style={styles.footerLink}>Privacy</Text>
-          </View>
+          <Text style={styles.footerText}>© 2025 MyPharmacy App. All rights reserved.</Text>
 
           <View style={styles.socialContainer}>
-            <Text style={styles.socialText}>Follow us:</Text>
+         <Text style={styles.socialText}>Follow us:</Text>
+          <Pressable onPress={() => Linking.openURL('https://www.facebook.com/')}>
             <Text style={styles.socialLink}>Facebook</Text>
+            </Pressable>
+            <Pressable onPress={() => Linking.openURL('https://www.instagram.com/')}>
             <Text style={styles.socialLink}>Instagram</Text>
-            <Text style={styles.socialLink}>Twitter</Text>
-          </View>
+            </Pressable>
+             <Pressable onPress={() => Linking.openURL('https://twitter.com/')}>
+             <Text style={styles.socialLink}>Twitter</Text>
+          </Pressable>
+         </View>
         </View>
       </ScrollView>
 

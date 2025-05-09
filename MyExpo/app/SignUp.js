@@ -5,6 +5,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import {auth,db} from '../firebase'; 
 import { doc, setDoc } from "firebase/firestore"; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { showNotification } from './utils/notify';
+
 
 
 
@@ -55,6 +57,8 @@ const Signup = () => {
   
       await AddUserToDatabase(user.uid);
       alert('Account created successfully');
+      await showNotification('🎉 Signup Complete', 'Your account was created!');
+
   
       router.replace('/logIn'); 
     } catch (error) {

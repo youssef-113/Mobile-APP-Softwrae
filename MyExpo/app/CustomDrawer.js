@@ -4,6 +4,8 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, useColorScheme } from 'react-native';
 import { useRouter, useNavigationState } from 'expo-router';
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { showNotification } from './utils/notify';
+
 
 export default function CustomDrawer(props) {
   const router = useRouter();
@@ -38,8 +40,9 @@ export default function CustomDrawer(props) {
         style: 'destructive',
         onPress: async () => {
           try {
-            await AsyncStorage.clear(); 
-            router.replace('/logIn'); 
+             await AsyncStorage.clear();
+              await showNotification('👋 Logged Out', 'You have been signed out.');
+            router.replace('/logIn');
           } catch (e) {
             console.error('Logout failed', e);
             Alert.alert('Error', 'Failed to log out. Please try again.');

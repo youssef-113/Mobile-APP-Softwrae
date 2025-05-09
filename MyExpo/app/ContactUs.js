@@ -1,100 +1,107 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Linking , Platform ,Image, Dimensions} from "react-native";
-import { Link , Stack} from "expo-router";
-import { FontAwesome } from "@expo/vector-icons";
+import {
+  View, Text, TextInput, TouchableOpacity,
+  ScrollView, StyleSheet, Linking, Platform, Image, Dimensions
+} from "react-native";
+import { Stack } from "expo-router";
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useAuth } from './context/AuthContext';
 import TabBar from './component/TabBar';
 
-const { height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web';
 
-const { width } = Dimensions.get('window');
-const isWeb = Platform.OS === 'web'
-
-
-
- const ContactScreen = () => {
+export default function ContactScreen() {
   const [feedback, setFeedback] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+  const { user } = useAuth();
 
-  const handleSendFeedback = () => {
+  const handleSendFeedback = async () => {
     if (feedback.trim() === "") {
       setAlertMessage("⚠️ Please enter your feedback before sending!");
       return;
     }
 
-    setAlertMessage("✅ Thank you! Your feedback has been sent successfully.");
-    setFeedback("");
+    try {
+      await addDoc(collection(db, 'feedbacks'), {
+        text: feedback,
+        userId: user ? user.uid : null,
+        createdAt: serverTimestamp(),
+      });
 
-    setTimeout(() => setAlertMessage(""), 3000);
+      setAlertMessage("✅ Thank you! Your feedback has been sent successfully.");
+      setFeedback("");
+      setTimeout(() => setAlertMessage(""), 3000);
+
+    } catch (err) {
+      console.error("Error sending feedback:", err);
+      setAlertMessage("❌ Failed to send feedback. Please try again.");
+      setTimeout(() => setAlertMessage(""), 3000);
+    }
   };
 
   return (
     <>
-    
-    <ScrollView contentContainerStyle={styles.container}>
-      
-      
-<Stack.Screen
-  options={{
-    headerStyle:styles.headerStyle,
-    headerBackVisible: true,
-    headerTitle: () => (
-      <View style={styles.forView}>
-        <Text style ={ styles.forText}>
-          Contact Us
-        </Text>
-        <Image
-          source={require('../assets/images/final transparent.png')}
-          style ={styles.logo}
+      <ScrollView contentContainerStyle={styles.container}>
+        <Stack.Screen
+          options={{
+            headerStyle: styles.headerStyle,
+            headerBackVisible: true,
+            headerTitle: () => (
+              <View style={styles.forView}>
+                <Text style={styles.forText}>Contact Us</Text>
+                <Image
+                  source={require('../assets/images/final transparent.png')}
+                  style={styles.logo}
+                />
+              </View>
+            ),
+          }}
         />
-      </View>
-    ),
-  }}
-/>
-      <Text style={styles.title}>📞 Contact Us</Text>
-      <Text style={styles.subtitle}>
-        We're here to help you! Reach out to us for any questions or feedback:
-      </Text>
 
-      <Text style={styles.info}>📧 Email: yossf.abdla311@gmail.com</Text>
-      <Text style={styles.info}>📞 Phone: 01 273 240 591</Text>
+        <Text style={styles.title}>📞 Contact Us</Text>
+        <Text style={styles.subtitle}>
+          We're here to help you! Reach out to us for any questions or feedback:
+        </Text>
 
-      <Text style={styles.formLabel}>💡 Send us your feedback:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Write your feedback here..."
-        placeholderTextColor="#888"
-        value={feedback}
-        onChangeText={setFeedback}
-        multiline
-      />
+        <Text style={styles.info}>📧 Email: yossf.abdla311@gmail.com</Text>
+        <Text style={styles.info}>📞 Phone: 01 273 240 591</Text>
 
-      {alertMessage !== "" && (
-        <Text style={styles.alertLabel}>{alertMessage}</Text>
-      )}
+        <Text style={styles.formLabel}>💡 Send us your feedback:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Write your feedback here..."
+          placeholderTextColor="#888"
+          value={feedback}
+          onChangeText={setFeedback}
+          multiline
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleSendFeedback}>
-        <Text style={styles.buttonText}>📨 Send Feedback</Text>
-      </TouchableOpacity>
+        {alertMessage !== "" && (
+          <Text style={styles.alertLabel}>{alertMessage}</Text>
+        )}
 
-      <Text style={styles.socialTitle}>🌐 Connect with us:</Text>
-      <TouchableOpacity
-        onPress={() =>
-          Linking.openURL(
-            "https://github.com/youssef-113/Mobile-APP-Softwrae"
-          )
-        }
-      >
-        <Text style={styles.socialLink}>🔹 GitHub</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleSendFeedback}>
+          <Text style={styles.buttonText}>📨 Send Feedback</Text>
+        </TouchableOpacity>
 
-      
+        <Text style={styles.socialTitle}>🌐 Connect with us:</Text>
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL("https://github.com/youssef-113/Mobile-APP-Softwrae")
+          }
+        >
+          <Text style={styles.socialLink}>🔹 GitHub</Text>
+        </TouchableOpacity>
       </ScrollView>
-    <TabBar />
+
+      <TabBar />
     </>
   );
-};
+}
 
-export default ContactScreen;
+
 
 const styles = StyleSheet.create({
   container: {
