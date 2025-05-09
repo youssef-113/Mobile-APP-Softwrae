@@ -7,6 +7,7 @@ import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import auth from '../firebase'; 
 import TabBar from './component/TabBar';
+import chat from './chat'
 
 
 
@@ -275,6 +276,15 @@ const home = () => {
           )}
         </TouchableOpacity>
       </View>
+            <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.cartIcon}
+        onPress={() => router.push({ 
+          pathname: '/chat'})}
+      >
+        <FontAwesome name="comment" size={24} color="#003366" />
+      </TouchableOpacity>
+    </View>
 
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
@@ -292,6 +302,15 @@ const home = () => {
 export default home;
 
 const styles = StyleSheet.create({
+
+   chatButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 8,
+  },
+  
   offerCardSquare: {
     width: 120,
     height: 155,
@@ -536,7 +555,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 2,
   },
-  // Modern Offer Card
+  
   offerCardModern: {
     width: 120,
     backgroundColor: '#fff',
@@ -704,7 +723,7 @@ const styles = StyleSheet.create({
 
   headerStyle: {
      backgroundColor: '#5B9BD5',
-     height: isWeb? 200 : 220, // أطول من السابق
+     height: isWeb? 200 : 220, 
   },
   searchBar: {
     width: isWeb ? 400 : '90%',
@@ -723,7 +742,7 @@ const styles = StyleSheet.create({
     shadowRadius: 7,
     shadowOffset: { width: 0, height: 2 },
   },
-  // تم حذف headerRow وheaderSearchBar لأنها لم تعد مستخدمة
+  
 
   board: {
     width: isWeb ? Math.min(1000, width * 0.9) : width * 1.5,
