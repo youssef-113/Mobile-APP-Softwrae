@@ -36,13 +36,19 @@ export default function CustomDrawer(props) {
       {
         text: 'Logout',
         style: 'destructive',
-        onPress: () => {
-          // Add logout logic here if needed
-          alert('Logged out successfully');
+        onPress: async () => {
+          try {
+            await AsyncStorage.clear(); 
+            router.replace('/logIn'); 
+          } catch (e) {
+            console.error('Logout failed', e);
+            Alert.alert('Error', 'Failed to log out. Please try again.');
+          }
         },
       },
     ]);
   };
+  
 
   const DrawerLink = ({ label, icon, to }) => (
     <DrawerItem
@@ -76,11 +82,14 @@ export default function CustomDrawer(props) {
       <View style={[styles.body, { backgroundColor }]}>
         <DrawerLink label="Home" icon={props => <Ionicons name="home-outline" {...props} />} to="/home" />
         <DrawerLink label="Products" icon={props => <MaterialCommunityIcons name="pill" {...props} />} to="/Products" />
+        <DrawerLink label="New Arrivals" icon={props => <MaterialCommunityIcons name="new-box" {...props} />} to="/NewArrivals" />
+        <DrawerLink label="offers"  icon={props => <Ionicons name="megaphone" {...props} />}  to="/offers"/>
         <DrawerLink label="Cart" icon={props => <Ionicons name="cart-outline" {...props} />} to="/Cart" />
         <DrawerLink label="Contact Us" icon={props => <Ionicons name="call-outline" {...props} />} to="/ContactUs" />
         <DrawerLink label="About" icon={props => <FontAwesome5 name="info-circle" {...props} />} to="/About" />
         <DrawerLink label="Login" icon={props => <Ionicons name="log-in-outline" {...props} />} to="/logIn" />
         <DrawerLink label="Sign Up" icon={props => <Ionicons name="person-add-outline" {...props} />} to="/SignUp" />
+      
       </View>
 
       <View style={[styles.footer, { backgroundColor }]}>
@@ -100,10 +109,10 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: '#E0FFFF',
     borderRadius: 60,
     padding: 3,
-    backgroundColor: '#fff',
+    backgroundColor: '#E0FFFF',
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 5,

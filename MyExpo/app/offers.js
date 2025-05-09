@@ -1,59 +1,122 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, TextInput, Platform, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Modal, Platform, Dimensions } from 'react-native';
 import { FontAwesome } from 'react-native-vector-icons';
-import { useRouter } from 'expo-router';
-import { Link, Stack } from 'expo-router'; 
+import { Stack, useRouter } from 'expo-router'; 
 import TabBar from './component/TabBar';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web';
-const { height } = Dimensions.get('window');
 
 const offersData = [
   {
     name: 'Vitamin C 1000mg',
     image: require('../assets/images/1.jpg'),
-    discount: 'Sale 30%'
+    discount: 'Sale 30%',
+    description: 'Boosts immunity and improves skin health.',
+    price: '100 EGP',
+    moreDetails: 'Helps protect against immune system deficiencies, cardiovascular disease, prenatal health problems, and skin wrinkling.'
+  },
+   {
+    name: 'Signal',
+    image: require('../assets/images/Signal.png'),
+    discount: 'Sale 30%',
+    description: 'Tooth health.',
+    price: ' Sale 100 EGP',
+    moreDetails: 'Toothpaste plays a crucial role in maintaining oral health. Even a small amount is effective in removing plaque, preventing cavities, and strengthening enamel due to ingredients like fluoride. It also helps freshen breath and reduce the risk of gum disease. Using the right amount—about a pea-sized drop—is both safe and efficient, especially for daily brushing. Neglecting toothpaste, even when brushing, means missing out on these essential benefits.'
+  },
+  {
+    name: 'Pampers',
+    image: require('../assets/images/Pamper.png'),
+    discount: 'Sale 30%',
+    description: 'childern health.',
+    price: 'sale 300 EGP',
+    moreDetails: 'It seems like you are asking about "Pampers," which is a popular brand of diapers. If you are looking for important keywords or terms related to Pampers (the diaper brand), here are a few:'
+  },
+   {
+    name: 'Mask',
+    image: require('../assets/images/Mask.png'),
+    discount: 'Sale 30%',
+    description: 'general health.',
+    price: '300 EGP',
+    moreDetails: 'It seems like you are asking about "Pampers," which is a popular brand of diapers. If you are looking for important keywords or terms related to Pampers (the diaper brand), here are a few:'
   },
   {
     name: 'Zinc Plus Capsules',
     image: require('../assets/images/2.jpg'),
-    discount: 'Sale 25%'
+    discount: 'Sale 25%',
+    description: 'Supports immune system and overall wellness.',
+    price: '80 EGP',
+    moreDetails: `✅ Immune System Support\n✅ Enhances Wound Healing\n✅ Hormonal Balance\n✅ Reduces Inflammation\n✅ Essential Daily Supplement`
   },
   {
     name: 'Medical Sunscreen',
     image: require('../assets/images/3.jpg'),
-    discount: 'Sale 15%'
+    discount: 'Sale 15%',
+    description: 'Protects skin from harmful UV rays.',
+    price: '120 EGP',
+    moreDetails: 'Offers broad-spectrum protection, prevents premature aging, and reduces risk of skin cancer.'
   },
   {
-    name: 'Anti-Dandruff Shampoo',
-    image: require('../assets/images/4.jpg'),
-    discount: 'Sale 20%'
+    name: 'Shampoo',
+    image: require('../assets/images/Sh.png'),
+    discount: 'Sale 20%',
+    description: 'Fights dandruff and nourishes scalp.',
+    price: '75 EGP',
+    moreDetails: 'Contains active ingredients like ketoconazole or zinc pyrithione, soothes itching, and restores scalp health.'
   },
   {
-    name: 'Anti-Dandruff Shampoo',
-    image: require('../assets/images/4.jpg'),
-    discount: 'Sale 20%'
-  },
-  {
-    name: 'Anti-Dandruff Shampoo',
-    image: require('../assets/images/4.jpg'),
-    discount: 'Sale 20%'
-  },
-  {
-    name: 'Anti-Dandruff Shampoo',
-    image: require('../assets/images/4.jpg'),
-    discount: 'Sale 20%'
-  },
-  {
-    name: 'Anti-Dandruff Shampoo',
-    image: require('../assets/images/4.jpg'),
-    discount: 'Sale 20%'
-  },
+    name: 'Massage gel',
+    image: require('../assets/images/Gel.png'),
+    description: 'Massage gel from Zeafelex',
+    discount:' Sale 20%',
+    price: '60.99 EGP',
+    moreDetails: `✅ Fast-Acting Relief\n✅ Gentle on the Skin\n✅ All-Natural Ingredients\n✅ Safe for All Ages\n✅ Long-Lasting Effects`
+  }
 ];
 
-export default function offers() {
+export default function NewArrivals() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showMore, setShowMore] = useState(false);
   const router = useRouter();
+
+  const isMedicine = (itemName) => {
+    return /vitamin|zinc|Massage gel|Medical Sunscreen|capsules/i.test(itemName);
+  };
+
+  const medicineItems = offersData.filter(offer => isMedicine(offer.name));
+  const medicalProductItems = offersData.filter(offer => !isMedicine(offer.name));
+
+  const openModal = (product) => {
+    setSelectedProduct(product);
+    setShowMore(false);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedProduct(null);
+    setShowMore(false);
+  };
+
+  const renderItems = (items) => (
+    <View style={styles.sectionContainer}>
+      {items.map((offer, idx) => (
+        <View key={idx} style={styles.gridCard}>
+          <Image source={offer.image} style={styles.gridImage} resizeMode="cover" />
+          <Text style={styles.gridName}>{offer.name}</Text>
+          <Text style={styles.gridDescription}>{offer.discount}</Text>
+          <Text style={styles.gridPrice}>{offer.price}</Text>
+
+          <TouchableOpacity style={styles.detailsButton} onPress={() => openModal(offer)}>
+            <Text style={styles.detailsButtonText}>Details</Text>
+            <FontAwesome name="info-circle" size={16} color="red" style={{ marginLeft: 4 }} />
+          </TouchableOpacity>
+        </View>
+      ))}
+    </View>
+  );
+
   return (
     <>
       <Stack.Screen
@@ -62,49 +125,87 @@ export default function offers() {
           headerBackVisible: true,
           headerTitle: () => (
             <View style={styles.forView}>
-              <Text style={styles.forText}>Offers</Text>
-              <Image
-                source={require('../assets/images/final transparent.png')}
-                style={styles.logo}
-              />
+              <Text style={styles.forText}>offers</Text>
+              <Image source={require('../assets/images/final transparent.png')} style={styles.logo} />
             </View>
           ),
         }}
       />
-      <ScrollView contentContainerStyle={styles.gridContainer}>
-        {offersData.map((offer, idx) => (
-          <TouchableOpacity
-            key={idx}
-            style={styles.gridCard}
-            activeOpacity={0.85}
-            onPress={() => router.push({ pathname: '/Products', params: { productName: offer.name } })}
-          >
-            <Image source={offer.image} style={styles.gridImage} resizeMode="cover" />
-            <Text style={styles.gridName}>{offer.name}</Text>
-            <Text style={styles.gridDiscount}>{offer.discount}</Text>
-            <View style={styles.detailsButton}>
-              <Text style={styles.detailsButtonText}>Details</Text>
-              <FontAwesome name="info-circle" size={16} color="#fff" style={{marginLeft: 4}} />
-            </View>
-          </TouchableOpacity>
-        ))}
+
+      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+        <Text style={styles.sectionTitle}>Medicines</Text>
+        {renderItems(medicineItems)}
+
+        <Text style={styles.sectionTitle}>Medical Products</Text>
+        {renderItems(medicalProductItems)}
       </ScrollView>
+
+      {selectedProduct && (
+        <Modal visible={modalVisible} transparent animationType="slide">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Image source={selectedProduct.image} style={{ width: 100, height: 100, marginBottom: 10 }} />
+              <Text style={styles.modalTitle}>{selectedProduct.name}</Text>
+              <Text style={styles.modalDescription}>{selectedProduct.description}</Text>
+              <Text style={styles.modalPrice}>{selectedProduct.price}</Text>
+
+              {!showMore && (
+                <TouchableOpacity onPress={() => setShowMore(true)} style={styles.seeMoreButton}>
+                  <Text style={styles.seeMoreText}>See More</Text>
+                </TouchableOpacity>
+              )}
+
+              {showMore && selectedProduct.moreDetails && (
+                <Text style={styles.modalMoreDetails}>{selectedProduct.moreDetails}</Text>
+              )}
+
+              <TouchableOpacity
+                onPress={() => {
+                  closeModal();
+                  router.push({
+                    pathname: '/Products',
+                    params: {
+                      name: selectedProduct.name,
+                      price: selectedProduct.price,
+                      description: selectedProduct.description,
+                      moreDetails: selectedProduct.moreDetails,
+                    },
+                  });
+                }}
+                style={styles.goToProductButton}
+              >
+                <Text style={styles.goToProductButtonText}>Go to the product to buy it</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
+
       <TabBar />
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  gridContainer: {
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginHorizontal: 12,
+    marginVertical: 8,
+    color: '#003366',
+  },
+  sectionContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    padding: 12,
-    paddingBottom: 80,
-    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 12,
   },
   gridCard: {
-    width: '47%',
+    width: '48%',
     backgroundColor: '#fff',
     borderRadius: 14,
     marginBottom: 16,
@@ -129,10 +230,17 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     textAlign: 'center',
   },
-  gridDiscount: {
-    color: '#b71c1c',
+  gridDescription: {
+    color: 'red',
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: 12,
+    marginBottom: 6,
+    textAlign: 'center',
+  },
+  gridPrice: {
+    color: '#336699',
+    fontWeight: 'bold',
+    fontSize: 14,
     marginBottom: 6,
   },
   detailsButton: {
@@ -149,183 +257,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 13,
   },
-
-
   logo: {
     width: isWeb ? 300 : width * 0.6,
-    height: isWeb ? 300 : height * 2.5,
-    marginLeft: isWeb? 650 : -20,
+    height: isWeb ? 300 : height * 0.25,
+    marginLeft: isWeb ? 650 : -20,
     resizeMode: 'contain',
-    alignSelf: 'center', 
-  },
-  
-  
-  forText:{ 
-    color: '#191716', 
-    fontWeight: 'bold', 
-    marginRight: isWeb ? 20 : 40,
-    fontSize: isWeb ? 18 : 16, 
-  },
-  forView:{
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: isWeb ? 'flex-start' : 'center', 
-    width: '100%', 
-  },
-
-  headerStyle: {
-    backgroundColor: '#5B9BD5',
-    height: isWeb? 100 : 120,
-   
- },
-  mainContainer: {
-    flex: 1,
-    backgroundColor: '#F5f5f5',
-  },
-  header: {
-    padding: 15,
-    backgroundColor: '#00796B',
-    borderBottomWidth: 1,
-    borderBottomColor: '#004D40',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  container: {
-    flexGrow: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    paddingBottom: 80,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginVertical: 10,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    color: '#000',
-    paddingRight: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#00796B',
-  },
-  searchIcon: {
-    marginLeft: 10,
-  },
-  categoryButton: {
-    backgroundColor: '#003366',
-    padding: 10,
-    borderRadius: 12,
-    marginVertical: 5,
-    borderWidth: 1,
-    borderColor: '#000',
-  },
-  categoryButtonText: {
-    fontSize: 14,
-    color: '#f5f5f5',
-    fontWeight: 'bold',
-  },
-  productContainer: {
-    backgroundColor: '#f5f5f5',
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#aaa',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 4,
-  },
-  productImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    marginLeft: 10,
-  },
-  productInfo: {
-    flex: 1,
-    color:'#000',
-  },
-  productName: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'right',
-  },
-  productDescription: {
-    fontSize: 12,
-    color: '#000',
-    textAlign: 'right',
-    marginVertical: 5,
-  },
-  readMore: {
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  productPrice: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'right',
-  },
-  productActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 5,
-  },
-  addButton: {
-    backgroundColor: '#000',
-    padding: 8,
-    borderRadius: 20,
-    marginLeft: 10,
-  },
-  cartButton: {
-    marginTop: 20,
-    backgroundColor: '#003366',
-    padding: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-
-  separator: {
-    height: 1,
-    backgroundColor: '#ccc',
-    marginVertical: 12, 
-    width: '90%', 
     alignSelf: 'center',
   },
-  cartButtonText: {
-    fontSize: 14,
-    color: '#f5f5f5',
+  forText: {
+    color: '#191716',
     fontWeight: 'bold',
+    marginRight: isWeb ? 20 : 40,
+    fontSize: isWeb ? 18 : 16,
   },
-  infobutton: {
-    color:'#000',
-    padding: 20,
-  },
-  tabsContainer: {
+  forView: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    justifyContent: isWeb ? 'flex-start' : 'center',
     width: '100%',
-    paddingVertical: 5,
-    backgroundColor: '#00796B',
-    position: 'absolute',
-    bottom: 0,
-    zIndex: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#004D40',
+  },
+  headerStyle: {
+    backgroundColor: '#5B9BD5',
+    height: isWeb ? 100 : 120,
   },
   modalContainer: {
     flex: 1,
@@ -334,36 +287,71 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: '#5B9BD5',
+    backgroundColor: '#F0FFFF',
     padding: 20,
     borderRadius: 10,
-    width: '80%',
+    width: '85%',
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
     color: '#000',
   },
   modalDescription: {
     fontSize: 16,
-    color: '#000',
-    marginBottom: 10,
+    color: '#003366',
+    marginBottom: 8,
+    textAlign: 'center',
   },
   modalPrice: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
-    marginBottom: 20,
+    marginBottom: 12,
+  },
+  modalMoreDetails: {
+    fontSize: 14,
+    color: '#333',
+    backgroundColor: '#FFF3E0',
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 8,
+    textAlign: 'left',
+    lineHeight: 20,
+  },
+  seeMoreButton: {
+    backgroundColor: '#003366',
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 6,
+    marginTop: 10,
+  },
+  seeMoreText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  goToProductButton: {
+    marginTop: 15,
+    backgroundColor: '#003366',
+    padding: 10,
+    borderRadius: 8,
+  },
+  goToProductButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   closeButton: {
-    backgroundColor: '#5B9BD5',
-    padding: 10,
-    borderRadius: 5,
+    marginTop: 10,
+    backgroundColor: '#FF6B6B',
+    padding: 8,
+    borderRadius: 6,
   },
   closeButtonText: {
-    color: '#f5f5f5',
-    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
