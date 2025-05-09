@@ -1,93 +1,116 @@
 import React from 'react';
-import { View, Text, StyleSheet , Dimensions , Platform , Image,ScrollView} from 'react-native';
-import { Link , Stack} from 'expo-router';
-import { FontAwesome } from 'react-native-vector-icons';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Platform,
+  Image,
+  ScrollView,
+} from 'react-native';
+import { Stack } from 'expo-router';
 import TabBar from './component/TabBar';
 
-
-const { height } = Dimensions.get('window');
 const { width } = Dimensions.get('window');
-const isWeb = Platform.OS === 'web'
+const isWeb = Platform.OS === 'web';
+
 const About = () => {
   return (
     <>
-    <ScrollView contentContainerStyle={styles.container}>
-      
-      <Stack.Screen
-        options={{
-          headerStyle:styles.headerStyle,
-          headerBackVisible: true,
-          headerTitle: () => (
-            <View style={styles.forView}>
-              <Text style ={ styles.forText}>
-                About
-              </Text>
-              <Image
-                source={require('../assets/images/final transparent.png')}
-                style ={styles.logo}
-              />
-            </View>
-          ),
-        }}
-      />
-      
-      <Text style={styles.subtitle}>About Us</Text>
-      <View style={styles.teamContainer}>
-        <Text style={styles.teamMember}>Pharma Tech Pharmacies leads the healthcare and personal care sector in Egypt,
-           and its history represents a remarkable success story.
-            The group began in 1975 with a single pharmacy and has since evolved into one of the most prominent healthcare 
-            institutions in Egypt. With over 40 years of experience, Pharma Tech Pharmacies is constantly striving to expand 
-            and consolidate its leadership in the pharmaceutical sector, both locally and regionally.
-            </Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Stack.Screen
+          options={{
+            headerStyle: styles.headerStyle,
+            headerTitleAlign: 'center',
+            headerBackVisible: true,
+            headerTitle: () => (
+              <View style={styles.headerTitleContainer}>
+                <Image
+                  source={require('../assets/images/final transparent.png')}
+                  style={styles.logo}
+                />
+                <Text style={styles.headerTitle}>About</Text>
+              </View>
+            ),
+          }}
+        />
 
-            <Text style={styles.teamMember}>
-              By introducing entirely new business models and offering an unprecedented array of services, 
-      such as home medication delivery, patient counseling and support, and contributing to raising health awareness, 
-      Pharma Tech Pharmacies has been able to raise the standard of healthcare in Egypt and progress day by day since its inception
-       in the Egyptian pharmaceutical market.
-       ***********************
-            </Text>    
+        <Text style={styles.sectionTitle}>About Us</Text>
+        <View style={styles.card}>
+          <Text style={styles.text}>
+            Pharma Tech Pharmacies is a trusted name in the healthcare and personal care sector in Egypt. 
+            Since its establishment in 1975 with a single branch, the company has grown into a nationwide network 
+            known for professionalism, innovation, and patient-centered care.
+          </Text>
+          <Text style={styles.text}>
+            We are proud to offer a wide range of services including medication home delivery, 
+            real-time prescription tracking, and expert consultation by licensed pharmacists. 
+            Our commitment to excellence is reflected in every detail of our operations.
+          </Text>
+          <Text style={styles.text}>
+            With over 90 branches across Egypt, our infrastructure includes modern warehouses, 
+            a childcare center, and a continuous learning center for our team members to keep them aligned 
+            with global pharmaceutical standards.
+          </Text>
+        </View>
 
-            <Text style={styles.teamMember}>
-            Believing that success always starts from within, the group has established a state-of-the-art skills development center
-             to support the talents of its employees. The center employs a group of experts who train employees and pharmacists to ensure
-              optimal performance and operational excellence, while maintaining international standards. By recruiting the best talent and
-               continuously developing their skills, the Pharma Tech team stands out as a trusted source of advice and support in the field of
-                pharmaceutical services.
-            </Text>  
+        <Text style={styles.sectionTitle}>Key Features</Text>
+        <View style={styles.card}>
+          {[
+            'Easy and secure medication ordering',
+            'Digital prescription management',
+            'Real-time order tracking via the app',
+            'Instant notifications for medication availability',
+            'Round-the-clock customer service and support',
+          ].map((item, idx) => (
+            <Text key={idx} style={styles.bullet}>• {item}</Text>
+          ))}
+        </View>
 
-            <Text style={styles.teamMember}>
-            Today, Pharma Tech Pharmacies leads the Egyptian pharmaceutical market by providing the finest healthcare products through the group's 90
-             branches spread across the country, in addition to its warehouses and childcare center.
-            </Text>    
+        <Text style={styles.sectionTitle}>Our Mission</Text>
+        <View style={styles.card}>
+          <Text style={styles.text}>
+            Our mission is to bridge the gap between people and the healthcare they need. 
+            We believe that every individual deserves timely access to authentic medication, 
+            guidance from qualified professionals, and support throughout their healthcare journey.
+          </Text>
+          <Text style={styles.text}>
+            We strive to create a seamless, digital-first pharmacy experience—making it simple, 
+            safe, and efficient to manage your health wherever you are.
+          </Text>
+        </View>
 
-      </View>
+        <Text style={styles.sectionTitle}>Our Vision</Text>
+        <View style={styles.card}>
+          <Text style={styles.text}>
+            To become the leading digital pharmacy platform in the Middle East and Africa, 
+            empowering individuals with technology-driven health services that are both accessible and reliable.
+          </Text>
+        </View>
 
-      <Text style={styles.subtitle}>Key Features</Text>
-      <View style={[styles.teamContainer]}>
-        <Text style={[styles.teamMember]}>• Easy medication ordering</Text>
-        <Text style={[styles.teamMember]}>• Prescription management</Text>
-        <Text style={[styles.teamMember]}>• Real-time order tracking</Text>
-        <Text style={[styles.teamMember]}>• Medication availability alerts</Text>
-        <Text style={[styles.teamMember]}>• 24/7 customer support</Text>
-      </View>
-      
-      <Text style={styles.subtitle}>Our Mission</Text>
-      <View style={styles.teamdis}>
-        <Text style={styles.teamMember}>
-        We're committed to making healthcare accessible by providing a reliable platform
-          for all your pharmaceutical needs. Our team of licensed pharmacists ensures
-          that you receive genuine medications with professional guidance.
-        </Text>
-      </View>
-        
-      <View style={styles.footer}>
-        <Text style={styles.copyright}>© 2023 MyPharmacy App. All rights reserved.</Text>
-      </View>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>© 2023 MyPharmacy App. All rights reserved.</Text>
 
-    </ScrollView>
-    
-    <TabBar />
+          <View style={styles.footerLinksContainer}>
+            <Text style={styles.footerLink}>About Us</Text>
+            <Text style={styles.footerDivider}>|</Text>
+            <Text style={styles.footerLink}>Help Center</Text>
+            <Text style={styles.footerDivider}>|</Text>
+            <Text style={styles.footerLink}>Terms</Text>
+            <Text style={styles.footerDivider}>|</Text>
+            <Text style={styles.footerLink}>Privacy</Text>
+          </View>
+
+          <View style={styles.socialContainer}>
+            <Text style={styles.socialText}>Follow us:</Text>
+            <Text style={styles.socialLink}>Facebook</Text>
+            <Text style={styles.socialLink}>Instagram</Text>
+            <Text style={styles.socialLink}>Twitter</Text>
+          </View>
+        </View>
+      </ScrollView>
+
+      <TabBar />
     </>
   );
 };
@@ -95,126 +118,124 @@ const About = () => {
 export default About;
 
 const styles = StyleSheet.create({
-  
-  headerStyle: {
-    backgroundColor: '#5B9BD5',
-    height: isWeb? 100 : 120,
-  },
-
   container: {
     flexGrow: 1,
+    backgroundColor: '#F9FAFB',
+    paddingVertical: 30,
     alignItems: 'center',
-    paddingVertical: 20,
     paddingBottom: 100,
-    backgroundColor: '#F5F5F5',
   },
 
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#00796B', 
-    marginBottom: 10,
+  headerStyle: {
+    backgroundColor: '#5B9BD5',
+    height: isWeb ? 100 : 120,
   },
 
-  subtitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 10,
-    alignSelf: 'flex-start',
-    marginLeft: 40,
-    width: '90%',
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   logo: {
-    width: isWeb ? 400 : width * 0.6,
-    height: isWeb ? 400 : height * 2.5,
-    marginLeft: isWeb? 650 : -20,
+    width: 150,
+    height: 150,
     resizeMode: 'contain',
-    alignSelf: 'center', 
+    marginRight: 10,
   },
 
-
-  forText:{ 
-    color: '#191716', 
-    fontWeight: 'bold', 
-    marginRight: isWeb ? 20 : 40,
-    fontSize: isWeb ? 18 : 16, 
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
 
-  forView:{
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: isWeb ? 'flex-start' : 'center', 
-    width: '100%', 
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#34495E',
+    alignSelf: 'flex-start',
+    marginLeft: 25,
+    marginBottom: 10,
   },
 
-  teamContainer: {
-    backgroundColor: '#003366', 
-    padding: 15,
-    borderRadius: 20,
-    alignItems: 'center',
-    elevation: 5,
-    marginBottom: 20,
+  card: {
+    backgroundColor: '#FFFFFF',
     width: '90%',
-    alignItems: 'flex-start',
-  },
-  
-  
-  teamdis: {
-    backgroundColor: '#003366', 
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    elevation: 5,
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
     marginBottom: 20,
-    width: '90%',
-  },
-  
-  teamMember: {
-    fontSize: 18,
-    color: '#f5f5f5',
-    marginVertical: 5,
-    marginLeft: 10,
-    textAlign: 'left', // محاذاة النص لليسار
-  },
-  
-  featureItem: {
-    alignSelf: 'flex-start', // تأكد من محاذاة العناصر لليسار
-    width: '100%', // تأخذ العرض الكامل
   },
 
-  tabsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    paddingVertical: 5,
-    backgroundColor: '#00796B',
-    position: 'absolute',
-    bottom: 0,
-    height: 60,
-    borderTopWidth: 2,
-    borderTopColor: '#004D40',
+  text: {
+    fontSize: 16,
+    color: '#2C3E50',
+    lineHeight: 24,
+    marginBottom: 10,
   },
-  
-  tabButton: {
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 60,
-    height: 60,
+
+  bullet: {
+    fontSize: 16,
+    color: '#2C3E50',
+    marginBottom: 8,
+    paddingLeft: 10,
   },
-  
+
   footer: {
-    marginTop: 20,
+    marginTop: 30,
     borderTopWidth: 1,
-    borderTopColor: '#ecf0f1',
+    borderTopColor: '#DDD',
     paddingTop: 15,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 40,
   },
-  
-  copyright: {
+
+  footerText: {
     fontSize: 14,
-    color: '#7f8c8d',
+    color: '#7F8C8D',
     textAlign: 'center',
+    marginBottom: 10,
+  },
+
+  footerLinksContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    marginBottom: 15,
+  },
+
+  footerLink: {
+    fontSize: 14,
+    color: '#2980B9',
+    marginHorizontal: 5,
+  },
+
+  footerDivider: {
+    marginHorizontal: 4,
+    color: '#BDC3C7',
+  },
+
+  socialContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+
+  socialText: {
+    fontSize: 14,
+    color: '#7F8C8D',
+    marginRight: 10,
+  },
+
+  socialLink: {
+    fontSize: 14,
+    color: '#2980B9',
+    marginHorizontal: 5,
   },
 });
