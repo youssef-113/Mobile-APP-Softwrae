@@ -7,6 +7,8 @@ import {
   Platform,
   Image,
   ScrollView,
+  Pressable,
+  Linking,
 } from 'react-native';
 import { Stack } from 'expo-router';
 import TabBar from './component/TabBar';
