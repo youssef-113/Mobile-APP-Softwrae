@@ -46,35 +46,40 @@ const Signup = () => {
   };
 
 
- const handleSignup = () => {
-   if (!validation()) return;
-   
-      router.replace('/logIn')
-    createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    console.log("DONE SIGN UP! ")
-    const user = userCredential.user;
-    AddUserToDatabase();
-    setEmailError('');
-    setPasswordError('');
-    alert('Account created successfully')
-    
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorMessage)
-  });
-
+  const handleSignup = async () => {
+    if (!validation()) return;
+  
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      await AddUserToDatabase(user.uid);
+      alert('Account created successfully');
+  
+      router.replace('/logIn'); 
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log("Signup Error:", errorCode, errorMessage);
+  
+      if (errorCode === 'auth/email-already-in-use') {
+        alert('Email already in use.');
+      } else if (errorCode === 'auth/invalid-email') {
+        alert('Invalid email address.');
+      } else {
+        alert('Signup failed. Please try again.');
+      }
+    }
   };
-  const AddUserToDatabase = async() => {
-    await setDoc(doc(db, "users", auth.currentUser.uid), {
+  
+  const AddUserToDatabase = async (uid) => {
+    await setDoc(doc(db, "users", uid), {
       name: username,
       email: email,
       Phone: Phone
     });
- 
-   };
+  };
+  
 
   return (
     <View style={styles.container}>

@@ -18,6 +18,41 @@ const productImages = {
   product3: require('../assets/images/3.jpg'),
   product4: require('../assets/images/1.jpg'),
   product5: require('../assets/images/5.jpg'),
+  product6: require('../assets/images/6.avif'),
+  product7: require('../assets/images/7.jpeg'),
+  product8: require('../assets/images/8.jpeg'),
+  product9: require('../assets/images/9.jpeg'),
+  product10: require('../assets/images/10.jpeg'),
+  product11: require('../assets/images/11.jpeg'),
+  product12: require('../assets/images/12.jpeg'),
+  product13: require('../assets/images/13.jpeg'),
+  product14: require('../assets/images/14.jpeg'),
+  product15: require('../assets/images/15.jpeg'),
+  product16: require('../assets/images/16.jpeg'),
+  product17: require('../assets/images/17.jpeg'),
+  product18: require('../assets/images/18.jpeg'),
+  product19: require('../assets/images/19.jpeg'),
+  product20: require('../assets/images/20.jpeg'),
+  product21: require('../assets/images/21.jpeg'),
+  product22: require('../assets/images/22.jpeg'),
+  product23: require('../assets/images/23.jpeg'),
+  product24: require('../assets/images/24.jpeg'),
+  product25: require('../assets/images/25.jpeg'),
+  product26: require('../assets/images/26.jpeg'),
+  product27: require('../assets/images/27.jpeg'),
+  product28: require('../assets/images/28.jpeg'),
+  product29: require('../assets/images/29.jpeg'),
+  product30: require('../assets/images/30.jpeg'),
+  product31: require('../assets/images/31.jpeg'),
+  product32: require('../assets/images/32.jpeg'),
+  product33: require('../assets/images/33.jpeg'),
+  product34: require('../assets/images/34.jpeg'),
+  product35: require('../assets/images/35.jpeg'),
+  product36: require('../assets/images/36.jpg'),
+  product37: require('../assets/images/37.jpg'),
+  product38: require('../assets/images/38.jpg'),
+  product39: require('../assets/images/39.jpg'),
+  product40: require('../assets/images/40.jpg'),
   default: require('../assets/images/favicon.png'),
 };
 
@@ -53,22 +88,64 @@ function getMockRecommendations() {
 
 const productsData = [
   { id: '1', name: 'Xiclav', description: 'Xiclav 1g 14 coated tablets', price: '151.99 EGP', image: productImages.product1 },
-];
+  { id: '2', name: 'Stopadol', description: 'Stopadol Forte 1000 mg 10 sachets', price: '60.99 EGP', image: productImages.product2 },
+  { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product3 },
+  { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product4 },
+  { id: '5', name: 'Cinacalcet', description: 'Cinacalcet 30 mg 10 tablets', price: '277.99 EGP', image: productImages.product5 },
+ ];
 
 const productsData2 = [
-  { id: '2', name: 'Stopadol', description: 'Stopadol Forte 1000 mg 10 sachets', price: '60.99 EGP', image: productImages.product2 },
-];
+  { id: '6', name: 'Panadol', description: 'Panadol Extra 500 mg 24 tablets', price: '55.99 EGP', image: productImages.product6 },
+  { id: '7', name: 'Ambezim', description: 'Ambezim anti-inflammatory 20 tablets', price: '38.50 EGP', image: productImages.product7 },
+  { id: '8', name: 'Ventolin', description: 'Ventolin inhaler 100 mcg', price: '80.00 EGP', image: productImages.product8 },
+  { id: '9', name: 'Zyrtec', description: 'Zyrtec 10 mg 20 tablets', price: '64.75 EGP', image: productImages.product9 },
+  { id: '10', name: 'Motilium', description: 'Motilium 10 mg 30 tablets', price: '44.99 EGP', image: productImages.product10 },
+  ];
 
 const productsData3 = [
-  { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product3 },
-];
+  { id: '11', name: 'Augmentin', description: 'Augmentin 1g 14 tablets', price: '165.00 EGP', image: productImages.product11 },
+  { id: '12', name: 'Adol', description: 'Adol 500 mg 24 tablets', price: '33.00 EGP', image: productImages.product12 },
+  { id: '13', name: 'Cataflam', description: 'Cataflam 50 mg 20 tablets', price: '48.50 EGP', image: productImages.product13 },
+  { id: '14', name: 'Brufen', description: 'Brufen 600 mg 20 tablets', price: '45.00 EGP', image: productImages.product14 },
+  { id: '15', name: 'Solpadeine', description: 'Solpadeine effervescent 12 tablets', price: '72.00 EGP', image: productImages.product15 },
+ ];
 
 const productsData4 = [
-  { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product4 },
-];
+  { id: '16', name: 'Antinal', description: 'Antinal 200 mg 24 capsules', price: '25.99 EGP', image: productImages.product16 },
+  { id: '17', name: 'Flagyl', description: 'Flagyl 500 mg 20 tablets', price: '32.00 EGP', image: productImages.product17 },
+  { id: '18', name: 'Nexium', description: 'Nexium 40 mg 14 tablets', price: '170.00 EGP', image: productImages.product18 },
+  { id: '19', name: 'Losec', description: 'Losec 20 mg 14 tablets', price: '105.00 EGP', image: productImages.product19 },
+  { id: '20', name: 'Omeprazole', description: 'Omeprazole 20 mg 28 capsules', price: '75.99 EGP', image: productImages.product20 },
+ ];
 
 const productsData5 = [
-  { id: '5', name: 'Cinacalcet', description: 'Cinacalcet 30 mg 10 tablets', price: '277.99 EGP', image: productImages.product5 },
+  { id: '21', name: 'Glucophage', description: 'Glucophage 500 mg 30 tablets', price: '55.50 EGP', image: productImages.product21 },
+  { id: '22', name: 'Insulatard', description: 'Insulatard insulin injection 100 IU/ml', price: '120.00 EGP', image: productImages.product22 },
+  { id: '23', name: 'Lantus', description: 'Lantus insulin injection 100 IU/ml', price: '180.00 EGP', image: productImages.product23 },
+  { id: '24', name: 'Trulicity', description: 'Trulicity 1.5 mg injection', price: '600.00 EGP', image: productImages.product24 },
+  { id: '25', name: 'Euthyrox', description: 'Euthyrox 100 mcg 50 tablets', price: '35.00 EGP', image: productImages.product25 },
+  { id: '36', name: 'Signal', description: 'Tooth health', price: '55.50 EGP', image: productImages.product36 },
+  { id: '37', name: 'Pampers', description: 'Children health', price: '120.00 EGP', image: productImages.product37 },
+  { id: '38', name: 'Massage gel', description: 'Message gel', price: '40.00 EGP', image: productImages.product38 },
+  { id: '39', name: 'Shampoo', description: 'Shampoo', price: '60.00 EGP', image: productImages.product39 },
+  { id: '40', name: 'Mask', description: 'general health', price: '5.00 EGP', image: productImages.product40 },
+  
+  ];
+
+const productsData6 = [
+ { id: '26', name: 'Concor', description: 'Concor 5 mg 20 tablets', price: '47.00 EGP', image: productImages.product26 },
+  { id: '27', name: 'Lipitor', description: 'Lipitor 20 mg 30 tablets', price: '170.00 EGP', image: productImages.product27 },
+  { id: '28', name: 'Plavix', description: 'Plavix 75 mg 28 tablets', price: '290.00 EGP', image: productImages.product28 },
+  { id: '29', name: 'Cardura', description: 'Cardura 4 mg 30 tablets', price: '78.00 EGP', image: productImages.product29 },
+  { id: '30', name: 'Lasix', description: 'Lasix 40 mg 20 tablets', price: '39.00 EGP', image: productImages.product30 },
+];
+
+const productsData7 = [
+{ id: '31', name: 'Zantac', description: 'Zantac 150 mg 20 tablets', price: '48.00 EGP', image: productImages.product31 },
+{ id: '32', name: 'Clavox', description: 'Clavox 625 mg 14 tablets', price: '132.50 EGP', image: productImages.product32 },
+{ id: '33', name: 'Ketolac', description: 'Ketolac 10 mg 20 tablets', price: '42.00 EGP', image: productImages.product33 },
+{ id: '34', name: 'Neuroton', description: 'Neuroton 30 tablets for nerve support', price: '85.00 EGP', image: productImages.product34 },
+{ id: '35', name: 'Hemoclar', description: 'Hemoclar gel 40g for bruises', price: '52.75 EGP', image: productImages.product35 },
 ];
 
 const allProducts = [
@@ -77,6 +154,8 @@ const allProducts = [
   ...productsData3,
   ...productsData4,
   ...productsData5,
+  ...productsData6,
+  ...productsData7,
 ];
 
 const ProductItem = ({ product, addToCart, openModal, isInWishlist, toggleWishlist }) => {
@@ -150,12 +229,14 @@ export default function ProductsScreen() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchText, setSearchText] = useState('');
   const router = useRouter();
-  // الأقسام
+  
   const categories = [
   { key: 'Antibiotics', label: 'Antibiotics' },
   { key: 'Painkillers', label: 'Painkillers' },
   { key: 'Cardiovascular', label: 'Cardiovascular' },
   { key: 'Supplements', label: 'Supplements' },
+  { key: 'Blood pressure', label: 'Blood pressure' },
+  { key: 'Diabetes', label: 'Diabetes' },
   { key: 'Others', label: 'Others' },
   { key: 'Favorites', label: 'Favorites' },
 ];
@@ -242,6 +323,8 @@ export default function ProductsScreen() {
       else if (selectedCategory === 'Cardiovascular') products = productsData3;
       else if (selectedCategory === 'Supplements') products = productsData4;
       else if (selectedCategory === 'Others') products = productsData5;
+      else if (selectedCategory === 'Blood pressure') products = productsData6;
+      else if (selectedCategory === 'Diabetes') products = productsData7;
     }
 
     if (searchText.length > 0) {
@@ -501,6 +584,8 @@ export default function ProductsScreen() {
               else if (cat.key === 'Painkillers') products = productsData2;
               else if (cat.key === 'Cardiovascular') products = productsData3;
               else if (cat.key === 'Supplements') products = productsData4;
+              else if (cat.key === 'Blood pressure') products = productsData6;
+              else if (cat.key === 'Diabetes') products = productsData7;
               else products = productsData5;
               if (!products.length) return null;
               return (
