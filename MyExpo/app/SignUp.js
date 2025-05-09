@@ -53,10 +53,10 @@ const Signup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
   
-      await AddUserToDatabase(user.uid); // أرسل الـ UID لضمان التسجيل الصحيح
+      await AddUserToDatabase(user.uid);
       alert('Account created successfully');
   
-      router.replace('/logIn'); // بعد ما يتم كل حاجة بنجاح
+      router.replace('/logIn'); 
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;

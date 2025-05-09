@@ -54,24 +54,24 @@ const Login = () => {
     if (!validation()) return;
   
     try {
-      // تسجيل الدخول بالإيميل والباسورد
+      
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
   
-      // جلب بيانات المستخدم من Firestore
+      
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
   
       if (userDoc.exists()) {
         const userData = userDoc.data();
   
-        // التحقق من الاسم ورقم الهاتف
+       
         if (userData.name !== username || userData.Phone !== Phone) {
           alert("Name or phone number does not match our records.");
           return;
         }
   
-        // ✅ كل شيء تمام
+      
         alert("Login successful!");
         router.replace('/home');
       } else {
