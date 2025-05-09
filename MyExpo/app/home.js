@@ -283,6 +283,12 @@ const home = () => {
         </TouchableOpacity>
       </View>
 
+        <Link href='NewArrivals' asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>New Arrivals</Text>
+            <FontAwesome name="star" size={20} color="#f5f5f5" />
+          </TouchableOpacity>
+        </Link>
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>About Us </Text>
