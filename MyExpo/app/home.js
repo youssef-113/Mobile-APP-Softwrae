@@ -6,6 +6,7 @@ import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import auth from '../firebase'; 
 import TabBar from './component/TabBar';
+import Chat from './chat';
 
 
 
@@ -220,6 +221,18 @@ const home = () => {
           </TouchableOpacity>
         </View>
 
+           <View style={styles.container}>
+      <TouchableOpacity
+
+      
+        style={styles.chatButton}
+        onPress={() => router.push({ 
+          pathname: '/chat'})}
+      >
+        <FontAwesome name="comment" size={24} color="white" />
+        <Text style={styles.chatText}>Go to Chat</Text>
+      </TouchableOpacity>
+    </View>
 
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
@@ -240,7 +253,18 @@ const home = () => {
 export default home;
 
 const styles = StyleSheet.create({
-  // Header Welcome Section
+  chatButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 8,
+  },
+  chatText: {
+    color: 'white',
+    marginLeft: 10,
+    fontSize: 16,
+  },
   headerWelcomeSection: {
     alignItems: 'center',
     marginBottom: 20,
@@ -500,8 +524,8 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: isWeb ? 300 : width * 0.6,
-    height: isWeb ? 300 : height * 2.5,
+    width: isWeb ? 400 : width * 0.6,
+    height: isWeb ? 400 : height * 2.5,
     marginLeft: isWeb? 650 : -20,
     resizeMode: 'contain',
     alignSelf: 'center', 

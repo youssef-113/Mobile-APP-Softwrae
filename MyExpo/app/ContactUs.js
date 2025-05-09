@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
 
 
   logo: {
-    width: isWeb ? 300 : width * 0.6,
-    height: isWeb ? 300 : height * 2.5,
+    width: isWeb ? 400 : width * 0.6,
+    height: isWeb ? 400 : height * 2.5,
     marginLeft: isWeb? 650 : -20,
     resizeMode: 'contain',
     alignSelf: 'center', 
