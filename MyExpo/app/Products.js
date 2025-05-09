@@ -87,65 +87,65 @@ function getMockRecommendations() {
 
 
 const productsData = [
-  { id: '1', name: 'Xiclav', description: 'Xiclav 1g 14 coated tablets', price: '151.99 EGP', image: productImages.product1 },
-  { id: '2', name: 'Stopadol', description: 'Stopadol Forte 1000 mg 10 sachets', price: '60.99 EGP', image: productImages.product2 },
-  { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product3 },
-  { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product4 },
-  { id: '5', name: 'Cinacalcet', description: 'Cinacalcet 30 mg 10 tablets', price: '277.99 EGP', image: productImages.product5 },
+  { id: '1', name: 'Xiclav', description: 'Xiclav 1g 14 coated tablets', price: '151.99 EGP', image: productImages.product1, dosages: '1g per tablet, 14 tablets', medicationType: 'Antibiotic', category: 'Antibiotics', suitableAge: 'Adults & children (doctor advice)' },
+  { id: '2', name: 'Stopadol', description: 'Stopadol Forte 1000 mg 10 sachets', price: '60.99 EGP', image: productImages.product2, dosages: '1000 mg per sachet', medicationType: 'Painkiller', category: 'Analgesics', suitableAge: 'Adults & children above 12' },
+  { id: '3', name: 'Norvasc', description: 'Norvasc 5 mg 10 tablets', price: '41.99 EGP', image: productImages.product3, dosages: '5 mg per tablet', medicationType: 'Antihypertensive', category: 'Cardiovascular', suitableAge: 'Adults' },
+  { id: '4', name: 'Daflon', description: 'Daflon 1000 mg 30 coated tablets', price: '285.99 EGP', image: productImages.product4, dosages: '1000 mg per tablet', medicationType: 'Veno-tonic', category: 'Vascular', suitableAge: 'Adults' },
+  { id: '5', name: 'Cinacalcet', description: 'Cinacalcet 30 mg 10 tablets', price: '277.99 EGP', image: productImages.product5, dosages: '30 mg per tablet', medicationType: 'Calcimimetic', category: 'Endocrine', suitableAge: 'Adults' },
  ];
 
 const productsData2 = [
-  { id: '6', name: 'Panadol', description: 'Panadol Extra 500 mg 24 tablets', price: '55.99 EGP', image: productImages.product6 },
-  { id: '7', name: 'Ambezim', description: 'Ambezim anti-inflammatory 20 tablets', price: '38.50 EGP', image: productImages.product7 },
-  { id: '8', name: 'Ventolin', description: 'Ventolin inhaler 100 mcg', price: '80.00 EGP', image: productImages.product8 },
-  { id: '9', name: 'Zyrtec', description: 'Zyrtec 10 mg 20 tablets', price: '64.75 EGP', image: productImages.product9 },
-  { id: '10', name: 'Motilium', description: 'Motilium 10 mg 30 tablets', price: '44.99 EGP', image: productImages.product10 },
+  { id: '6', name: 'Panadol', description: 'Panadol Extra 500 mg 24 tablets', price: '55.99 EGP', image: productImages.product6, dosages: '500 mg per tablet', medicationType: 'Painkiller', category: 'Analgesics', suitableAge: 'Adults & children above 6' },
+  { id: '7', name: 'Ambezim', description: 'Ambezim anti-inflammatory 20 tablets', price: '38.50 EGP', image: productImages.product7, dosages: 'As prescribed', medicationType: 'Anti-inflammatory', category: 'Enzyme therapy', suitableAge: 'Adults' },
+  { id: '8', name: 'Ventolin', description: 'Ventolin inhaler 100 mcg', price: '80.00 EGP', image: productImages.product8, dosages: '100 mcg per puff', medicationType: 'Bronchodilator', category: 'Respiratory', suitableAge: 'Adults & children' },
+  { id: '9', name: 'Zyrtec', description: 'Zyrtec 10 mg 20 tablets', price: '64.75 EGP', image: productImages.product9, dosages: '10 mg per tablet', medicationType: 'Antihistamine', category: 'Allergy', suitableAge: 'Adults & children above 6' },
+  { id: '10', name: 'Motilium', description: 'Motilium 10 mg 30 tablets', price: '44.99 EGP', image: productImages.product10, dosages: '10 mg per tablet', medicationType: 'Antiemetic', category: 'Digestive', suitableAge: 'Adults & children' },
   ];
 
 const productsData3 = [
-  { id: '11', name: 'Augmentin', description: 'Augmentin 1g 14 tablets', price: '165.00 EGP', image: productImages.product11 },
-  { id: '12', name: 'Adol', description: 'Adol 500 mg 24 tablets', price: '33.00 EGP', image: productImages.product12 },
-  { id: '13', name: 'Cataflam', description: 'Cataflam 50 mg 20 tablets', price: '48.50 EGP', image: productImages.product13 },
-  { id: '14', name: 'Brufen', description: 'Brufen 600 mg 20 tablets', price: '45.00 EGP', image: productImages.product14 },
-  { id: '15', name: 'Solpadeine', description: 'Solpadeine effervescent 12 tablets', price: '72.00 EGP', image: productImages.product15 },
+  { id: '11', name: 'Augmentin', description: 'Augmentin 1g 14 tablets', price: '165.00 EGP', image: productImages.product11, dosages: '1g per tablet', medicationType: 'Antibiotic', category: 'Antibiotics', suitableAge: 'Adults & children (doctor advice)' },
+  { id: '12', name: 'Adol', description: 'Adol 500 mg 24 tablets', price: '33.00 EGP', image: productImages.product12, dosages: '500 mg per tablet', medicationType: 'Painkiller', category: 'Analgesics', suitableAge: 'Adults & children above 6' },
+  { id: '13', name: 'Cataflam', description: 'Cataflam 50 mg 20 tablets', price: '48.50 EGP', image: productImages.product13, dosages: '50 mg per tablet', medicationType: 'NSAID', category: 'Anti-inflammatory', suitableAge: 'Adults' },
+  { id: '14', name: 'Brufen', description: 'Brufen 600 mg 20 tablets', price: '45.00 EGP', image: productImages.product14, dosages: '600 mg per tablet', medicationType: 'NSAID', category: 'Anti-inflammatory', suitableAge: 'Adults & children above 12' },
+  { id: '15', name: 'Solpadeine', description: 'Solpadeine effervescent 12 tablets', price: '72.00 EGP', image: productImages.product15, dosages: 'As prescribed', medicationType: 'Painkiller', category: 'Analgesics', suitableAge: 'Adults' },
  ];
 
 const productsData4 = [
-  { id: '16', name: 'Antinal', description: 'Antinal 200 mg 24 capsules', price: '25.99 EGP', image: productImages.product16 },
-  { id: '17', name: 'Flagyl', description: 'Flagyl 500 mg 20 tablets', price: '32.00 EGP', image: productImages.product17 },
-  { id: '18', name: 'Nexium', description: 'Nexium 40 mg 14 tablets', price: '170.00 EGP', image: productImages.product18 },
-  { id: '19', name: 'Losec', description: 'Losec 20 mg 14 tablets', price: '105.00 EGP', image: productImages.product19 },
-  { id: '20', name: 'Omeprazole', description: 'Omeprazole 20 mg 28 capsules', price: '75.99 EGP', image: productImages.product20 },
+  { id: '16', name: 'Antinal', description: 'Antinal 200 mg 24 capsules', price: '25.99 EGP', image: productImages.product16, dosages: '200 mg per capsule', medicationType: 'Antidiarrheal', category: 'Digestive', suitableAge: 'Adults & children' },
+  { id: '17', name: 'Flagyl', description: 'Flagyl 500 mg 20 tablets', price: '32.00 EGP', image: productImages.product17, dosages: '500 mg per tablet', medicationType: 'Antibiotic/Antiprotozoal', category: 'Digestive', suitableAge: 'Adults & children' },
+  { id: '18', name: 'Nexium', description: 'Nexium 40 mg 14 tablets', price: '170.00 EGP', image: productImages.product18, dosages: '40 mg per tablet', medicationType: 'Proton pump inhibitor', category: 'Digestive', suitableAge: 'Adults' },
+  { id: '19', name: 'Losec', description: 'Losec 20 mg 14 tablets', price: '105.00 EGP', image: productImages.product19, dosages: '20 mg per tablet', medicationType: 'Proton pump inhibitor', category: 'Digestive', suitableAge: 'Adults' },
+  { id: '20', name: 'Omeprazole', description: 'Omeprazole 20 mg 28 capsules', price: '75.99 EGP', image: productImages.product20, dosages: '20 mg per capsule', medicationType: 'Proton pump inhibitor', category: 'Digestive', suitableAge: 'Adults' },
  ];
 
 const productsData5 = [
-  { id: '21', name: 'Glucophage', description: 'Glucophage 500 mg 30 tablets', price: '55.50 EGP', image: productImages.product21 },
-  { id: '22', name: 'Insulatard', description: 'Insulatard insulin injection 100 IU/ml', price: '120.00 EGP', image: productImages.product22 },
-  { id: '23', name: 'Lantus', description: 'Lantus insulin injection 100 IU/ml', price: '180.00 EGP', image: productImages.product23 },
-  { id: '24', name: 'Trulicity', description: 'Trulicity 1.5 mg injection', price: '600.00 EGP', image: productImages.product24 },
-  { id: '25', name: 'Euthyrox', description: 'Euthyrox 100 mcg 50 tablets', price: '35.00 EGP', image: productImages.product25 },
-  { id: '36', name: 'Signal', description: 'Tooth health', price: '55.50 EGP', image: productImages.product36 },
-  { id: '37', name: 'Pampers', description: 'Children health', price: '120.00 EGP', image: productImages.product37 },
-  { id: '38', name: 'Massage gel', description: 'Message gel', price: '40.00 EGP', image: productImages.product38 },
-  { id: '39', name: 'Shampoo', description: 'Shampoo', price: '60.00 EGP', image: productImages.product39 },
-  { id: '40', name: 'Mask', description: 'general health', price: '5.00 EGP', image: productImages.product40 },
+  { id: '21', name: 'Glucophage', description: 'Glucophage 500 mg 30 tablets', price: '55.50 EGP', image: productImages.product21, dosages: '500 mg per tablet', medicationType: 'Antidiabetic', category: 'Diabetes', suitableAge: 'Adults' },
+  { id: '22', name: 'Insulatard', description: 'Insulatard insulin injection 100 IU/ml', price: '120.00 EGP', image: productImages.product22, dosages: '100 IU/ml', medicationType: 'Insulin', category: 'Diabetes', suitableAge: 'Adults & children' },
+  { id: '23', name: 'Lantus', description: 'Lantus insulin injection 100 IU/ml', price: '180.00 EGP', image: productImages.product23, dosages: '100 IU/ml', medicationType: 'Insulin', category: 'Diabetes', suitableAge: 'Adults & children' },
+  { id: '24', name: 'Trulicity', description: 'Trulicity 1.5 mg injection', price: '600.00 EGP', image: productImages.product24, dosages: '1.5 mg per injection', medicationType: 'GLP-1 agonist', category: 'Diabetes', suitableAge: 'Adults' },
+  { id: '25', name: 'Euthyrox', description: 'Euthyrox 100 mcg 50 tablets', price: '35.00 EGP', image: productImages.product25, dosages: '100 mcg per tablet', medicationType: 'Thyroid hormone', category: 'Endocrine', suitableAge: 'Adults' },
+  { id: '36', name: 'Signal', description: 'Tooth health', price: '55.50 EGP', image: productImages.product36, dosages: 'Apply as needed', medicationType: 'Toothpaste', category: 'Oral care', suitableAge: 'All ages' },
+  { id: '37', name: 'Pampers', description: 'Children health', price: '120.00 EGP', image: productImages.product37, dosages: 'Use as needed', medicationType: 'Diaper', category: 'Baby care', suitableAge: 'Babies & toddlers' },
+  { id: '38', name: 'Massage gel', description: 'Message gel', price: '40.00 EGP', image: productImages.product38, dosages: 'Apply as needed', medicationType: 'Topical gel', category: 'Pain relief', suitableAge: 'All ages' },
+  { id: '39', name: 'Shampoo', description: 'Shampoo', price: '60.00 EGP', image: productImages.product39, dosages: 'Apply as needed', medicationType: 'Shampoo', category: 'Hair care', suitableAge: 'All ages' },
+  { id: '40', name: 'Mask', description: 'general health', price: '5.00 EGP', image: productImages.product40, dosages: 'Use as needed', medicationType: 'Face mask', category: 'Protection', suitableAge: 'All ages' },
   
   ];
 
 const productsData6 = [
- { id: '26', name: 'Concor', description: 'Concor 5 mg 20 tablets', price: '47.00 EGP', image: productImages.product26 },
-  { id: '27', name: 'Lipitor', description: 'Lipitor 20 mg 30 tablets', price: '170.00 EGP', image: productImages.product27 },
-  { id: '28', name: 'Plavix', description: 'Plavix 75 mg 28 tablets', price: '290.00 EGP', image: productImages.product28 },
-  { id: '29', name: 'Cardura', description: 'Cardura 4 mg 30 tablets', price: '78.00 EGP', image: productImages.product29 },
-  { id: '30', name: 'Lasix', description: 'Lasix 40 mg 20 tablets', price: '39.00 EGP', image: productImages.product30 },
+  { id: '26', name: 'Concor', description: 'Concor 5 mg 20 tablets', price: '47.00 EGP', image: productImages.product26, dosages: '5 mg per tablet', medicationType: 'Beta blocker', category: 'Cardiovascular', suitableAge: 'Adults' },
+  { id: '27', name: 'Lipitor', description: 'Lipitor 20 mg 30 tablets', price: '170.00 EGP', image: productImages.product27, dosages: '20 mg per tablet', medicationType: 'Statin', category: 'Cholesterol', suitableAge: 'Adults' },
+  { id: '28', name: 'Plavix', description: 'Plavix 75 mg 28 tablets', price: '290.00 EGP', image: productImages.product28, dosages: '75 mg per tablet', medicationType: 'Antiplatelet', category: 'Cardiovascular', suitableAge: 'Adults' },
+  { id: '29', name: 'Cardura', description: 'Cardura 4 mg 30 tablets', price: '78.00 EGP', image: productImages.product29, dosages: '4 mg per tablet', medicationType: 'Alpha blocker', category: 'Cardiovascular', suitableAge: 'Adults' },
+  { id: '30', name: 'Lasix', description: 'Lasix 40 mg 20 tablets', price: '39.00 EGP', image: productImages.product30, dosages: '40 mg per tablet', medicationType: 'Diuretic', category: 'Cardiovascular', suitableAge: 'Adults' },
 ];
 
 const productsData7 = [
-{ id: '31', name: 'Zantac', description: 'Zantac 150 mg 20 tablets', price: '48.00 EGP', image: productImages.product31 },
-{ id: '32', name: 'Clavox', description: 'Clavox 625 mg 14 tablets', price: '132.50 EGP', image: productImages.product32 },
-{ id: '33', name: 'Ketolac', description: 'Ketolac 10 mg 20 tablets', price: '42.00 EGP', image: productImages.product33 },
-{ id: '34', name: 'Neuroton', description: 'Neuroton 30 tablets for nerve support', price: '85.00 EGP', image: productImages.product34 },
-{ id: '35', name: 'Hemoclar', description: 'Hemoclar gel 40g for bruises', price: '52.75 EGP', image: productImages.product35 },
+  { id: '31', name: 'Zantac', description: 'Zantac 150 mg 20 tablets', price: '48.00 EGP', image: productImages.product31, dosages: '150 mg per tablet', medicationType: 'H2 blocker', category: 'Digestive', suitableAge: 'Adults' },
+  { id: '32', name: 'Clavox', description: 'Clavox 625 mg 14 tablets', price: '132.50 EGP', image: productImages.product32, dosages: '625 mg per tablet', medicationType: 'Antibiotic', category: 'Antibiotics', suitableAge: 'Adults & children (doctor advice)' },
+  { id: '33', name: 'Ketolac', description: 'Ketolac 10 mg 20 tablets', price: '42.00 EGP', image: productImages.product33, dosages: '10 mg per tablet', medicationType: 'NSAID', category: 'Pain relief', suitableAge: 'Adults' },
+  { id: '34', name: 'Neuroton', description: 'Neuroton 30 tablets for nerve support', price: '85.00 EGP', image: productImages.product34, dosages: 'As prescribed', medicationType: 'Vitamin B complex', category: 'Nerve support', suitableAge: 'Adults' },
+  { id: '35', name: 'Hemoclar', description: 'Hemoclar gel 40g for bruises', price: '52.75 EGP', image: productImages.product35, dosages: 'Apply as needed', medicationType: 'Topical gel', category: 'Bruises & swelling', suitableAge: 'All ages' },
 ];
 
 const allProducts = [

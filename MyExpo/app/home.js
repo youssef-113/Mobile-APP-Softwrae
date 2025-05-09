@@ -275,17 +275,20 @@ const home = () => {
             </View>
           )}
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.chatIcon}
+          onPress={() => router.push({ pathname: '/chat'})}
+        >
+          <FontAwesome name="comment" size={24} color="#003366" />
+        </TouchableOpacity>
       </View>
-            <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.cartIcon}
-        onPress={() => router.push({ 
-          pathname: '/chat'})}
-      >
-        <FontAwesome name="comment" size={24} color="#003366" />
-      </TouchableOpacity>
-    </View>
 
+        <Link href='NewArrivals' asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>New Arrivals</Text>
+            <FontAwesome name="star" size={20} color="#f5f5f5" />
+          </TouchableOpacity>
+        </Link>
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>About Us </Text>
@@ -464,7 +467,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 2 },
   },
-  // Header Welcome Section
+  
   headerWelcomeSection: {
     alignItems: 'center',
     marginBottom: 20,
@@ -486,7 +489,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 28,
   },
-  // Modern Slider
+
   sliderContainerModern: {
     width: isWeb ? Math.min(1000, width * 0.93) : width * 0.97,
     height: 200,
@@ -506,7 +509,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 18,
   },
-  // Section Title Bar
+
   sectionTitleBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -534,7 +537,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 2,
   },
-  // Offers Row
+
   offersRowWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -796,6 +799,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     padding: 10,
     color:'#F5F5F5'
+  },
+  chatIcon: {
+    position: 'relative',
+    padding: 10,
+    marginLeft: 10,
+    color:'#F5F5F5',
   },
   cartBadge: {
     position: 'absolute',
