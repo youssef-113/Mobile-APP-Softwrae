@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { TextInput } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { View, Text, Image,TouchableOpacity, ScrollView, StyleSheet , Dimensions , Platform } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
@@ -18,6 +19,7 @@ const isWeb = Platform.OS === 'web'
 const home = () => {
   const router = useRouter();
   const [cartItems, setCartItems] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const offersScrollRef = useRef(null);
 
   const scrollOffers = (direction) => {
@@ -30,9 +32,10 @@ const home = () => {
   };
 
   const sliderImages = [
-    require('../assets/images/free shipping.png'),
-    require('../assets/images/Check new.png'),
-    require('../assets/images/final transparent.png'),
+    require('../assets/images/aw.jpeg'),
+    require('../assets/images/az.jpeg'),
+    require('../assets/images/am.jpeg'),
+    require('../assets/images/as.jpeg'),
   ];
 
 
@@ -87,16 +90,14 @@ const home = () => {
     <View style={{flex: 1, backgroundColor: '#F5F5F5'}}>
       <Stack.Screen
         options={{
-          headerStyle:styles.headerStyle,
+          headerStyle: [styles.headerStyle, {height: 140}],
           headerBackVisible: true,
           headerTitle: () => (
             <View style={styles.forView}>
-              <Text style ={ styles.forText}>
-                Home
-              </Text>
+              <Text style={styles.forText}>Home</Text>
               <Image
                 source={require('../assets/images/final transparent.png')}
-                style ={styles.logo}
+                style={styles.logo}
               />
             </View>
           ),
@@ -107,10 +108,10 @@ const home = () => {
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
 
       <View style={styles.headerWelcomeSection}>
-        <Image source={require('../assets/images/final transparent.png')} style={styles.headerLogoSmall} />
-        <Text style={styles.title1}>Welcome to <Text style={styles.brandAccent}>Pharma Tech</Text></Text>
-        <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
-      </View>
+  <Image source={require('../assets/images/final transparent.png')} style={styles.headerLogoSmall} />
+  <Text style={styles.title1}>Welcome to <Text style={styles.brandAccent}>Pharma Tech</Text></Text>
+  <Text style={styles.subtitle}>Your health matters to us, our services are always with you</Text>
+</View>
 
       <View style={styles.sliderContainerModern}>
         <Swiper
@@ -122,12 +123,39 @@ const home = () => {
           containerStyle={styles.swiperStyle}
         >
           {sliderImages.map((img, idx) => (
-            <Image
+            <View
               key={idx}
-              source={img}
-              style={styles.sliderImageModern}
-              resizeMode="cover"
-            />
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#f5f5f5',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+            >
+             
+              <Image
+                source={img}
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  resizeMode: 'cover',
+                  opacity: 0.3,
+                }}
+                blurRadius={8}
+              />
+             
+              <Image
+                source={img}
+                style={{
+                  width: '90%',
+                  height: '90%',
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
           ))}
         </Swiper>
       </View>
@@ -150,11 +178,11 @@ const home = () => {
           style={{ flex: 1 }}
         >
           {offersData.map((offer, idx) => (
-            <View key={idx} style={styles.offerCardModern}>
+            <TouchableOpacity key={idx} style={styles.offerCardModern} onPress={() => router.push('/offers')}>
               <Image source={offer.image} style={styles.offerImageModern} />
-              <Text style={styles.offerNameModern}>{offer.name}</Text>
+              <Text style={styles.offerName}>{offer.name}</Text>
               <Text style={styles.offerDiscountModern}>{offer.discount}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
         <TouchableOpacity onPress={() => scrollOffers('right')} style={styles.arrowButtonModern}>
@@ -162,64 +190,91 @@ const home = () => {
         </TouchableOpacity>
       </View>
 
-      <Image
-          source={require('../assets/images/free shipping.png')}
-          style ={styles.board}
-        />
-          <Link href='/Products' asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Shopping</Text>
-            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" />
-          </TouchableOpacity>
-        
-        </Link>
-        <Link href='/offers' asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Offers</Text>
-            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" />
-          </TouchableOpacity>
-        
-        </Link>
-        <Link href='/BestSellers' asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Best Seller</Text>
-            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" />
-          </TouchableOpacity>
-        
-        </Link>
-         <Image
-          source={require('../assets/images/Check new.png')}
-          style ={styles.board}
-        />
 
-        <Link href='/NewArrivals' asChild> 
-          <TouchableOpacity style={styles.button}> 
-            <Text style={styles.buttonText}>New arrivals</Text> 
-            <FontAwesome name="shopping-cart" size={20} color="#f5f5f5" /> 
-          </TouchableOpacity> 
-        </Link>
 
-        <View style={styles.separator} />
-
-        <View style={styles.header}>
-
-          <TouchableOpacity 
-            onPress={() => router.push({ 
-              pathname: '/Cart', 
-              params: { cartItems: JSON.stringify(cartItems) } 
-            })} 
-            style={styles.cartIcon}
-          >
-            
-            <FontAwesome name="shopping-cart" size={24} color="#003366" />
-            {cartItems.length > 0 && (
-              <View style={styles.cartBadge}>
-                <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
-              </View>
-            )}
+      <View style={[styles.categoriesSection, {marginTop: 15, marginBottom: 20}]}> 
+        <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', width:'100%', marginBottom:8}}>
+          <TouchableOpacity style={styles.seeAllBtn} onPress={() => router.push('/Products')}>
+            <Text style={styles.seeAllText}>عرض الكل </Text>
+            <FontAwesome name="arrow-right" size={16} color="#00796B" />
           </TouchableOpacity>
+          <Text style={styles.categoriesTitle}>تسوق حسب الأقسام</Text>
         </View>
+        <View style={styles.categoriesGridWrapper}>
+  {[0, 1].map(col => (
+    <View key={col} style={styles.categoriesGridColumn}>
+      {[
+        { key: 'Antibiotics', label: 'Antibiotics', image: require('../assets/images/10.jpeg') },
+        { key: 'Painkillers', label: 'Painkillers', image: require('../assets/images/1.jpg') },
+        { key: 'Cardiovascular', label: 'Cardiovascular', image: require('../assets/images/3.jpg') },
+        { key: 'Supplements', label: 'Supplements', image: require('../assets/images/4.jpg') },
+        { key: 'Others', label: 'Others', image: require('../assets/images/2.jpg') },
+        { key: 'Favorites', label: 'Favorites', image: require('../assets/images/1.jpg') },
+      ]
+        .filter((_, idx) => idx % 2 === col)
+        .map(cat => (
+          <View key={cat.key} style={{alignItems:'center', marginVertical:10}}>
+  <TouchableOpacity style={styles.categoryCircle} onPress={() => router.push('/Products')}>
+    <Image source={cat.image} style={styles.categoryCircleImage} />
+  </TouchableOpacity>
+  <Text style={styles.categoryLabelUnder}>{cat.label}</Text>
+</View>
+        ))}
+    </View>
+  ))}
+</View>
 
+
+      </View>
+
+      
+      <View style={[styles.categoriesSection, {marginTop: 15, marginBottom: 20}]}> 
+        <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', width:'100%', marginBottom:8}}>
+          <TouchableOpacity style={styles.seeAllBtn} onPress={() => router.push('/offers')}>
+            <Text style={styles.seeAllText}>عرض الكل </Text>
+            <FontAwesome name="arrow-right" size={16} color="#00796B" />
+          </TouchableOpacity>
+          <Text style={styles.categoriesTitle}>وفر أكتر وأكتر</Text>
+        </View>
+        <View style={styles.categoriesList}>
+          {[
+            { key: 'Supplements', label: 'Supplements', image: require('../assets/images/2.jpg') },
+            { key: 'Others', label: 'Others', image: require('../assets/images/10.jpeg') },
+            { key: 'Favorites', label: 'Favorites', image: require('../assets/images/10.jpeg') },
+          ].map((cat, idx) => (
+            <View key={cat.key} style={{alignItems:'center', flexBasis:'48%', marginBottom: 16}}>
+              <TouchableOpacity
+                style={[styles.categoryCard, (idx === 2 || idx === 5) && {backgroundColor: '#e0e0e0'}]}
+                onPress={() => router.push({ pathname: '/OfferDetails', params: { name: cat.label, discount: 'Sale 20%', image: cat.image } })}
+                activeOpacity={0.85}
+              >
+                <View style={styles.imageBgCircle}>
+                  <Image source={cat.image} style={styles.categoryImage} resizeMode="cover" />
+                </View>
+              </TouchableOpacity>
+              <Text style={styles.categoryLabel}>{cat.label}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      
+      <View style={styles.header}>
+        <TouchableOpacity 
+          onPress={() => router.push({ 
+            pathname: '/Cart', 
+            params: { cartItems: JSON.stringify(cartItems) } 
+          })} 
+          style={styles.cartIcon}
+        >
+          <FontAwesome name="shopping-cart" size={24} color="#003366" />
+          {cartItems.length > 0 && (
+            <View style={styles.cartBadge}>
+              <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      </View>
 
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
@@ -228,9 +283,6 @@ const home = () => {
           </TouchableOpacity>
         </Link>
 
-        
-
-      
       </ScrollView>
       <TabBar />
     </View>
@@ -240,6 +292,159 @@ const home = () => {
 export default home;
 
 const styles = StyleSheet.create({
+  offerCardSquare: {
+    width: 120,
+    height: 155,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginRight: 14,
+    marginBottom: 8,
+    paddingTop: 10,
+    shadowColor: '#003366',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.10,
+    shadowRadius: 8,
+    elevation: 4,
+    borderWidth: 1.2,
+    borderColor: '#F3F6FB',
+  },
+  offerImageSquare: {
+    width: 75,
+    height: 75,
+    borderRadius: 12,
+    marginBottom: 10,
+    resizeMode: 'cover',
+  },
+  offerDiscountBadge: {
+    marginTop: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 8,
+    backgroundColor: '#D32F2F',
+    alignSelf: 'center',
+  },
+  offerDiscountBadgeText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 13,
+    textAlign: 'center',
+  },
+  categoriesGridWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  categoriesGridColumn: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 18,
+  },
+  categoryCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    shadowColor: '#003366',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.13,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  categoryCircleImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    marginBottom: 0,
+  },
+  categoryLabelUnder: {
+    marginTop: 8,
+    textAlign: 'center',
+    fontSize: 15,
+    color: '#003366',
+    fontWeight: '600',
+  },
+  categoriesList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 0,
+  },
+  categoryCardWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '48%',
+    marginBottom: 16,
+  },
+  categoryCard: {
+    width: 90,
+    height: 90,
+    backgroundColor: '#fff',
+    borderRadius: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#003366',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.13,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  imageBgCircle: {
+    width: 72,
+    height: 72,
+    backgroundColor: '#fff',
+    borderRadius: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  categoryImage: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+  },
+  headerTitleContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 16,
+    paddingBottom: 18,
+    minHeight: isWeb ? 120 : 140,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: '100%',
+    gap: 8,
+    paddingHorizontal: 12,
+  },
+  headerSearchBar: {
+    width: '65%',
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    paddingHorizontal: 12,
+    fontSize: 15,
+    color: '#222',
+    marginRight: 24,
+    marginTop: 12,
+    alignSelf: 'flex-end',
+    elevation: 2,
+    shadowColor: '#003366',
+    shadowOpacity: 0.07,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+  },
   // Header Welcome Section
   headerWelcomeSection: {
     alignItems: 'center',
@@ -355,12 +560,23 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor: '#F5F6FA',
   },
-  offerNameModern: {
-    fontSize: 14,
-    fontWeight: 'bold',
+  categoriesTitle: {
+    fontSize: 16,
+    fontWeight: 'normal',
     color: '#003366',
-    marginBottom: 2,
-    textAlign: 'center',
+    marginBottom: 0,
+    alignSelf: 'flex-start',
+    marginRight: 10,
+  },
+  seeAllBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 4,
+  },
+  seeAllText: {
+    color: '#00796B',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
   offerDiscountModern: {
     color: '#D32F2F',
@@ -423,10 +639,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   offerImage: {
-    width: 100,
-    height: 80,
-    borderRadius: 8,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     marginBottom: 6,
+    resizeMode: 'cover',
+    alignSelf: 'center',
   },
   offerName: {
     fontSize: 15,
@@ -486,9 +704,27 @@ const styles = StyleSheet.create({
 
   headerStyle: {
      backgroundColor: '#5B9BD5',
-     height: isWeb? 100 : 120,
-    
+     height: isWeb? 200 : 220, // أطول من السابق
   },
+  searchBar: {
+    width: isWeb ? 400 : '90%',
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: '#fff',
+    paddingHorizontal: 18,
+    fontSize: 17,
+    color: '#222',
+    marginTop: 14,
+    marginBottom: 0,
+    alignSelf: 'center',
+    elevation: 3,
+    shadowColor: '#003366',
+    shadowOpacity: 0.09,
+    shadowRadius: 7,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  // تم حذف headerRow وheaderSearchBar لأنها لم تعد مستخدمة
+
   board: {
     width: isWeb ? Math.min(1000, width * 0.9) : width * 1.5,
     height: 300, 
@@ -575,6 +811,14 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     marginRight:50,
     marginLeft:50,
+  },
+  categoriesTitle: {
+    fontSize: 28,
+    color: '#003366',
+    fontWeight: 'bold',
+    marginBottom: 11,
+    textAlign: 'right',
+    marginRight: 12,
   },
   button: {
     width: '90%',

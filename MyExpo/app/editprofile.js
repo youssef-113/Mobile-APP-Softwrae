@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Button,
   ScrollView,
+  Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { doc, getDoc,updateDoc } from "firebase/firestore";
@@ -36,39 +37,69 @@ export default function EditProfileScreen() {
   }, []);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      const uri = result.assets[0].uri;
-      setImage(uri);
-      try {
-        await AsyncStorage.setItem('profileImageUri', uri);
-      } catch (e) {
-        console.error('Error saving image URI', e);
-      }
-    }
+    Alert.alert(
+      'تغيير الصورة',
+      'اختر مصدر الصورة',
+      [
+        {
+          text: 'الكاميرا',
+          onPress: async () => {
+            let result = await ImagePicker.launchCameraAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.Images,
+              allowsEditing: true,
+              aspect: [1, 1],
+              quality: 1,
+            });
+            if (!result.canceled) {
+              const uri = result.assets[0].uri;
+              setImage(uri);
+              try {
+                await AsyncStorage.setItem('profileImageUri', uri);
+              } catch (e) {
+                console.error('Error saving image URI', e);
+              }
+            }
+          }
+        },
+        {
+          text: 'المعرض',
+          onPress: async () => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.Images,
+              allowsEditing: true,
+              aspect: [1, 1],
+              quality: 1,
+            });
+            if (!result.canceled) {
+              const uri = result.assets[0].uri;
+              setImage(uri);
+              try {
+                await AsyncStorage.setItem('profileImageUri', uri);
+              } catch (e) {
+                console.error('Error saving image URI', e);
+              }
+            }
+          }
+        },
+        { text: 'إلغاء', style: 'cancel' }
+      ],
+      { cancelable: true }
+    );
   };
-  const  GetUser = async() => {
+
+  const GetUser = async () => {
     const docRef = doc(db, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
-
-if (docSnap.exists()) {
-  //console.log("Document data:", docSnap.data());
-  const data = docSnap.data();
-  setName(data.name);
-  setEmail(data.email);
-  setPhone(data.Phone);
-} else {
-  // docSnap.data() will be undefined in this case
-  console.log("No such document!");
-}
-
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setName(data.name);
+      setEmail(data.email);
+      setPhone(data.Phone);
+    } else {
+      console.log("No such document!");
+    }
   };
+
   const updateUserData = async() => {
     const washingtonRef = doc(db,"users", auth.currentUser.uid);
 
@@ -162,7 +193,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   changeText: {
-    color: '#00796B',  // لون أخضر داكن لتغيير الصورة
+    color: '#00796B',  
     marginBottom: 20,
   },
   input: {
@@ -175,7 +206,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%',
-    backgroundColor: '#003366',  // لون أزرق داكن للخلفية
+    backgroundColor: '#003366',  
     paddingVertical: 15,
     borderRadius: 12,
     alignItems: 'center',
