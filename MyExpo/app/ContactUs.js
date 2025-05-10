@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity,
+import {View, Text, TextInput, TouchableOpacity,
   ScrollView, StyleSheet, Linking, Platform, Image, Dimensions
 } from "react-native";
 import { Stack } from "expo-router";
@@ -30,13 +29,13 @@ export default function ContactScreen() {
         createdAt: serverTimestamp(),
       });
 
-      setAlertMessage("✅ Thank you! Your feedback has been sent successfully.");
+      setAlertMessage("Thank you! Your feedback has been sent successfully✅ ");
       setFeedback("");
       setTimeout(() => setAlertMessage(""), 3000);
 
     } catch (err) {
       console.error("Error sending feedback:", err);
-      setAlertMessage("❌ Failed to send feedback. Please try again.");
+      setAlertMessage("Failed to send feedback. Please try again.❌ ");
       setTimeout(() => setAlertMessage(""), 3000);
     }
   };
@@ -60,15 +59,15 @@ export default function ContactScreen() {
           }}
         />
 
-        <Text style={styles.title}>📞 Contact Us</Text>
+        <Text style={styles.title}>Contact Us📞</Text>
         <Text style={styles.subtitle}>
           We're here to help you! Reach out to us for any questions or feedback:
         </Text>
 
-        <Text style={styles.info}>📧 Email: yossf.abdla311@gmail.com</Text>
-        <Text style={styles.info}>📞 Phone: 01 273 240 591</Text>
+        <Text style={styles.info}>Email: yossf.abdla311@gmail.com 📧 </Text>
+        <Text style={styles.info}>Phone: 01 273 240 591 📞 </Text>
 
-        <Text style={styles.formLabel}>💡 Send us your feedback:</Text>
+        <Text style={styles.formLabel}>Send us your feedback 💡 </Text>
         <TextInput
           style={styles.input}
           placeholder="Write your feedback here..."

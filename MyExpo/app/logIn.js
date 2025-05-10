@@ -5,7 +5,6 @@ import {signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../firebase'; 
 import { doc, getDoc } from 'firebase/firestore';
 import { showNotification } from './utils/notify';
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { navigate } from 'expo-router/build/global-state/routing';
 import { useNotification } from './context/NotificationsContext';
@@ -124,8 +123,8 @@ const Login = () => {
               onChangeText={setUsername}
               autoCapitalize="none"
               keyboardType="defult"
-              />
-        <TextInput 
+      />
+      <TextInput 
           style={styles.input} 
           placeholder="Your Phone" 
           placeholderTextColor="#888"

@@ -270,6 +270,7 @@ export default function ProductsScreen() {
             name: product.name,
             description: product.description,
             price: product.price,
+            image: product.image,
           }),
         });
       } else {
@@ -279,6 +280,7 @@ export default function ProductsScreen() {
               name: product.name,
               description: product.description,
               price: product.price,
+              image: product.image,
             },
           ],
         });
