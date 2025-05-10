@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { EventEmitter } from 'events';
+
+
+export const profileEventEmitter = new EventEmitter();
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
@@ -7,43 +12,41 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  Button,
   ScrollView,
   Alert,
-  Animated,
-  Platform,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from '../firebase';
+import { doc, getDoc,updateDoc } from "firebase/firestore";
+import {auth,db} from '../firebase';  
 
 export default function EditProfileScreen() {
   const [name, setName] = useState('Ahmed Mohamed');
   const [email, setEmail] = useState('ahmed@example.com');
   const [Phone, setPhone] = useState('01234567890');
   const [image, setImage] = useState(null);
-  const [viewMode, setViewMode] = useState(true);
-
-  // Animated scale for avatar “hover” effect
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const [viewMode, setViewMode] = useState(true); 
 
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        alert('We need camera roll permissions to make this work!');
+        alert('Sorry, we need camera roll permissions to make this work!');
       }
-      const uri = await AsyncStorage.getItem('profileImageUri');
-      if (uri) setImage(uri);
+      const storedUri = await AsyncStorage.getItem('profileImageUri');
+      if (storedUri) {
+        setImage(storedUri);
+      }
     })();
   }, []);
 
   const pickImage = async () => {
     Alert.alert(
-      'Select Image',
-      'Choose source',
+      'select image',
+      'select an option',
       [
         {
-          text: 'Camera',
+          text: 'camera',
           onPress: async () => {
             let result = await ImagePicker.launchCameraAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -54,12 +57,17 @@ export default function EditProfileScreen() {
             if (!result.canceled) {
               const uri = result.assets[0].uri;
               setImage(uri);
-              await AsyncStorage.setItem('profileImageUri', uri);
+              try {
+                await AsyncStorage.setItem('profileImageUri', uri);
+profileEventEmitter.emit('profileImageChanged');
+              } catch (e) {
+                console.error('Error saving image URI', e);
+              }
             }
           }
         },
         {
-          text: 'Gallery',
+          text: 'gallery',
           onPress: async () => {
             let result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -70,7 +78,12 @@ export default function EditProfileScreen() {
             if (!result.canceled) {
               const uri = result.assets[0].uri;
               setImage(uri);
-              await AsyncStorage.setItem('profileImageUri', uri);
+              try {
+                await AsyncStorage.setItem('profileImageUri', uri);
+profileEventEmitter.emit('profileImageChanged');
+              } catch (e) {
+                console.error('Error saving image URI', e);
+              }
             }
           }
         },
@@ -81,19 +94,26 @@ export default function EditProfileScreen() {
   };
 
   const GetUser = async () => {
-    const ref = doc(db, "users", auth.currentUser.uid);
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      const data = snap.data();
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
       setName(data.name);
       setEmail(data.email);
       setPhone(data.Phone);
+    } else {
+      console.log("No such document!");
     }
   };
 
-  const updateUserData = async () => {
-    const ref = doc(db, "users", auth.currentUser.uid);
-    await updateDoc(ref, { name, email, Phone });
+  const updateUserData = async() => {
+    const washingtonRef = doc(db,"users", auth.currentUser.uid);
+
+    await updateDoc(washingtonRef, {
+    name:name,
+    email:email,
+    Phone:Phone
+});
   };
 
   const handleSave = () => {
@@ -103,115 +123,114 @@ export default function EditProfileScreen() {
   const handleEdit = () => {
     setViewMode(false);
   };
-  if (viewMode) GetUser();
+  {viewMode ?GetUser():null};
 
   return (
-    <ScrollView contentContainerStyle={styles.page}>
-      <View style={styles.card}>
-        {/* Avatar */}
-        <TouchableOpacity
-          onPress={pickImage}
-          onPressIn={() => Animated.spring(scaleAnim, { toValue: 1.1, useNativeDriver: true }).start()}
-          onPressOut={() => Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }).start()}
-        >
-          <Animated.Image
-            source={image ? { uri: image } : require('../assets/images/user.png')}
-            style={[styles.img, { transform: [{ scale: scaleAnim }] }]}
-          />
-        </TouchableOpacity>
-        <Text style={styles.heading}>Edit Profile</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <TouchableOpacity onPress={pickImage}>
+        <Image
+          source={
+            image
+              ? { uri: image }
+              : require('../assets/images/user.png')
+          }
+          style={styles.avatar}
+        />
+        <Text style={styles.changeText}>edite your profile</Text>
+      </TouchableOpacity>
+      {viewMode ?(
+        <View>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.info}>{name}</Text>
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.label}>{email}</Text>
+          <Text style={styles.label}>Phone:</Text>
+          <Text style={styles.label}>{Phone}</Text>
+          <TouchableOpacity style={styles.button} onPress={handleEdit}>
+        <Text style={styles.buttonText}>Edit</Text>
+      </TouchableOpacity>
+    </View>
+      ) : (
+      <View>
+        <TextInput
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+        placeholder="name"
+      />
+      <TextInput
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholder="email"
+        keyboardType="email-address"
+      />
 
-        {viewMode ? (
-          <View style={styles.infoBlock}>
-            <Text style={styles.label}>Name:</Text>
-            <Text style={styles.info}>{name}</Text>
-            <Text style={styles.label}>Email:</Text>
-            <Text style={styles.info}>{email}</Text>
-            <Text style={styles.label}>Phone:</Text>
-            <Text style={styles.info}>{Phone}</Text>
-            <TouchableOpacity style={styles.button} onPress={handleEdit}>
-              <Text style={styles.buttonText}>Edit</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={styles.infoBlock}>
-            <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="Name" />
-            <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" />
-            <TextInput style={styles.input} value={Phone} onChangeText={setPhone} placeholder="Phone" keyboardType="phone-pad" />
-            <TouchableOpacity style={styles.button} onPress={handleSave}>
-              <Text style={styles.buttonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+      <TextInput
+        style={styles.input}
+        value={Phone}
+        onChangeText={setPhone}
+        placeholder="phone number"
+        keyboardType="phone-pad"
+      />
+      <TouchableOpacity style={styles.button} onPress={handleSave}>
+        <Text style={styles.buttonText}>save</Text>
+      </TouchableOpacity>
       </View>
-    </ScrollView>
+  )}
+  </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  page: {
+  container: {
     flexGrow: 1,
-    backgroundColor: '#f0f2f5',
-    alignItems: 'center',
-    paddingVertical: 20,
+    padding: 20,
+    backgroundColor: '#90CAF9',
   },
-  card: {
-    width: 400,
-    minHeight: 400,
-    backgroundColor: '#07182E',
-    borderRadius: 5,
-    alignItems: 'center',
-    padding: 15,
-    overflow: 'hidden',
-  },
-  img: {
-    width: 90,
-    height: 90,
-    borderRadius: 39.5,
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 10,
     borderWidth: 2,
-    borderColor: '#f0f0f0',
-    backgroundColor: '#152f50',
-    marginTop: 25,
-    marginBottom: 15,
+    borderColor: '#ccc',
   },
-  heading: {
-    color: '#f0f0f0',
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 10,
-  },
-  infoBlock: {
-    width: '100%',
-    paddingHorizontal: 20,
-    alignItems: 'flex-start',
-  },
-  label: {
-    color: '#f0f0f0',
-    fontWeight: '600',
-    marginTop: 8,
-  },
-  info: {
-    color: '#f0f0f0',
-    marginBottom: 10,
+  changeText: {
+    color: '#fff',  
+    marginBottom: 20,
   },
   input: {
     width: '100%',
-    backgroundColor: '#1b324d',
-    color: '#f0f0f0',
-    padding: 8,
-    borderRadius: 4,
-    marginBottom: 10,
+    backgroundColor: '#fff',
+    padding: 12,
+    borderRadius: 10,
+    fontSize: 16,
+    marginBottom: 16,
+    borderWidth: 1.5,
+    borderColor: '#5B9BD5',
+    color: '#003366',
   },
   button: {
-    backgroundColor: '#10b981',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 4,
-    alignSelf: 'center',
-    marginTop: 10,
+    width: '90%',
+    backgroundColor: '#2196F3',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 20,
+    shadowColor: '#003366',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 4,
+    flexDirection: 'row',
   },
   buttonText: {
-    color: '#07182E',
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
+    marginHorizontal: 10,
+    letterSpacing: 1.2,
   },
 });
