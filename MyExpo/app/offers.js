@@ -24,14 +24,7 @@ const offersData = [
     price: ' Sale 100 EGP',
     moreDetails: 'Toothpaste plays a crucial role in maintaining oral health. Even a small amount is effective in removing plaque, preventing cavities, and strengthening enamel due to ingredients like fluoride. It also helps freshen breath and reduce the risk of gum disease. Using the right amount—about a pea-sized drop—is both safe and efficient, especially for daily brushing. Neglecting toothpaste, even when brushing, means missing out on these essential benefits.'
   },
-  {
-    name: 'Pampers',
-    image: require('../assets/images/Pamper.png'),
-    discount: 'Sale 30%',
-    description: 'childern health.',
-    price: 'sale 300 EGP',
-    moreDetails: 'It seems like you are asking about "Pampers," which is a popular brand of diapers. If you are looking for important keywords or terms related to Pampers (the diaper brand), here are a few:'
-  },
+ 
    {
     name: 'Mask',
     image: require('../assets/images/Mask.png'),

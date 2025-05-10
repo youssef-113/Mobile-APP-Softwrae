@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { EventEmitter } from 'events';
+
+
+export const profileEventEmitter = new EventEmitter();
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
@@ -54,6 +59,7 @@ export default function EditProfileScreen() {
               setImage(uri);
               try {
                 await AsyncStorage.setItem('profileImageUri', uri);
+profileEventEmitter.emit('profileImageChanged');
               } catch (e) {
                 console.error('Error saving image URI', e);
               }
@@ -74,6 +80,7 @@ export default function EditProfileScreen() {
               setImage(uri);
               try {
                 await AsyncStorage.setItem('profileImageUri', uri);
+profileEventEmitter.emit('profileImageChanged');
               } catch (e) {
                 console.error('Error saving image URI', e);
               }
@@ -179,8 +186,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#F5F5F5',
-    alignItems: 'center',
+    backgroundColor: '#90CAF9',
   },
   avatar: {
     width: 120,
@@ -191,36 +197,40 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   changeText: {
-    color: '#00796B',  
+    color: '#fff',  
     marginBottom: 20,
   },
   input: {
     width: '100%',
+    backgroundColor: '#fff',
     padding: 12,
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 10,
-    marginBottom: 15,
+    fontSize: 16,
+    marginBottom: 16,
+    borderWidth: 1.5,
+    borderColor: '#5B9BD5',
+    color: '#003366',
   },
   button: {
     width: '90%',
-    backgroundColor: '#003366',  
-    paddingVertical: 15,
+    backgroundColor: '#2196F3',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     borderRadius: 12,
     alignItems: 'center',
     marginTop: 20,
-    shadowColor: '#aaa',
+    shadowColor: '#003366',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 4,
     flexDirection: 'row',
-    justifyContent: 'center',
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
     marginHorizontal: 10,
+    letterSpacing: 1.2,
   },
 });

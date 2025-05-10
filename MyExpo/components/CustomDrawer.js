@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { profileEventEmitter } from '../app/editprofile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, useColorScheme } from 'react-native';
@@ -28,6 +30,20 @@ export default function CustomDrawer(props) {
 
   useEffect(() => {
     loadUserData();
+  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadUserData();
+    }, [])
+  );
+
+ 
+  useEffect(() => {
+    const handler = () => loadUserData();
+    profileEventEmitter.on('profileImageChanged', handler);
+    return () => {
+      profileEventEmitter.off('profileImageChanged', handler);
+    };
   }, []);
 
   const confirmLogout = () => {

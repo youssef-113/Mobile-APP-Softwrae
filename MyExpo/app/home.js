@@ -7,7 +7,6 @@ import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import auth from '../firebase'; 
 import TabBar from './component/TabBar';
-import chat from './chat'
 
 
 
@@ -44,47 +43,67 @@ const home = () => {
     {
       name: 'Vitamin C 1000mg',
       image: require('../assets/images/1.jpg'),
-      discount: 'Sale 30%'
+      discount: 'Sale 30%',
+      price: 100
     },
     {
       name: 'Zinc Plus Capsules',
       image: require('../assets/images/2.jpg'),
-      discount: 'Sale 25%'
+      discount: 'Sale 25%',
+      price: 80
     },
     {
       name: 'Medical Sunscreen',
       image: require('../assets/images/3.jpg'),
-      discount: 'Sale 15%'
+      discount: 'Sale 15%',
+      price: 120
     },
     {
       name: 'Anti-Dandruff Shampoo',
       image: require('../assets/images/4.jpg'),
-      discount: 'Sale 20%'
+      discount: 'Sale 20%',
+      price: 90
     },
     {
       name: 'Anti-Dandruff Shampoo',
-      image: require('../assets/images/4.jpg'),
-      discount: 'Sale 20%'
+      image: require('../assets/images/36.jpg'),
+      discount: 'Sale 20%',
+      price: 90
     },
     {
       name: 'Anti-Dandruff Shampoo',
-      image: require('../assets/images/4.jpg'),
-      discount: 'Sale 20%'
+      image: require('../assets/images/38.jpg'),
+      discount: 'Sale 20%',
+      price: 90
     },
     {
       name: 'Anti-Dandruff Shampoo',
-      image: require('../assets/images/4.jpg'),
-      discount: 'Sale 20%'
+      image: require('../assets/images/40.jpg'),
+      discount: 'Sale 20%',
+      price: 90
     },
     {
       name: 'Anti-Dandruff Shampoo',
-      image: require('../assets/images/4.jpg'),
-      discount: 'Sale 20%'
+      image: require('../assets/images/39.jpg'),
+      discount: 'Sale 20%',
+      price: 90
     },
   ];
 
   const addToCart = (product) => {
-    setCartItems((prevCart) => [...prevCart, product]);
+   
+    setCartItems((prevCart) => {
+      const foundIdx = prevCart.findIndex(item => item.name === product.name);
+      if (foundIdx !== -1) {
+    
+        const updatedCart = [...prevCart];
+        updatedCart[foundIdx].quantity = (updatedCart[foundIdx].quantity || 1) + 1;
+        return updatedCart;
+      } else {
+        
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
   };
 
   return (
@@ -179,11 +198,15 @@ const home = () => {
           style={{ flex: 1 }}
         >
           {offersData.map((offer, idx) => (
-            <TouchableOpacity key={idx} style={styles.offerCardModern} onPress={() => router.push('/offers')}>
+            <View key={idx} style={styles.offerCardModern}>
               <Image source={offer.image} style={styles.offerImageModern} />
               <Text style={styles.offerName}>{offer.name}</Text>
               <Text style={styles.offerDiscountModern}>{offer.discount}</Text>
-            </TouchableOpacity>
+              <Text style={{color: '#003366', fontWeight: 'bold', marginVertical: 2}}>{offer.price} جنيه</Text>
+              <TouchableOpacity style={{backgroundColor:'#00796B',padding:5,borderRadius:6,marginTop:4}} onPress={() => addToCart(offer)}>
+                <Text style={{color:'#fff',fontWeight:'bold'}}>Add to Cart</Text>
+              </TouchableOpacity>
+            </View>
           ))}
         </ScrollView>
         <TouchableOpacity onPress={() => scrollOffers('right')} style={styles.arrowButtonModern}>
@@ -196,10 +219,10 @@ const home = () => {
       <View style={[styles.categoriesSection, {marginTop: 15, marginBottom: 20}]}> 
         <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', width:'100%', marginBottom:8}}>
           <TouchableOpacity style={styles.seeAllBtn} onPress={() => router.push('/Products')}>
-            <Text style={styles.seeAllText}>عرض الكل </Text>
+            <Text style={styles.seeAllText}>show all</Text>
             <FontAwesome name="arrow-right" size={16} color="#00796B" />
           </TouchableOpacity>
-          <Text style={styles.categoriesTitle}>تسوق حسب الأقسام</Text>
+          <Text style={styles.categoriesTitle}>Shop by department</Text>
         </View>
         <View style={styles.categoriesGridWrapper}>
   {[0, 1].map(col => (
@@ -209,7 +232,7 @@ const home = () => {
         { key: 'Painkillers', label: 'Painkillers', image: require('../assets/images/1.jpg') },
         { key: 'Cardiovascular', label: 'Cardiovascular', image: require('../assets/images/3.jpg') },
         { key: 'Supplements', label: 'Supplements', image: require('../assets/images/4.jpg') },
-        { key: 'Others', label: 'Others', image: require('../assets/images/2.jpg') },
+        { key: 'Others', label: 'Baby products', image: require('../assets/images/2.jpg') },
         { key: 'Favorites', label: 'Favorites', image: require('../assets/images/1.jpg') },
       ]
         .filter((_, idx) => idx % 2 === col)
@@ -232,21 +255,21 @@ const home = () => {
       <View style={[styles.categoriesSection, {marginTop: 15, marginBottom: 20}]}> 
         <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', width:'100%', marginBottom:8}}>
           <TouchableOpacity style={styles.seeAllBtn} onPress={() => router.push('/offers')}>
-            <Text style={styles.seeAllText}>عرض الكل </Text>
+            <Text style={styles.seeAllText}>show all</Text>
             <FontAwesome name="arrow-right" size={16} color="#00796B" />
           </TouchableOpacity>
-          <Text style={styles.categoriesTitle}>وفر أكتر وأكتر</Text>
+          <Text style={styles.categoriesTitle}>Until stock runs out</Text>
         </View>
         <View style={styles.categoriesList}>
           {[
-            { key: 'Supplements', label: 'Supplements', image: require('../assets/images/2.jpg') },
-            { key: 'Others', label: 'Others', image: require('../assets/images/10.jpeg') },
-            { key: 'Favorites', label: 'Favorites', image: require('../assets/images/10.jpeg') },
+            { key: 'Supplements', label: 'Supplements', image: require('../assets/images/muscle.jpg') },
+            { key: 'Others', label: 'Baby products', image: require('../assets/images/baby.jpg') },
+            { key: 'Favorites', label: 'skin cares', image: require('../assets/images/sun.jpg') },
           ].map((cat, idx) => (
             <View key={cat.key} style={{alignItems:'center', flexBasis:'48%', marginBottom: 16}}>
               <TouchableOpacity
                 style={[styles.categoryCard, (idx === 2 || idx === 5) && {backgroundColor: '#e0e0e0'}]}
-                onPress={() => router.push({ pathname: '/OfferDetails', params: { name: cat.label, discount: 'Sale 20%', image: cat.image } })}
+                onPress={() => router.push({ pathname: '/offerdetails', params: { name: cat.label, discount: 'Sale 20%', image: cat.image } })}
                 activeOpacity={0.85}
               >
                 <View style={styles.imageBgCircle}>
@@ -275,20 +298,8 @@ const home = () => {
             </View>
           )}
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.chatIcon}
-          onPress={() => router.push({ pathname: '/chat'})}
-        >
-          <FontAwesome name="comment" size={24} color="#003366" />
-        </TouchableOpacity>
       </View>
 
-        <Link href='NewArrivals' asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>New Arrivals</Text>
-            <FontAwesome name="star" size={20} color="#f5f5f5" />
-          </TouchableOpacity>
-        </Link>
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>About Us </Text>
@@ -305,15 +316,6 @@ const home = () => {
 export default home;
 
 const styles = StyleSheet.create({
-
-   chatButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 8,
-  },
-  
   offerCardSquare: {
     width: 120,
     height: 155,
@@ -467,7 +469,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 2 },
   },
-  
+ 
   headerWelcomeSection: {
     alignItems: 'center',
     marginBottom: 20,
@@ -489,7 +491,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 28,
   },
-
+ 
   sliderContainerModern: {
     width: isWeb ? Math.min(1000, width * 0.93) : width * 0.97,
     height: 200,
@@ -509,7 +511,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 18,
   },
-
+ 
   sectionTitleBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -537,7 +539,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 2,
   },
-
+ 
   offersRowWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -558,7 +560,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 2,
   },
-  
+ 
   offerCardModern: {
     width: 120,
     backgroundColor: '#fff',
@@ -746,7 +748,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   
-
   board: {
     width: isWeb ? Math.min(1000, width * 0.9) : width * 1.5,
     height: 300, 
@@ -799,12 +800,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     padding: 10,
     color:'#F5F5F5'
-  },
-  chatIcon: {
-    position: 'relative',
-    padding: 10,
-    marginLeft: 10,
-    color:'#F5F5F5',
   },
   cartBadge: {
     position: 'absolute',
