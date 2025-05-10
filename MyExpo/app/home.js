@@ -7,6 +7,7 @@ import { FontAwesome } from 'react-native-vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import auth from '../firebase'; 
 import TabBar from './component/TabBar';
+import chat from './chat'
 
 
 
@@ -77,13 +78,13 @@ const home = () => {
       price: 90
     },
     {
-      name: 'Anti-Dandruff Shampoo',
+      name: 'Mask',
       image: require('../assets/images/40.jpg'),
       discount: 'Sale 20%',
       price: 90
     },
     {
-      name: 'Anti-Dandruff Shampoo',
+      name: 'Shampoo',
       image: require('../assets/images/39.jpg'),
       discount: 'Sale 20%',
       price: 90
@@ -298,8 +299,12 @@ const home = () => {
             </View>
           )}
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.chatIcon}
+          onPress={() => router.push({ pathname: '/chat'})}>
+          <FontAwesome name="comment" size={24} color="#003366" />
+        </TouchableOpacity>
       </View>
-
         <Link href='About' asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>About Us </Text>
@@ -316,6 +321,13 @@ const home = () => {
 export default home;
 
 const styles = StyleSheet.create({
+  chatButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 8,
+  },
   offerCardSquare: {
     width: 120,
     height: 155,
@@ -795,6 +807,12 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     zIndex: 10,
+  },
+  chatIcon: {
+    position: 'relative',
+    padding: 10,
+    marginLeft: 10,
+    color:'#F5F5F5',
   },
   cartIcon: {
     position: 'relative',
