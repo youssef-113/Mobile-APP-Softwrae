@@ -42,7 +42,7 @@ export default function Chat() {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer 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`,
+                        'Authorization': `Bearer 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`,
                     },
                 }
             );
