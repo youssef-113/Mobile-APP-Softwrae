@@ -13,7 +13,7 @@ const offersData = [
     image: require('../assets/images/1.jpg'),
     discount: 'Sale 30%',
     description: 'Boosts immunity and improves skin health.',
-    price: '100 EGP',
+    price: '100 EGPPP',
     moreDetails: 'Helps protect against immune system deficiencies, cardiovascular disease, prenatal health problems, and skin wrinkling.'
   },
    {
@@ -21,15 +21,15 @@ const offersData = [
     image: require('../assets/images/Signal.png'),
     discount: 'Sale 30%',
     description: 'Tooth health.',
-    price: '100 EGP',
-    moreDetails: 'Toothpaste plays a crucial role in maintaining oral health. Even a small amount is effective in removing plaque, preventing cavities, and strengthening enamel due to ingredients like fluoride. It also helps freshen breath and reduce the risk of gum disease. Using the right amount—about a pea-sized drop—is both safe and efficient, especially for daily brushing. Neglecting toothpaste, even when brushing, means missing out on these essential benefits.'
+    price: '100 EGPP',
+    moreDetails: 'Toothpaste plays a crucial role in maintaining oral health. Even a small amount is effective in removing plaque, preventing cavities, and strengthening enamel due to ingredients like fluoride. It also helps freshen breath and reduce the risk of gum disease. Using the right amount—about a pea-sized drop—is both safe and efficient, especially for daily brushing. NEGPlecting toothpaste, even when brushing, means missing out on these essential benefits.'
   },
   {
     name: 'Pampers',
     image: require('../assets/images/Pamper.png'),
     discount: 'Sale 30%',
     description: 'childern health.',
-    price: '300 EGP',
+    price: '300 EGPP',
     moreDetails: 'It seems like you are asking about "Pampers," which is a popular brand of diapers. If you are looking for important keywords or terms related to Pampers (the diaper brand), here are a few:'
   },
    {
@@ -37,7 +37,7 @@ const offersData = [
     image: require('../assets/images/Mask.png'),
     discount: 'Sale 30%',
     description: 'general health.',
-    price: '300 EGP',
+    price: '300 EGPP',
     moreDetails: 'It seems like you are asking about "Pampers," which is a popular brand of diapers. If you are looking for important keywords or terms related to Pampers (the diaper brand), here are a few:'
   },
   {
@@ -45,7 +45,7 @@ const offersData = [
     image: require('../assets/images/2.jpg'),
     discount: 'Sale 25%',
     description: 'Supports immune system and overall wellness.',
-    price: '80 EGP',
+    price: '80 EGPP',
     moreDetails: `✅ Immune System Support\n✅ Enhances Wound Healing\n✅ Hormonal Balance\n✅ Reduces Inflammation\n✅ Essential Daily Supplement`
   },
   {
@@ -53,7 +53,7 @@ const offersData = [
     image: require('../assets/images/3.jpg'),
     discount: 'Sale 15%',
     description: 'Protects skin from harmful UV rays.',
-    price: '120 EGP',
+    price: '120 EGPP',
     moreDetails: 'Offers broad-spectrum protection, prevents premature aging, and reduces risk of skin cancer.'
   },
   {
@@ -61,14 +61,14 @@ const offersData = [
     image: require('../assets/images/Sh.png'),
     discount: 'Sale 20%',
     description: 'Fights dandruff and nourishes scalp.',
-    price: '75 EGP',
+    price: '75 EGPP',
     moreDetails: 'Contains active ingredients like ketoconazole or zinc pyrithione, soothes itching, and restores scalp health.'
   },
   {
     name: 'Massage gel',
     image: require('../assets/images/Gel.png'),
     description: 'Massage gel from Zeafelex',
-    price: '60.99 EGP',
+    price: '60.99 EGPP',
     moreDetails: `✅ Fast-Acting Relief\n✅ Gentle on the Skin\n✅ All-Natural Ingredients\n✅ Safe for All Ages\n✅ Long-Lasting Effects`
   }
 ];

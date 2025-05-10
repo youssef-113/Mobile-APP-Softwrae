@@ -22,7 +22,7 @@ const offersData = [
     discount: 'Sale 30%',
     description: 'Tooth health.',
     price: ' Sale 100 EGP',
-    moreDetails: 'Toothpaste plays a crucial role in maintaining oral health. Even a small amount is effective in removing plaque, preventing cavities, and strengthening enamel due to ingredients like fluoride. It also helps freshen breath and reduce the risk of gum disease. Using the right amount—about a pea-sized drop—is both safe and efficient, especially for daily brushing. Neglecting toothpaste, even when brushing, means missing out on these essential benefits.'
+    moreDetails: 'Toothpaste plays a crucial role in maintaining oral health. Even a small amount is effective in removing plaque, preventing cavities, and strengthening enamel due to ingredients like fluoride. It also helps freshen breath and reduce the risk of gum disease. Using the right amount—about a pea-sized drop—is both safe and efficient, especially for daily brushing. NEGPlecting toothpaste, even when brushing, means missing out on these essential benefits.'
   },
  
    {

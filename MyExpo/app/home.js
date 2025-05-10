@@ -203,7 +203,7 @@ const home = () => {
               <Image source={offer.image} style={styles.offerImageModern} />
               <Text style={styles.offerName}>{offer.name}</Text>
               <Text style={styles.offerDiscountModern}>{offer.discount}</Text>
-              <Text style={{color: '#003366', fontWeight: 'bold', marginVertical: 2}}>{offer.price} جنيه</Text>
+              <Text style={{color: '#003366', fontWeight: 'bold', marginVertical: 2}}>{offer.price} EGP</Text>
               <TouchableOpacity style={{backgroundColor:'#00796B',padding:5,borderRadius:6,marginTop:4}} onPress={() => addToCart(offer)}>
                 <Text style={{color:'#fff',fontWeight:'bold'}}>Add to Cart</Text>
               </TouchableOpacity>

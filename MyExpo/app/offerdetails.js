@@ -91,18 +91,18 @@ export default function OfferDetails() {
             <View style={styles.priceRow}>
               {(params.name === 'Pampers' || params.name === 'Baby products') ? (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={[styles.oldPrice, { marginLeft: 8, textDecorationLine: 'line-through', color: '#c00' }]}>400 جنيه</Text>
-                  <Text style={[styles.currentPrice, { color: '#388e3c', fontWeight: 'bold', marginLeft: 8 }]}>250 جنيه</Text>
+                  <Text style={[styles.oldPrice, { marginLeft: 8, textDecorationLine: 'line-through', color: '#c00' }]}>400 EGPP</Text>
+                  <Text style={[styles.currentPrice, { color: '#388e3c', fontWeight: 'bold', marginLeft: 8 }]}>250 EGP</Text>
                 </View>
               ) : (params.name === 'skin care' || params.name === 'skin cares') ? (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={[styles.oldPrice, { marginLeft: 8, textDecorationLine: 'line-through', color: '#c00' }]}>500 جنيه</Text>
-                  <Text style={[styles.currentPrice, { color: '#388e3c', fontWeight: 'bold', marginLeft: 8 }]}>250 جنيه</Text>
+                  <Text style={[styles.oldPrice, { marginLeft: 8, textDecorationLine: 'line-through', color: '#c00' }]}>500 EGP</Text>
+                  <Text style={[styles.currentPrice, { color: '#388e3c', fontWeight: 'bold', marginLeft: 8 }]}>250 EGP</Text>
                 </View>
               ) : (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={styles.oldPrice}>155 جنيه</Text>
-                  <Text style={styles.currentPrice}>100 جنيه</Text>
+                  <Text style={styles.oldPrice}>155 EGP</Text>
+                  <Text style={styles.currentPrice}>100 EGP</Text>
                 </View>
               )}
             </View>
