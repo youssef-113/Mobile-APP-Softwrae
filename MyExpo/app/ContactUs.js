@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import {View, Text, TextInput, TouchableOpacity,
+import {
+  View, Text, TextInput, TouchableOpacity,
   ScrollView, StyleSheet, Linking, Platform, Image, Dimensions
 } from "react-native";
 import { Stack } from "expo-router";
+import { FontAwesome } from "@expo/vector-icons";
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from './context/AuthContext';
@@ -12,6 +14,7 @@ const { width, height } = Dimensions.get('window');
 const isWeb = Platform.OS === 'web';
 
 export default function ContactScreen() {
+  const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const { user } = useAuth();
@@ -21,21 +24,20 @@ export default function ContactScreen() {
       setAlertMessage("⚠️ Please enter your feedback before sending!");
       return;
     }
-
     try {
       await addDoc(collection(db, 'feedbacks'), {
+        rating,
         text: feedback,
         userId: user ? user.uid : null,
         createdAt: serverTimestamp(),
       });
-
-      setAlertMessage("Thank you! Your feedback has been sent successfully✅ ");
+      setAlertMessage("✅ Thank you! Your feedback has been sent.");
       setFeedback("");
+      setRating(0);
       setTimeout(() => setAlertMessage(""), 3000);
-
     } catch (err) {
-      console.error("Error sending feedback:", err);
-      setAlertMessage("Failed to send feedback. Please try again.❌ ");
+      console.error(err);
+      setAlertMessage("❌ Failed to send feedback");
       setTimeout(() => setAlertMessage(""), 3000);
     }
   };
@@ -59,18 +61,33 @@ export default function ContactScreen() {
           }}
         />
 
-        <Text style={styles.title}>Contact Us📞</Text>
+        <Text style={styles.title}>Contact Us 📞</Text>
         <Text style={styles.subtitle}>
-          We're here to help you! Reach out to us for any questions or feedback:
+          We're here to help! Rate us and leave feedback below.
         </Text>
+        <Text style={styles.subtitle}>Phone: 01001725166 </Text>
+        <Text style={styles.formLabel }>Rate Us</Text>
+        <View style={styles.ratingContainer}>
+          {[1,2,3,4,5].map((star) => (
+            <TouchableOpacity
+              key={star}
+              onPress={() => setRating(star)}
+              activeOpacity={0.7}
+            >
+              <FontAwesome
+                name={ star <= rating ? "star" : "star-o" }
+                size={32}
+                color={ star <= rating ? "#6f00ff" : "#ccc" }
+                style={styles.star}
+              />
+            </TouchableOpacity>
+          ))}
+        </View>
 
-        <Text style={styles.info}>Email: yossf.abdla311@gmail.com 📧 </Text>
-        <Text style={styles.info}>Phone: 01 273 240 591 📞 </Text>
-
-        <Text style={styles.formLabel}>Send us your feedback 💡 </Text>
+        <Text style={styles.formLabel}>Your Feedback 💡</Text>
         <TextInput
           style={styles.input}
-          placeholder="Write your feedback here..."
+          placeholder="Write here..."
           placeholderTextColor="#888"
           value={feedback}
           onChangeText={setFeedback}
@@ -86,21 +103,23 @@ export default function ContactScreen() {
         </TouchableOpacity>
 
         <Text style={styles.socialTitle}>🌐 Connect with us:</Text>
+
         <TouchableOpacity
-          onPress={() =>
-            Linking.openURL("https://github.com/youssef-113/Mobile-APP-Softwrae")
-          }
+          
+          onPress={() => Linking.openURL("yossf.abdla311@gmail.com")}
         >
-          <Text style={styles.socialLink}>🔹 GitHub</Text>
+          <Text style={styles.socialLink}>🔹Email</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => Linking.openURL("https://github.com/youssef-113/Mobile-APP-Softwrae")}
+        >
+          <Text style={styles.socialLink}>🔹GitHub</Text>
         </TouchableOpacity>
       </ScrollView>
-
       <TabBar />
     </>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -110,123 +129,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#000", 
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 20,
-    color: "#333", 
-    marginBottom: 20,
-    textAlign: "center",
-  },
-
-
-  logo: {
-    width: isWeb ? 400 : width * 0.6,
-    height: isWeb ? 400 : height * 2.5,
-    marginLeft: isWeb? 650 : -20,
-    resizeMode: 'contain',
-    alignSelf: 'center', 
-  },
-  
-  
-  forText:{ 
-    color: '#191716', 
-    fontWeight: 'bold', 
-    marginRight: isWeb ? 20 : 40,
-    fontSize: isWeb ? 18 : 16, 
-  },
-  forView:{
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: isWeb ? 'flex-start' : 'center', 
-    width: '100%', 
-  },
-
-  headerStyle: {
-    backgroundColor: '#5B9BD5',
-    height: isWeb? 100 : 120,
-   
- },
-  info: {
-    fontSize: 18,
-    color: "#000",
-    marginBottom: 10,
-  },
-  formLabel: {
-    fontSize: 18,
-    color: "#000",
-    marginTop: 20,
-    marginBottom: 10,
-  },
+  title: { fontSize: 28, fontWeight: "bold", color: "#000", marginBottom: 10 },
+  subtitle: { fontSize: 18, color: "#333", marginBottom: 20, textAlign: "center" },
+  ratingContainer: { flexDirection: 'row', marginBottom: 16 },
+  star: { marginHorizontal: 4 },
+  formLabel: { fontSize: 18, color: "#000", marginTop: 10, marginBottom: 6 },
   input: {
-    width: "90%",
-    height: 100,
-    backgroundColor: "#FFFFFF", 
-    color: "#333", 
-    padding: 10,
-    borderRadius: 10,
+    width: "90%", minHeight: 100, backgroundColor: "#FFF",
+    color: "#333", padding: 10, borderRadius: 10,
+    borderWidth: 1, borderColor: "#00796B", marginBottom: 15,
     textAlignVertical: "top",
-    borderWidth: 1,
-    borderColor: "#00796B",
-    marginBottom: 15,
-  },
-  button: {
-    backgroundColor: "#003366",
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#F5F5F5", 
-  },
-  socialTitle: {
-    fontSize: 18,
-    color: "#00796B", 
-    marginTop: 30,
-    marginBottom: 10,
-  },
-  socialLink: {
-    fontSize: 16,
-    color: "#1E90FF",
-    marginBottom: 5,
   },
   alertLabel: {
-    backgroundColor: "#00796B", 
-    color: "#FFF", 
-    fontSize: 16,
-    fontWeight: "bold",
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#00796B", 
-    textAlign: "center",
-    marginVertical: 10,
-    width: "100%",
+    backgroundColor: "#00796B", color: "#FFF", fontSize: 16,
+    fontWeight: "bold", padding: 10, borderRadius: 10,
+    textAlign: "center", marginVertical: 10, width: "90%",
   },
-  tabsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    paddingVertical: 5,
-    backgroundColor: '#00796B',
-    position: 'absolute',
-    bottom: 0,
-    height: 60,
-    borderTopWidth: 2,
-    borderTopColor: '#004D40',
+  button: {
+    backgroundColor: "#003366", paddingVertical: 15,
+    paddingHorizontal: 40, borderRadius: 10, alignItems: "center",
+    marginBottom: 20,
   },
-  tabButton: {
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 60,
-    height: 60,
-  },
+  buttonText: { fontSize: 18, fontWeight: "bold", color: "#F5F5F5" },
+  socialTitle: { fontSize: 18, color: "#00796B", marginTop: 10, marginBottom: 6 },
+  socialLink: { fontSize: 16, color: "#1E90FF", marginBottom: 5 },
+  forText:{ color: '#191716', fontWeight: 'bold', marginRight: 20, fontSize: 16 },
+  forView:{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' },
+  headerStyle:{ backgroundColor: '#5B9BD5', height: isWeb? 100:120 },
+  logo:{ width: isWeb? 400:width*0.6, height: isWeb?400:height*2.5, resizeMode:'contain', alignSelf:'center' },
 });
