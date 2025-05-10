@@ -1,321 +1,245 @@
+// app/logIn.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity,Pressable, StyleSheet, Alert , Image , Platform ,Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+  StyleSheet,
+  Image,
+  Platform,
+  Dimensions,
+} from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
-import {signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from '../firebase'; 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { showNotification } from './utils/notify';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { navigate } from 'expo-router/build/global-state/routing';
 import { useNotification } from './context/NotificationsContext';
 
-const { height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const isWeb = Platform.OS === 'web';
 
-const { width } = Dimensions.get('window');
-const isWeb = Platform.OS === 'web'
-
-
-const Login = () => {
+export default function Login() {
   const router = useRouter();
   const [username, setUsername] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [Phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [Phone, setPhone] = useState('');
-  const [hover, setHover] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
+  const [hover, setHover] = useState(false);
   const { showNotification } = useNotification();
 
- const validation = () => {
+  const validation = () => {
     let valid = true;
-    if (!email.includes('@') && !email.includes('.com')) {   
-      alert("Invalid Email , Please enter a valid email");
-       setEmailError("Invalid Email , Please enter a valid email");
+    if (!email.includes('@') || !email.includes('.com')) {
+      setEmailError("Invalid email format");
       valid = false;
-    } else {
-      setEmailError('');
-    }
+    } else setEmailError('');
     if (password.length < 8) {
-      alert("Password must be at least 8 characters long"); 
-      setPasswordError('Password must be at least 8 characters long.');
+      setPasswordError("Password must be at least 8 characters");
       valid = false;
-    }
-    else {
-      setPasswordError('');
-    }
+    } else setPasswordError('');
     return valid;
-    
   };
-
 
   const handleLogin = async () => {
     if (!validation()) return;
-  
     try {
-      
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-  
-      
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
-  
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      const userDoc = await getDoc(doc(db, "users", cred.user.uid));
       if (userDoc.exists()) {
-        const userData = userDoc.data();
-  
-       
-        if (userData.name !== username || userData.Phone !== Phone) {
-          alert("Name or phone number does not match our records.");
+        const data = userDoc.data();
+        if (data.name !== username || data.Phone !== Phone) {
+          alert("Name or phone mismatch");
           return;
         }
-  
-      
-        alert("Login successful!");
-        router.replace('/home');
         await showNotification('✅ Login Successful', `Welcome back, ${username}!`);
-      } else {
-        alert("User record not found in database.");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      if (error.code === "auth/user-not-found") {
-        alert("User not found. Please sign up.");
-      } else if (error.code === "auth/wrong-password") {
-        alert("Incorrect password.");
-      } else if (error.code === "auth/invalid-email") {
-        alert("Invalid email format.");
-      } else {
-        alert("Login failed. Please check your credentials.");
-      }
+        router.replace('/home');
+      } else alert("User record not found");
+    } catch (e) {
+      console.error(e);
+      alert(e.message);
     }
   };
-  
-  
 
   return (
-    <View style={styles.container} >
-  
-     <Stack.Screen
-       options={{
-         headerStyle:styles.headerStyle,
-         headerBackVisible: true,
-         headerTitle: () => (
-           <View style={styles.forView}>
-             <Text style ={ styles.forText}>
-               LogIn
-             </Text>
-             <Image
-               source={require('../assets/images/final transparent.png')}
-               style ={styles.logo}
-             />
-           </View>
-         ),
-       }}
-     />
-        <Text style={styles.title} >Welcome in our pharmacy</Text>  
-      <Text style={styles.title}>Login to your account </Text>
-              <TextInput 
-              style={styles.input} 
-              placeholder="Your Name" 
-              placeholderTextColor="#888"
-              value={username} 
-              onChangeText={setUsername}
-              autoCapitalize="none"
-              keyboardType="defult"
-      />
-      <TextInput 
-          style={styles.input} 
-          placeholder="Your Phone" 
-          placeholderTextColor="#888"
-          value={Phone} 
-          onChangeText={setPhone}
-          autoCapitalize="none"
-          keyboardType="default"
-              />
-       <TextInput 
-         style={styles.input} 
-         placeholder="Email" 
-         placeholderTextColor="#888"
-         value={email} 
-         onChangeText={setEmail}
-         autoCapitalize="none"
-         keyboardType="email-address"
-         onBlur={() => {
-                if (!email.includes('@') && !email.includes('.com')) {
-                  setEmailError('Invalid email format, please enter a valid email.');
-                } else {
-                  setEmailError('');
-                }
-              }}
-         />
-       {emailError !== '' && <Text style={styles.errorText}>{emailError}</Text>}
-    
-        <TextInput 
-          style={styles.input} 
-          placeholder="Password" 
-          placeholderTextColor="#888"
-          value={password} 
-          onChangeText={setPassword}
-          secureTextEntry={!showPassword}
-          onBlur={() => {
-            if (password.length < 8) {
-              setPasswordError('Password must be at least 8 characters long.');
-            } else {
-              setPasswordError('');
-            }
-          }}
-      />
-         
-        <Pressable
-          onPress={() => setShowPassword(prev => !prev)}
-          style={({ pressed }) => [
-            styles.eyeIcon,
-            pressed && styles.iconPressed
-          ]}
-        >
-        </Pressable>
-       
-      
-      {passwordError !== '' && <Text style={styles.errorText}>{passwordError}</Text>}
+    <View style={styles.page}>
+      <Stack.Screen options={{ headerShown: false }} />
 
-      <Pressable
-        onPress={handleLogin}
-        onHoverIn={() => isWeb && setHover(true)}
-        onHoverOut={() => isWeb && setHover(false)}
-        style={({ pressed }) => [
-          styles.buttonLogin,
-          pressed && styles.buttonPressed,
-          hover && styles.buttonHover
-        ]}
-      >
-      {({ pressed }) => (
-          <Text style={[styles.buttonText, (pressed || hover) && styles.buttonTextHover]}>Login</Text>
-        )}
-      </Pressable>
-      <Text style={styles.linkText}>
-        Don't have an account?{' '}
-        <Link href="/SignUp" style={styles.link}>Sign Up</Link>
-      </Text>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Welcome to Our Pharmacy</Text>
+
+        <View style={styles.form}>
+          {/* Name */}
+          <Text style={styles.label}>Your Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your name"
+            placeholderTextColor="#888"
+            value={username}
+            onChangeText={setUsername}
+          />
+
+          {/* Phone */}
+          <Text style={styles.label}>Phone</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your phone"
+            placeholderTextColor="#888"
+            value={Phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+          />
+
+          {/* Email */}
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your email"
+            placeholderTextColor="#888"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+          {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+
+          {/* Password */}
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your password"
+            placeholderTextColor="#888"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+
+          <TouchableOpacity
+            style={styles.toggle}
+            onPress={() => setShowPassword(p => !p)}
+          >
+            <Text style={styles.toggleText}>
+              {showPassword ? 'Hide' : 'Show'}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Login Button */}
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={handleLogin}
+          >
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+
+          {/* Sign up link */}
+          <Text style={styles.agreement}>
+            Don't have an account?{' '}
+            <Link href="/SignUp" style={styles.link}>Sign Up</Link>
+          </Text>
+        </View>
+      </View>
     </View>
   );
-};
+}
 
-export default Login;
 const styles = StyleSheet.create({
-
-  logo: {
-    width: isWeb ? 400 : width * 0.6,
-    height: isWeb ? 400 : height * 2.5,
-    marginLeft: isWeb? 650 : -20,
-    resizeMode: 'contain',
-    alignSelf: 'center', 
-  },
-  
-  
-  forText:{ 
-    color: '#191716', 
-    fontWeight: 'bold', 
-    marginRight: isWeb ? 20 : 40,
-    fontSize: isWeb ? 18 : 16, 
-  },
-  forView:{ 
-    flexDirection: 'row', 
-    alignItems: 'center',
-    justifyContent: isWeb ? 'flex-start' : 'center', 
-    width: '100%', 
-  },
-
-  headerStyle: {
-    backgroundColor: '#5B9BD5',
-    height: isWeb? 100 : 120,
-   
- },
-  container: {
+  page: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
+    backgroundColor: '#eef3fb',
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
   },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 10,
+  container: {
+    width: width * 0.95,
+    maxWidth: 380,
+    backgroundColor: '#f8f9fd',
+    borderRadius: 40,
+    paddingVertical: 25,
+    paddingHorizontal: 35,
+    borderWidth: 5,
+    borderColor: '#fff',
+    shadowColor: 'rgba(133,189,215,0.88)',
+    shadowOffset: { width: 0, height: 30 },
+    shadowOpacity: 1,
+    shadowRadius: 30,
+    elevation: 10,
   },
-  subtitle: {
-    fontSize: 18,
-    color: '#000',
+  heading: {
+    textAlign: 'center',
+    fontWeight: '900',
+    fontSize: 30,
+    color: 'rgb(16,137,211)',
     marginBottom: 20,
   },
+  form: {
+    marginTop: 10,
+  },
+  label: {
+    marginTop: 15,
+    marginBottom: 5,
+    color: '#444',
+    fontSize: 14,
+    fontWeight: '600',
+  },
   input: {
-    width: '90%',
-    height: 50,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    color: '#333',
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: '#B2DFDB',
+    width: '100%',
+    backgroundColor: '#fff',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    fontSize: 15,
+    shadowColor: '#cff0ff',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    elevation: 5,
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
   errorText: {
     color: 'red',
-    fontSize: 14,
-    alignSelf: 'flex-start',
-    marginLeft: '5%',
-    marginBottom: 10,
+    marginTop: 5,
+    fontSize: 12,
   },
-  button: {
-    backgroundColor: '#003366',
-    paddingVertical: 15,
-    paddingHorizontal: 50,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 10,
+  toggle: {
+    alignSelf: 'flex-end',
+    marginTop: 5,
+    marginRight: 10,
   },
-  buttonText: {
-    color: '#f5f5f5',
-    fontSize: 18,
-    fontWeight: 'bold',
+  toggleText: {
+    color: '#0099ff',
+    fontSize: 12,
   },
-  linkText: {
-    color: '#000',
-    fontSize: 16,
+  loginButton: {
     marginTop: 20,
+    width: '100%',
+    paddingVertical: 15,
+    borderRadius: 20,
+    backgroundColor: 'rgb(16,137,211)',
+    alignItems: 'center',
+    shadowColor: 'rgba(133,189,215,0.88)',
+    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  agreement: {
+    textAlign: 'center',
+    marginTop: 15,
+    fontSize: 12,
+    color: '#666',
   },
   link: {
-    color: '#000',
+    color: '#0099ff',
     fontWeight: 'bold',
   },
-  buttonLogin: {
-    margin: 15,
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderWidth: 2,
-    borderColor: '#003366',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  buttonPressed: {
-    transform: [{ scale: 0.9 }],
-  },
-  buttonHover: {
-    backgroundColor: '#003366',
-  },
-  buttonText: {
-    color: '#003366',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  buttonTextHover: {
-    color: '#fff',
-  },
-  linkText: {
-    color: '#000',
-    fontSize: 16,
-    marginTop: 20,
-  },
-
 });
